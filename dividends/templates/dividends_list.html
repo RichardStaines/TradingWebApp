@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block content %}
+    <h1 class="my5">Dividends</h1>
+    <table id="dividends" class="display datatable table-striped table-bordered"
+           style="width:100%" searching="true">
+    <thead>
+
+        <tr class="col-head">
+            <th class="sorting_enabled">Payment Date</th>
+            <th class="sorting_enabled">Amount</th>
+            <th class="sorting_enabled">Instrument</th>
+            <th class="sorting_enabled">Portfolio</th>
+            <th class="sorting_enabled">Description</th>
+            <th class="sorting_enabled">Created On</th>
+            <th class="sorting_enabled">Updated On</th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for dividend in dividends %}
+            <tr>
+                <td>{{dividend.payment_date}}</td>
+                <td>£{{dividend.amount |intcomma}}</td>
+                <td>
+                    <a href="{% url 'dividend.details' pk=dividend.id %}" class="test-dark text-decoration-non">
+                        {{ dividend.instrument }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{% url 'portfolio.details' pk=dividend.portfolio.id %}" class="test-dark text-decoration-non">
+                        {{dividend.portfolio}}
+                    </a>
+                </td>
+                <td>{{dividend.description}}</td>
+                <td>{{dividend.created_on}}</td>
+                <td>{{dividend.updated_on}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<a href="{% url 'dividend.new' %}" class="btn btn-secondary my-5">New</a>
+{% endblock %}

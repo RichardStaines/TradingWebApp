@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1 class="my5">Portfolios</h1>
+    <div class="row row-cols3 g-2">
+        {% for portfolio in portfolios %}
+        <div class="col">
+            <div class="p-3 border">
+                <a href="{% url 'portfolio.details' pk=portfolio.id %}" class="test-dark text-decoration-non">
+                    <h3>{{ portfolio.name }}</h3>
+                </a>
+                {{portfolio.description | truncatechars:100 }}
+                <br>({{ portfolio.id }})
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+<a href="{% url 'portfolio.new' %}" class="btn btn-secondary my-5">New</a>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="border round">
+    <h1 class="my-5">{{cash.id}}</h1>
+    <p>{{cash.type}}</p>
+    <p>{{cash.portfolio}}</p>
+    <p>{{cash.description}}</p>
+    <p>{{cash.amount}}</p>
+    <p>{{cash.payment_date}}</p>
+    <p>{{cash.created_on}}</p>
+    <p>{{cash.updated_on}}</p>
+</div>
+
+<a href="{% url 'cash.list' %}" class="btn btn-secondary my-5">List</a>
+<a href="{% url 'cash.update' pk=cash.id%}" class="btn btn-secondary">Edit</a>
+<a href="{% url 'cash.delete' pk=cash.id%}" class="btn btn-danger">Delete</a>
+
+{% endblock %}

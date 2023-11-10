@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form method="post">
+    {% csrf_token %}
+    <p>Are you sure you want to delete "{{instrument.code}" ?</p>
+    <p>This action cannot be undone</p>
+
+    <input type="submit" class="btn btn-danger" value="Confirm">
+</form>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block content %}
+    <h1 class="my5">Trades</h1>
+    <table id="cash" class="display datatable table-striped table-bordered"
+           style="width:100%" searching="true">
+    <thead>
+
+        <tr class="col-head">
+            <th class="sorting_enabled">BuySell</th>
+            <th class="sorting_enabled">Instrument</th>
+            <th class="sorting_enabled">Quantity</th>
+            <th class="sorting_enabled">Price</th>
+            <th class="sorting_enabled">Net Consideration</th>
+            <th class="sorting_enabled">Portfolio</th>
+            <th class="sorting_enabled">Trade Date</th>
+            <th class="sorting_enabled">Settlement Date</th>
+            <th class="sorting_enabled">Description</th>
+            <th class="sorting_enabled">Created On</th>
+            <th class="sorting_enabled">Updated On</th>
+            <th class="sorting_enabled">Reference/Id</th>
+            <th></th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for row in trades %}
+            <tr>
+                <td>{{row.buy_sell}}</td>
+                <td>{{row.instrument}}</td>
+                <td>{{row.quantity |intcomma}}</td>
+                <td>£{{row.price |intcomma}}</td>
+                <td>£{{row.net_consideration |intcomma}}</td>
+                <td>
+                    <a href="{% url 'portfolio.details' pk=row.portfolio.id %}" class="test-dark text-decoration-non">
+                        {{row.portfolio}}
+                    </a>
+                </td>
+                <td>{{row.trade_date}}</td>
+                <td>{{row.settle_date}}</td>
+                <td>{{row.description}}</td>
+                <td>{{row.created_on}}</td>
+                <td>{{row.updated_on}}</td>
+                <td>
+                    <button onclick="window.location.href='{% url 'trade.update' pk=row.id %}'"
+                            class="test-dark text-decoration-non">Edit {{row.reference}}/{{row.id}}</button>
+                </td>
+                <td>
+                    <button onclick="window.location.href='{% url 'trade.delete' pk=row.id %}'"
+                            class="test-dark text-decoration-non">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<a href="{% url 'trade.new' %}" class="btn btn-secondary my-5">New</a>
+{% endblock %}

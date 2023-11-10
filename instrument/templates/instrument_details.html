@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="border round">
+    <h1 class="my-5">{{instrument.code}}</h1>
+    <p>{{instrument.sedol}}</p>
+    <p>{{instrument.description}}</p>
+    <p>{{instrument.price_source}}</p>
+    <p>{{instrument.created_on}}</p>
+    <p>{{instrument.updated_on}}</p>
+</div>
+
+
+<a href="{% url 'instrument.list' %}" class="btn btn-secondary my-5">List</a>
+<a href="{% url 'instrument.update' pk=instrument.id%}" class="btn btn-secondary">Edit</a>
+<a href="{% url 'instrument.delete' pk=instrument.id%}" class="btn btn-danger">Delete</a>
+
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="border round">
+    <h1 class="my-5">{{portfolio.name}}</h1>
+    <p>{{portfolio.description}}</p>
+    <p>Id: {{portfolio.id}}
+    <p>Created: {{portfolio.created_on}}</p>
+    <p>Updated: {{portfolio.updated_on}}</p>
+</div>
+
+<a href="{% url 'portfolio.list' %}" class="btn btn-secondary my-5">List</a>
+<a href="{% url 'portfolio.update' pk=portfolio.id%}" class="btn btn-secondary">Edit</a>
+<a href="{% url 'portfolio.delete' pk=portfolio.id%}" class="btn btn-danger">Delete</a>
+
+{% endblock %}

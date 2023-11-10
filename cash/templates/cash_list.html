@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block content %}
+    <h1 class="my5">Cash</h1>
+    <table id="cash" class="display datatable table-striped table-bordered"
+           style="width:100%" searching="true">
+    <thead>
+
+        <tr class="col-head">
+            <th class="sorting_enabled">Type</th>
+            <th class="sorting_enabled">Payment Date</th>
+            <th class="sorting_enabled">Amount</th>
+            <th class="sorting_enabled">Portfolio</th>
+            <th class="sorting_enabled">Description</th>
+            <th class="sorting_enabled">Created On</th>
+            <th class="sorting_enabled">Updated On</th>
+            <th class="sorting_enabled">Id</th>
+            <th></th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for row in cash_list %}
+            <tr>
+                <td>{{row.type}}</td>
+                <td>{{row.payment_date}}</td>
+                <td>£{{row.amount |intcomma}}</td>
+                <td>
+                    <a href="{% url 'portfolio.details' pk=row.portfolio.id %}" class="test-dark text-decoration-non">
+                        {{row.portfolio}}
+                    </a>
+                </td>
+                <td>{{row.description}}</td>
+                <td>{{row.created_on}}</td>
+                <td>{{row.updated_on}}</td>
+                <td>
+                    <button onclick="window.location.href='{% url 'cash.update' pk=row.id %}'"
+                            class="test-dark text-decoration-non">Edit {{row.id}}</button>
+                </td>
+                <td>
+                    <button onclick="window.location.href='{% url 'cash.delete' pk=row.id %}'"
+                            class="test-dark text-decoration-non">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<a href="{% url 'cash.new' %}" class="btn btn-secondary my-5">New</a>
+{% endblock %}

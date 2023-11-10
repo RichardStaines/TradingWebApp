@@ -1,0 +1,15 @@
+tr:nth-of-type(odd) {
+  background-color: lavender;
+}
+th {
+    background-color: lightblue;
+}
+
+.dividend-li {
+    color: red;
+}
+ul.errorlist {display:none}
+
+
+
+
