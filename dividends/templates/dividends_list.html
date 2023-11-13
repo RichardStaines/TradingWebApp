@@ -3,8 +3,9 @@
 {% load humanize %}
 
 {% block content %}
+
     <h1 class="my5">Dividends</h1>
-    <table id="dividends" class="display datatable table-striped table-bordered"
+    <table id="datatable1" class="display stripe table-bordered"
            style="width:100%" searching="true">
     <thead>
 
@@ -16,6 +17,8 @@
             <th class="sorting_enabled">Description</th>
             <th class="sorting_enabled">Created On</th>
             <th class="sorting_enabled">Updated On</th>
+            <th>Id</th>
+            <th></th>
         </tr>
     </thead>
         <tbody>
@@ -36,9 +39,26 @@
                 <td>{{dividend.description}}</td>
                 <td>{{dividend.created_on}}</td>
                 <td>{{dividend.updated_on}}</td>
+                <td>
+                    <button onclick="window.location.href='{% url 'dividend.update' pk=dividend.id %}'"
+                            class="test-dark text-decoration-non">Edit {{dividend.id}}</button>
+                </td>
+                <td>
+                    <button onclick="window.location.href='{% url 'dividend.delete' pk=dividend.id %}'"
+                            class="test-dark text-decoration-non">Delete</button>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 <a href="{% url 'dividend.new' %}" class="btn btn-secondary my-5">New</a>
+
+<script>
+
+    $(document).ready(function() {
+        $('#datatable1').DataTable();
+    } );
+
+</script>
+
 {% endblock %}

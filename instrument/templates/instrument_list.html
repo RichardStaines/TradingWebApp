@@ -7,7 +7,7 @@
 {% block content %}
     <h1 class="my5">Instruments</h1>
 
-    <table id="instruments" class="display datatable table-striped table-bordered"
+    <table id="datatable1" class="display stripe table-bordered"
            style="width:100%" searching="true">
     <thead>
 
@@ -18,6 +18,8 @@
             <th class="sorting_enabled">Price Source</th>
             <th class="sorting_enabled">Created On</th>
             <th class="sorting_enabled">Updated On</th>
+            <th>Id</th>
+            <th></th>
         </tr>
     </thead>
         <tbody>
@@ -33,10 +35,25 @@
                 <td>{{instrument.price_source}}</td>
                 <td>{{instrument.created_on}}</td>
                 <td>{{instrument.updated_on}}</td>
+                <td>
+                    <button onclick="window.location.href='{% url 'instrument.update' pk=instrument.id %}'"
+                            class="test-dark text-decoration-non">Edit {{row.id}}</button>
+                </td>
+                <td>
+                    <button onclick="window.location.href='{% url 'instrument.delete' pk=instrument.id %}'"
+                            class="test-dark text-decoration-non">Delete</button>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
 </table>
 
 <a href="{% url 'instrument.new' %}" class="btn btn-secondary my-5">New</a>
+
+<script>
+    $(document).ready(function() {
+        $('#datatable1').DataTable();
+    } );
+</script>
+
 {% endblock %}

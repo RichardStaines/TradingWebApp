@@ -4,7 +4,7 @@
 
 {% block content %}
     <h1 class="my5">Trades</h1>
-    <table id="cash" class="display datatable table-striped table-bordered"
+    <table id="datatable1" class="display stripe table-bordered"
            style="width:100%" searching="true">
     <thead>
 
@@ -55,4 +55,11 @@
         </tbody>
     </table>
 <a href="{% url 'trade.new' %}" class="btn btn-secondary my-5">New</a>
+
+<script>
+    $(document).ready(function() {
+        $('#datatable1').DataTable();
+    } );
+</script>
+
 {% endblock %}
