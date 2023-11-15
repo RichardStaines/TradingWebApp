@@ -4,7 +4,7 @@ from django.views.generic import DetailView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import PortfolioForm
+from .forms import PortfolioForm, PortfolioCsvLoadForm
 from .models import Portfolio
 
 
@@ -12,7 +12,7 @@ class PortfolioCreateView(CreateView):
     model = Portfolio
     success_url = '/portfolios'
     form_class = PortfolioForm
-    template_name = 'portfolio_form.html'
+    template_name = 'portfolio_csv_load_form.html'
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -49,5 +49,15 @@ class PortfolioListView(LoginRequiredMixin, ListView):
         return Portfolio.objects.all()
         # return self.request.user.portfolio.all()
 
+class PortfolioCsvLoadView(CreateView):
+    model = Portfolio
+    success_url = '/portfolios'
+    form_class = PortfolioCsvLoadForm
+    template_name = 'portfolio_csv_load_form.html'
 
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 

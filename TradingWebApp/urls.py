@@ -26,4 +26,5 @@ urlpatterns = [
     path('', include('instrument.urls')),
     path('', include('cash.urls')),
     path('', include('trade.urls')),
+    path('csvloader', include('CsvLoader.urls'))
 ]

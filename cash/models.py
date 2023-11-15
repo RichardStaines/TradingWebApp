@@ -1,4 +1,8 @@
+import math
+
 from django.db import models
+
+from instrument.models import InstrumentRepository
 from portfolio.models import Portfolio
 
 
@@ -15,3 +19,29 @@ class Cash(models.Model):
 
     class Meta:
         db_table = "app_cash"
+
+
+class CashRepository:
+
+    def __init__(self, debug=False):
+        self.debug = debug
+
+    def clear_table(self):
+        Cash.objects.all().delete()
+
+    def save_from_df(self, df, portfolio, clear_before_load=False):
+        if clear_before_load:
+            self.clear_table()
+        print(f"nRows={df.count()}")
+        print ([f"{row.Type} {row.Datetime} {row.Amount}" for row in df.itertuples()])
+        rec_list = [Cash(type=row.Type,
+                         description=row.Description,
+                         amount=float(row.Amount),
+                         payment_date=row.Datetime,
+                         portfolio=portfolio
+                         ) for row in df.itertuples()]
+
+        if self.debug:
+            print(rec_list)
+        print(f"nRows={len(rec_list)}")
+        Cash.objects.bulk_create(rec_list, batch_size=len(rec_list))
