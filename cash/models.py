@@ -32,8 +32,8 @@ class CashRepository:
     def save_from_df(self, df, portfolio, clear_before_load=False):
         if clear_before_load:
             self.clear_table()
-        print(f"nRows={df.count()}")
-        print ([f"{row.Type} {row.Datetime} {row.Amount}" for row in df.itertuples()])
+
+        # print ([f"{row.Type} {row.Datetime} {row.Amount}" for row in df.itertuples()])
         rec_list = [Cash(type=row.Type,
                          description=row.Description,
                          amount=float(row.Amount),
@@ -43,5 +43,5 @@ class CashRepository:
 
         if self.debug:
             print(rec_list)
-        print(f"nRows={len(rec_list)}")
+       # print(f"nRows={len(rec_list)}")
         Cash.objects.bulk_create(rec_list, batch_size=len(rec_list))
