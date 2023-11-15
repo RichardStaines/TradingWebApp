@@ -28,13 +28,16 @@
                   </button>
                     <a href="{% url 'portfolio.list' %}" class="btn btn-outline-light ms-1">Portfolios</a>
                     <a href="{% url 'instrument.list' %}" class="btn btn-outline-light ms-1">Instruments</a>
+                    <a href="{% url 'dividend_schedule.list' %}" class="btn btn-outline-light me-1">Dividend Schedule</a>
 
                     <a href="{% url 'cash.list' %}" class="btn btn-outline-light me-1">Cash</a>
                     <a href="{% url 'dividend.list' %}" class="btn btn-outline-light me-1">Dividends</a>
                     <a href="{% url 'trade.list' %}" class="btn btn-outline-light me-1">Trades</a>
+
                   <ul class="dropdown-menu" data-bs-theme="light">
                       <li><a class="dropdown-item" href="{% url 'portfolio.load' %}">Load portfolios from a CSV File</a></li>
                       <li><a class="dropdown-item" href="{% url 'csv.load' %}">Load cash, dividends and trades from a CSV File</a></li>
+                      <li><a class="dropdown-item" href="{% url 'dividend_schedule.load' %}">Load dividend schedules from a CSV File</a></li>
                       <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'portfolio.list' %}">Portfolios</a></li>
                     <li><a class="dropdown-item" href="{% url 'instrument.list' %}">Instruments</a></li>

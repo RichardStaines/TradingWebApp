@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'home',
     'portfolio',
     'dividends',
+    'DividendSchedule',
     'instrument',
     'cash',
     'trade',

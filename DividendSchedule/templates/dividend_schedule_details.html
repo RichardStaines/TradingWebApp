@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="border round">
+    <h1 class="my-5">{{dividend.instrument}}</h1>
+    <p>{{dividend.ex_div_date}}</p>
+    <p>{{dividend.payment_date}}</p>
+    <p>{{dividend.payment}}</p>
+
+    <p>{{dividend.created_on}}</p>
+    <p>{{dividend.updated_on}}</p>
+</div>
+
+<a href="{% url 'dividend_schedule.list' %}" class="btn btn-secondary my-5">List</a>
+<a href="{% url 'dividend_schedule.update' pk=dividend_schedule.id%}" class="btn btn-secondary">Edit</a>
+<a href="{% url 'dividend_schedule.delete' pk=dividend_schedule.id%}" class="btn btn-danger">Delete</a>
+
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block content %}
+
+    <h1 class="my5">Dividend Schedules</h1>
+    <table id="datatable1" class="display stripe table-bordered"
+           style="width:100%" searching="true">
+    <thead>
+
+        <tr class="col-head">
+            <th class="sorting_enabled">Instrument</th>
+            <th class="sorting_enabled">ExDiv Date</th>
+            <th class="sorting_enabled">Payment Date</th>
+            <th class="sorting_enabled">Payment</th>
+            <th class="sorting_enabled">Created On</th>
+            <th class="sorting_enabled">Updated On</th>
+            <th>Id</th>
+            <th></th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for row in dividend_schedules %}
+            <tr>
+                <td>
+                    <a href="{% url 'dividend_schedule.details' pk=row.id %}" class="test-dark text-decoration-non">
+                        {{ row.instrument }}
+                    </a>
+                </td>
+                <td>{{row.ex_div_date}}</td>
+                <td>{{row.payment_date}}</td>
+                <td>£{{row.payment |intcomma}}</td>
+                <td>{{row.created_on}}</td>
+                <td>{{row.updated_on}}</td>
+                <td>
+                    <button onclick="window.location.href='{% url 'dividend_schedule.update' pk=row.id %}'"
+                            class="test-dark text-decoration-non">Edit {{row.id}}</button>
+                </td>
+                <td>
+                    <button onclick="window.location.href='{% url 'dividend_schedule.delete' pk=row.id %}'"
+                            class="test-dark text-decoration-non">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<a href="{% url 'dividend_schedule.new' %}" class="btn btn-secondary my-5">New</a>
+
+<script>
+
+    $(document).ready(function() {
+        $('#datatable1').DataTable();
+    } );
+
+</script>
+
+{% endblock %}

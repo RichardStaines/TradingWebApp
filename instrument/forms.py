@@ -4,6 +4,14 @@ from .models import Instrument
 
 
 class InstrumentForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        # first call parent's constructor
+        super(InstrumentForm, self).__init__(*args, **kwargs)
+        # there's a `fields` property now
+        self.fields['price_source'].required = False
+        self.fields['sedol'].required = False
+
     class Meta:
         model = Instrument
         fields = ['code', 'sedol', 'description', 'price_source']
