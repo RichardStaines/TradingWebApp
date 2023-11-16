@@ -44,3 +44,12 @@ def load_dividend_schedules_from_csv(filename, clear_before_load):
     db = DivScheduleRepository(debug=True)
     db.save_from_df(df, clear_before_load)
     return df
+
+
+def load_portfolios_csv(filename, clear_before_load):
+    df = pd.read_csv(filename, keep_default_na=True)
+    #print(df.columns)
+    db = PortfolioRepository(debug=True)
+    db.save_from_df(df, clear_before_load)
+    return df
+
