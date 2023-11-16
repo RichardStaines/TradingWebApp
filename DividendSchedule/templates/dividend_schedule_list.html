@@ -30,7 +30,7 @@
                 </td>
                 <td>{{row.ex_div_date}}</td>
                 <td>{{row.payment_date}}</td>
-                <td>£{{row.payment |intcomma}}</td>
+                <td>£{{row.payment.normalize |intcomma}}</td>
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
                 <td>
