@@ -121,10 +121,19 @@
                     .column(1, { page: 'current' })
                     .data()
                     .reduce((a, b) => intVal(a) + intVal(b), 0);
-
+                var pageTotal = new Intl.NumberFormat("en-UK", {
+                  style: "currency",
+                  currency: "GBP"
+                }).format(pageTotal);
+                var total = new Intl.NumberFormat("en-UK", {
+                  style: "currency",
+                  currency: "GBP"
+                }).format(total);
                 // Update footer
                 api.column(1).footer().innerHTML =
-                    '£' + total;
+                    pageTotal;
+                api.column(2).footer().innerHTML =
+                    total;
             }
         });
     } );
