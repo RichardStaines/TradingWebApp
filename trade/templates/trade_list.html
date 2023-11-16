@@ -66,17 +66,29 @@
 <script>
     $(document).ready(function() {
         $('#datatable1').DataTable({
-
+            order: [[6, 'desc']],
             columnDefs: [
                 {
-                    targets: [6,7,9,10], // your field position
+                    targets: [6,7], // your field position
                     type: 'datetime',
                     render: function (data, type, row, meta) {
-                        var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');
+                        var momentObj = moment(data, 'DD MMM YYYY');
                         if (type === 'sort') {
                             return momentObj.unix();
                         }
-                        return momentObj.format('MMM. DD, YYYY, h:mm a');
+                        return momentObj.format('DD MMM YYYY');
+                    },
+                    orderable: true
+                },
+                {
+                    targets: [9,10], // your field position
+                    type: 'datetime',
+                    render: function (data, type, row, meta) {
+                        var momentObj = moment(data, 'MMM DD YYYY, hh:mm');
+                        if (type === 'sort') {
+                            return momentObj.unix();
+                        }
+                        return momentObj.format('MMM DD YYYY, hh:mm');
                     },
                     orderable: true
                 },

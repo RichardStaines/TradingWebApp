@@ -41,7 +41,7 @@ class DividendListView(LoginRequiredMixin, ListView):
     login_url = "/login"
 
     def get_queryset(self):
-        return Dividend.objects.all().order_by('-payment_date')  # descending order
+        return Dividend.objects.all()
 
 
 class DividendDetailView(DetailView):

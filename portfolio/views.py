@@ -48,7 +48,7 @@ class PortfolioListView(LoginRequiredMixin, ListView):
     login_url = "/login"
 
     def get_queryset(self):
-        return Portfolio.objects.all()
+        return Portfolio.objects.all().order_by('name')
         # return self.request.user.portfolio.all()
 
 

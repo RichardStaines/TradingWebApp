@@ -57,9 +57,22 @@
 
     $(document).ready(function() {
         $('#datatable1').DataTable({
+            order: [[0, 'desc']],
             columnDefs: [
                 {
-                    targets: [0,5,6], // your field position
+                    targets: [0], // payment date
+                    type: 'date',
+                    render: function (data, type, row, meta) {
+                        var momentObj = moment(data, 'DD MMM YYYY');
+                        if (type === 'sort') {
+                            return momentObj.unix();
+                        }
+                        return momentObj.format('DD MMM YYYY');
+                    },
+                    orderable: true
+                },
+                {
+                    targets: [5,6], // created on, updated on
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');
