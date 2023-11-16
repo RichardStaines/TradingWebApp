@@ -7,7 +7,7 @@ from instrument.models import Instrument
 class DividendScheduleForm(forms.ModelForm):
     class Meta:
         model = DividendSchedule
-        fields = ['instrument', 'payment', 'ex_div_date', 'payment_date']
+        fields = ['instrument', 'payment', 'ex_div_date', 'payment_date', ]
         widgets = {
             'instrument': forms.Select(),
             'payment': forms.NumberInput(
@@ -29,7 +29,8 @@ class DividendScheduleForm(forms.ModelForm):
             ),
         }
         labels = {'instrument': 'Instrument',
-                  'payment_date': 'Payment Date'}
+                  'payment_date': 'Payment Date',
+                  }
 
 
 class DividendScheduleCsvLoaderForm(forms.Form):

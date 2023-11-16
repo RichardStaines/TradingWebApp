@@ -8,9 +8,9 @@ class DividendSchedule( models.Model):
 
     id = models.AutoField(primary_key=True)
     # instrument = models.CharField(max_length=10, unique=False, blank=False)
-    payment = models.DecimalField(max_digits=12, decimal_places=2)
+    payment = models.DecimalField(max_digits=12, decimal_places=6)
     ex_div_date = models.DateField(null=False)
-    payment_date = models.DateField(null=False)
+    payment_date = models.DateField(null=True)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)

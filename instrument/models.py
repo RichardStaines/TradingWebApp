@@ -8,6 +8,8 @@ class Instrument(models.Model):
     sedol =  models.CharField(max_length =10, unique=False)
     description = models.CharField(max_length=100, unique=False)
     price_source = models.CharField(max_length=20, unique=False)
+    dividend_info_link = models.URLField(null=False, default='')
+    company_link = models.URLField(null=False, default='')
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
 

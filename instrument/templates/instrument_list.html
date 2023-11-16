@@ -14,8 +14,11 @@
         <tr class="col-head">
             <th class="sorting_enabled">Code</th>
             <th class="sorting_enabled">Sedol</th>
-            <th class="sorting_enabled">Descritpion</th>
+            <th class="sorting_enabled">Description</th>
             <th class="sorting_enabled">Price Source</th>
+            <th class="sorting_enabled">Dividend Info Link</th>
+            <th class="sorting_enabled">Company Link</th>
+
             <th class="sorting_enabled">Created On</th>
             <th class="sorting_enabled">Updated On</th>
             <th>Id</th>
@@ -33,6 +36,14 @@
                 <td>{{instrument.sedol}}</td>
                 <td>{{instrument.description}}</td>
                 <td>{{instrument.price_source}}</td>
+                <td><a href="{{instrument.dividend_info_link}}"
+                       class="test-dark text-decoration-non">
+                    {{instrument.dividend_info_link}}
+                </a></td>
+                <td><a href="{{instrument.company_link}}"
+                       class="test-dark text-decoration-non">
+                    {{instrument.company_link}}
+                </a></td>
                 <td>{{instrument.created_on}}</td>
                 <td>{{instrument.updated_on}}</td>
                 <td>
