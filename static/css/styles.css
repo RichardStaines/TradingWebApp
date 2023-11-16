@@ -7,6 +7,7 @@
   color: blue;
 }
 
+th { white-space: nowrap; }
 
 ul.errorlist {display:none}
 

@@ -5,13 +5,13 @@
 {% block content %}
 
     <h1 class="my5">Dividends</h1>
-    <table id="datatable1" class="display stripe table-bordered"
+    <table id="datatable1" class="display stripe cell-border"
            style="width:100%" searching="true">
     <thead>
 
         <tr class="col-head">
             <th class="sorting_enabled">Payment Date</th>
-            <th class="sorting_enabled">Amount</th>
+            <th class="sorting_enabled">Amount Paid</th>
             <th class="sorting_enabled">Instrument</th>
             <th class="sorting_enabled">Portfolio</th>
             <th class="sorting_enabled">Description</th>
@@ -50,6 +50,19 @@
             </tr>
             {% endfor %}
         </tbody>
+        <tfoot >
+            <tr>
+                <th colspan="1" style="text-align:right">Total:</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tfoot>
     </table>
 <a href="{% url 'dividend.new' %}" class="btn btn-secondary my-5">New</a>
 
@@ -61,9 +74,9 @@
             columnDefs: [
                 {
                     targets: [0], // payment date
-                    type: 'date',
+                    type: 'datetime',
                     render: function (data, type, row, meta) {
-                        var momentObj = moment(data, 'DD MMM YYYY');
+                        var momentObj = moment(data, 'MMM DD, YYYY');
                         if (type === 'sort') {
                             return momentObj.unix();
                         }
@@ -75,15 +88,44 @@
                     targets: [5,6], // created on, updated on
                     type: 'datetime',
                     render: function (data, type, row, meta) {
-                        var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');
+                        var momentObj = moment(data, 'MMM DD, YYYY, h:mm a');
                         if (type === 'sort') {
                             return momentObj.unix();
                         }
-                        return momentObj.format('MMM. DD, YYYY, h:mm a');
+                        return momentObj.format('DD MMM YYYY HH:mm');
                     },
                     orderable: true
                 }
-            ]
+            ],
+
+        footerCallback: function (row, data, start, end, display) {
+                let api = this.api();
+
+                // Remove the formatting to get integer data for summation
+                let intVal = function (i) {
+                    return typeof i === 'string'
+                        ? i.replace(/[\$£,]/g, '') * 1
+                        : typeof i === 'number'
+                        ? i
+                        : 0;
+                };
+
+                // Total over all pages
+                total = api
+                    .column(1)
+                    .data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+
+                // Total over this page
+                pageTotal = api
+                    .column(1, { page: 'current' })
+                    .data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+
+                // Update footer
+                api.column(1).footer().innerHTML =
+                    '£' + total;
+            }
         });
     } );
 

@@ -5,7 +5,7 @@
 {% block content %}
 
     <h1 class="my5">Dividend Schedules</h1>
-    <table id="datatable1" class="display stripe table-bordered"
+    <table id="datatable1" class="display stripe cell-border"
            style="width:100%" searching="true">
     <thead>
 
@@ -56,9 +56,9 @@
             columnDefs: [
                 {
                     targets: [1,2], // your field position
-                    type: 'date',
+                    type: 'datetime',
                     render: function (data, type, row, meta) {
-                        var momentObj = moment(data, 'DD MMM YYYY');
+                        var momentObj = moment(data, 'MMM. DD, YYYY');
                         if (type === 'sort') {
                             return momentObj.unix();
                         }
@@ -74,7 +74,7 @@
                         if (type === 'sort') {
                             return momentObj.unix();
                         }
-                        return momentObj.format('MMM. DD, YYYY, h:mm a');
+                        return momentObj.format('DD MMM YYYY HH:mm');
                     },
                     orderable: true
                 }
