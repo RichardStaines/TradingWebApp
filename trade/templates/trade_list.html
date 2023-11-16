@@ -10,20 +10,35 @@
     <thead>
 
         <tr class="col-head">
-            <th class="sorting_enabled">BuySell</th>
-            <th class="sorting_enabled">Instrument</th>
-            <th class="sorting_enabled">Quantity</th>
-            <th class="sorting_enabled">Price</th>
-            <th class="sorting_enabled">Net Consideration</th>
-            <th class="sorting_enabled">Portfolio</th>
-            <th class="sorting_enabled">Trade Date</th>
-            <th class="sorting_enabled">Settlement Date</th>
-            <th class="sorting_enabled">Description</th>
-            <th class="sorting_enabled">Created On</th>
-            <th class="sorting_enabled">Updated On</th>
-            <th class="sorting_enabled">Reference/Id</th>
+            <th>BuySell</th>
+            <th>Instrument</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Net Consideration</th>
+            <th>Portfolio</th>
+            <th>Trade Date</th>
+            <th>Settlement Date</th>
+            <th>Description</th>
+            <th>Created On</th>
+            <th>Updated On</th>
+            <th>Reference/Id</th>
             <th></th>
         </tr>
+            <tr>
+            <th >BuySell</th>
+            <th >Instrument</th>
+            <th >Quantity</th>
+            <th >Price</th>
+            <th >Net Consideration</th>
+            <th >Portfolio</th>
+            <th >Trade Date</th>
+            <th >Settlement Date</th>
+            <th >Description</th>
+            <th >Created On</th>
+            <th >Updated On</th>
+            <th >Reference/Id</th>
+            <th></th>
+            </tr>
     </thead>
         <tbody>
             {% for row in trades %}
@@ -60,11 +75,30 @@
             </tr>
             {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+            <th ></th>
+            <th ></th>
+            <th ></th>
+            <th ></th>
+            <th ></th>
+            <th ></th>
+            <th ></th>
+            <th ></th>
+            <th ></th>
+            <th ></th>
+            <th ></th>
+            <th ></th>
+            <th></th>
+            </tr>
+
+        </tfoot>
     </table>
 <a href="{% url 'trade.new' %}" class="btn btn-secondary my-5">New</a>
 
 <script>
     $(document).ready(function() {
+
         $('#datatable1').DataTable({
             order: [[6, 'desc']],
             columnDefs: [
@@ -93,6 +127,27 @@
                     orderable: true
                 },
             ],
+
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        let column = this;
+                        let title = column.header().textContent;
+
+                        // Create input element
+                        let input = document.createElement('input');
+                        input.placeholder = title;
+                        column.header().replaceChildren(input);
+
+                        // Event listener for user input
+                        input.addEventListener('keyup', () => {
+                            if (column.search() !== this.value) {
+                                column.search(input.value).draw();
+                            }
+                        });
+                    });
+            },
 
         });
     } );

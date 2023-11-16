@@ -10,10 +10,21 @@
     <thead>
 
         <tr class="col-head">
-            <th class="sorting_enabled">Payment Date</th>
-            <th class="sorting_enabled">Amount Paid</th>
-            <th class="sorting_enabled">Instrument</th>
-            <th class="sorting_enabled">Portfolio</th>
+            <th>Payment Date</th>
+            <th>Amount Paid</th>
+            <th>Instrument</th>
+            <th>Portfolio</th>
+            <th>Description</th>
+            <th>Created On</th>
+            <th>Updated On</th>
+            <th>Id</th>
+            <th></th>
+        </tr>
+        <tr >
+            <th>Payment Date</th>
+            <th>Amount Paid</th>
+            <th>Instrument</th>
+            <th>Portfolio</th>
             <th class="sorting_enabled">Description</th>
             <th class="sorting_enabled">Created On</th>
             <th class="sorting_enabled">Updated On</th>
@@ -98,6 +109,27 @@
                 }
             ],
 
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        let column = this;
+                        let title = column.header().textContent;
+
+                        // Create input element
+                        let input = document.createElement('input');
+                        input.placeholder = title;
+                        column.header().replaceChildren(input);
+
+                        // Event listener for user input
+                        input.addEventListener('keyup', () => {
+                            if (column.search() !== this.value) {
+                                column.search(input.value).draw();
+                            }
+                        });
+                    });
+            },
+
         footerCallback: function (row, data, start, end, display) {
                 let api = this.api();
 
@@ -132,8 +164,8 @@
                 // Update footer
                 api.column(1).footer().innerHTML =
                     pageTotal;
-                api.column(2).footer().innerHTML =
-                    total;
+               // api.column(2).footer().innerHTML =
+               //     total;
             }
         });
     } );

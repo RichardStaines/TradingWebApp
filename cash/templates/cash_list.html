@@ -9,14 +9,25 @@
     <thead>
 
         <tr class="col-head">
-            <th class="sorting_enabled">Type</th>
-            <th class="sorting_enabled">Payment Date</th>
-            <th class="sorting_enabled">Amount</th>
-            <th class="sorting_enabled">Portfolio</th>
-            <th class="sorting_enabled">Description</th>
-            <th class="sorting_enabled">Created On</th>
-            <th class="sorting_enabled">Updated On</th>
-            <th class="sorting_enabled">Id</th>
+            <th>Type</th>
+            <th>Payment Date</th>
+            <th>Amount</th>
+            <th>Portfolio</th>
+            <th>Description</th>
+            <th>Created On</th>
+            <th>Updated On</th>
+            <th>Id</th>
+            <th></th>
+        </tr>
+            <tr class="col-head">
+            <th>Type</th>
+            <th>Payment Date</th>
+            <th>Amount</th>
+            <th>Portfolio</th>
+            <th>Description</th>
+            <th>Created On</th>
+            <th>Updated On</th>
+            <th>Id</th>
             <th></th>
         </tr>
     </thead>
@@ -77,7 +88,29 @@
                     },
                     orderable: true
                 }
-            ]
+            ],
+
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        let column = this;
+                        let title = column.header().textContent;
+
+                        // Create input element
+                        let input = document.createElement('input');
+                        input.placeholder = title;
+                        column.header().replaceChildren(input);
+
+                        // Event listener for user input
+                        input.addEventListener('keyup', () => {
+                            if (column.search() !== this.value) {
+                                column.search(input.value).draw();
+                            }
+                        });
+                    });
+            },
+
 
         });
     } );
