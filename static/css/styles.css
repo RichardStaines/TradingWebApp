@@ -1,13 +1,13 @@
-tr:nth-of-type(odd) {
-  background-color: lavender;
-}
-th {
-    background-color: lightblue;
+
+.sell {
+  color: red;
 }
 
-.dividend-li {
-    color: red;
+.buy {
+  color: blue;
 }
+
+
 ul.errorlist {display:none}
 
 

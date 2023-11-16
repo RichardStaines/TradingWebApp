@@ -28,7 +28,7 @@
                         {{ row.instrument }}
                     </a>
                 </td>
-                <td>{{row.ex_div_date}}</td>
+                <td  data-sort="{{row.ex_div_date}}" >{{row.ex_div_date}}</td>
                 <td>{{row.payment_date}}</td>
                 <td>£{{row.payment.normalize |intcomma}}</td>
                 <td>{{row.created_on}}</td>
@@ -50,7 +50,25 @@
 <script>
 
     $(document).ready(function() {
-        $('#datatable1').DataTable();
+
+        $('#datatable1').DataTable({
+
+            columnDefs: [
+                {
+                    targets: [1,2,4,5], // your field position
+                    type: 'datetime',
+                    render: function (data, type, row, meta) {
+                        var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');
+                        if (type === 'sort') {
+                            return momentObj.unix();
+                        }
+                        return momentObj.format('MMM. DD, YYYY, h:mm a');
+                    },
+                    orderable: true
+                }
+            ]
+
+        });
     } );
 
 </script>

@@ -9,7 +9,7 @@ class DividendScheduleForm(forms.ModelForm):
         model = DividendSchedule
         fields = ['instrument', 'payment', 'ex_div_date', 'payment_date', ]
         widgets = {
-            'instrument': forms.Select(),
+            'instrument': forms.Select(attrs={'class': 'select'}),
             'payment': forms.NumberInput(
                 attrs={'class': 'form-control',}
             ),

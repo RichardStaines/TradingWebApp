@@ -2,6 +2,7 @@
 
 {% load humanize %}
 
+
 {% block content %}
     <h1 class="my5">Trades</h1>
     <table id="datatable1" class="display stripe table-bordered"
@@ -26,8 +27,14 @@
     </thead>
         <tbody>
             {% for row in trades %}
-            <tr>
-                <td>{{row.buy_sell}}</td>
+
+            {% if row.buy_sell == 'B' %}
+            <tr class="buy">
+            {% else %}
+            <tr class="sell">
+            {% endif %}
+
+                <td >{{row.buy_sell}}</td>
                 <td>{{row.instrument}}</td>
                 <td>{{row.quantity |intcomma}}</td>
                 <td>£{{row.price |intcomma}}</td>
@@ -58,7 +65,24 @@
 
 <script>
     $(document).ready(function() {
-        $('#datatable1').DataTable();
+        $('#datatable1').DataTable({
+
+            columnDefs: [
+                {
+                    targets: [6,7,9,10], // your field position
+                    type: 'datetime',
+                    render: function (data, type, row, meta) {
+                        var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');
+                        if (type === 'sort') {
+                            return momentObj.unix();
+                        }
+                        return momentObj.format('MMM. DD, YYYY, h:mm a');
+                    },
+                    orderable: true
+                },
+            ],
+
+        });
     } );
 </script>
 

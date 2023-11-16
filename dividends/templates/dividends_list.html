@@ -56,7 +56,22 @@
 <script>
 
     $(document).ready(function() {
-        $('#datatable1').DataTable();
+        $('#datatable1').DataTable({
+            columnDefs: [
+                {
+                    targets: [0,5,6], // your field position
+                    type: 'datetime',
+                    render: function (data, type, row, meta) {
+                        var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');
+                        if (type === 'sort') {
+                            return momentObj.unix();
+                        }
+                        return momentObj.format('MMM. DD, YYYY, h:mm a');
+                    },
+                    orderable: true
+                }
+            ]
+        });
     } );
 
 </script>
