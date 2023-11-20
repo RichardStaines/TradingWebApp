@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="border round">
+    <h1 class="my-5">{{position.instrument}}</h1>
+    <p>{{position.quantity}}</p>
+    <p>{{position.cost}}</p>
+    <p>{{positon.average_price}}</p>
+
+    <p>{{dividend.created_on}}</p>
+    <p>{{dividend.updated_on}}</p>
+</div>
+
+<a href="{% url 'position.list' %}" class="btn btn-secondary my-5">List</a>
+<a href="{% url 'position.update' pk=position.id%}" class="btn btn-secondary">Edit</a>
+<a href="{% url 'position.delete' pk=position.id%}" class="btn btn-danger">Delete</a>
+
+{% endblock %}

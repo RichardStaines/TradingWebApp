@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .formpair {
+  text-align: left;
+}
+</style>
+
+<form class="row g-3" method="POST" enctype = "multipart/form-data">{% csrf_token %}
+    <h1>Load Positions from CSV File</h1>
+    <div class="formpair">
+        {{ form.portfolio.errors }}
+        <label>Portfolio: </label>
+        {{ form.portfolio }}
+    </div>
+    <div class="formpair">
+        {{ form.message.errors }}
+        <label>File Path:</label>
+        {{ form.file_path }}
+    </div>
+    <div  class="formpair">
+        {{ form.sender.errors }}
+        <label>Clear before load:</label>
+        {{ form.clear_before_load }}
+    </div>
+
+    <div  class="formpair">
+    <button type="submit" class="btn btn-primary my-5">Load</button>
+    </div>
+</form>
+{% if form.errors %}
+<div class="alert alert-danger my-5">
+    {{form.errors.title.as_text}}
+</div>
+{% endif %}
+
+{% endblock %}

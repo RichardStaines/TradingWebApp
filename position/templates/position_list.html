@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% load humanize %}
+
+{% block content %}
+
+    <h1 class="my5">Positions</h1>
+    <table id="datatable1" class="display stripe cell-border"
+           style="width:100%" searching="true">
+    <thead>
+
+        <tr class="col-head">
+            <th>Instrument</th>
+            <th>Quantity</th>
+            <th>Cost</th>
+            <th>Average Price</th>
+            <th>Created On</th>
+            <th>Updated On</th>
+            <th>Id</th>
+            <th></th>
+        </tr>
+        <tr class="col-head">
+            <th>Instrument</th>
+            <th>Quantity</th>
+            <th>Cost</th>
+            <th>Average Price</th>
+            <th>Created On</th>
+            <th>Updated On</th>
+            <th>Id</th>
+            <th></th>
+        </tr>
+    </thead>
+        <tbody>
+            {% for row in positions %}
+            <tr>
+                <td>
+                    <a href="{% url 'position.details' pk=row.id %}" class="test-dark text-decoration-non">
+                        {{ row.instrument }}
+                    </a>
+                </td>
+                <td>{{row.quantity |intcomma}}</td>
+                <td>£{{row.cost.normalize |intcomma}}</td>
+                <td>{{row.avg_price.normalize |intcomma}}</td>
+                <td>{{row.created_on}}</td>
+                <td>{{row.updated_on}}</td>
+                <td>
+                    <button onclick="window.location.href='{% url 'position.update' pk=row.id %}'"
+                            class="test-dark text-decoration-non">Edit {{row.id}}</button>
+                </td>
+                <td>
+                    <button onclick="window.location.href='{% url 'position.delete' pk=row.id %}'"
+                            class="test-dark text-decoration-non">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+<a href="{% url 'position.new' %}" class="btn btn-secondary my-5">New</a>
+
+<script>
+
+    $(document).ready(function() {
+
+        $('#datatable1').DataTable({
+            order: [[0, 'asc']],
+            columnDefs: [
+                {
+                    targets: [4,5], // your field position
+                    type: 'datetime',
+                    render: function (data, type, row, meta) {
+                        var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');
+                        if (type === 'sort') {
+                            return momentObj.unix();
+                        }
+                        return momentObj.format('DD MMM YYYY HH:mm');
+                    },
+                    orderable: true
+                }
+            ],
+
+            initComplete: function () {
+                this.api()
+                    .columns()
+                    .every(function () {
+                        let column = this;
+                        let title = column.header().textContent;
+
+                        // Create input element
+                        let input = document.createElement('input');
+                        input.placeholder = title;
+                        column.header().replaceChildren(input);
+
+                        // Event listener for user input
+                        input.addEventListener('keyup', () => {
+                            if (column.search() !== this.value) {
+                                column.search(input.value).draw();
+                            }
+                        });
+                    });
+            },
+
+        });
+    } );
+
+</script>
+
+{% endblock %}

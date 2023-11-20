@@ -11,7 +11,7 @@ class Log:
     file_pointer = None
 
     @staticmethod
-    def create(config):
+    def create_from_cfg(config):
         module = 'Log.create'
         #logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
         #logging.debug(os.getcwd())

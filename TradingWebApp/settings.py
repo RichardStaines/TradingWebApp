@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'instrument',
     'cash',
     'trade',
+    'position',
     'CsvLoader',
 ]
 

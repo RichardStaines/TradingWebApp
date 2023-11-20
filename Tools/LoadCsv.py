@@ -5,6 +5,7 @@ import argparse
 from DividendSchedule.models import DivScheduleRepository
 from cash.models import *
 from dividends.models import *
+from position.models import PositionRepository
 from trade.models import *
 from Utils.iiCSV import IICsv
 from portfolio.models import *
@@ -53,3 +54,14 @@ def load_portfolios_csv(filename, clear_before_load):
     db.save_from_df(df, clear_before_load)
     return df
 
+
+def load_positions_from_csv(portfolio, filename, clear_before_load):
+    df = pd.read_csv(filename, keep_default_na=True)
+    df.rename(columns = {'Book Cost':'Cost', 'Average Price': 'AvgPrice'}, inplace = True)
+    df['Cost'] = df['Cost'].replace('[£,\,,n/a]', '', regex=True).astype(float)
+    df['AvgPrice'] = df['AvgPrice'].replace('[p,\,]', '', regex=True).astype(float)
+
+    #print(df.columns)
+    db = PositionRepository(debug=True)
+    db.save_from_df(df[:-2], portfolio, clear_before_load) # ditch last 2 lines of file from II file
+    return df

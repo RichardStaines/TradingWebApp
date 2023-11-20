@@ -27,5 +27,6 @@ urlpatterns = [
     path('', include('cash.urls')),
     path('', include('trade.urls')),
     path('csvloader', include('CsvLoader.urls')),
-    path('', include('DividendSchedule.urls'))
+    path('', include('DividendSchedule.urls')),
+    path('pos/', include('position.urls')),
 ]
