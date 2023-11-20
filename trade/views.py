@@ -52,13 +52,20 @@ class TradeListViewByPortfolioInstrument(LoginRequiredMixin, ListView):
     template_name = 'trade_list.html'
     login_url = "/login"
 
+    def get_context_data(self, **kwargs):
+        context = {
+            'extra_title' : f"for position {self.portfolio_name} {self.instrument_code}"
+        }
+        kwargs.update(context)
+        return super().get_context_data(**kwargs)
+
     def get_queryset(self):
-        portfolio_name = self.kwargs.get('portfolio')
+        self.portfolio_name = self.kwargs.get('portfolio')
         portRepo = PortfolioRepository()
-        portfolio_id = portRepo.get_portfolio(portfolio_name).id
-        instrument_code = self.kwargs.get('instrument')
+        portfolio_id = portRepo.get_portfolio(self.portfolio_name).id
+        self.instrument_code = self.kwargs.get('instrument')
         instRepo = InstrumentRepository()
-        inst_id = instRepo.get_instrument_by_code(instrument_code).id
+        inst_id = instRepo.get_instrument_by_code(self.instrument_code).id
         return (Trade.objects.all().filter(portfolio=portfolio_id, instrument=inst_id)
                 .order_by('-trade_date'))  # descending order
 
