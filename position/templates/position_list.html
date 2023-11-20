@@ -37,7 +37,8 @@
             <tr>
                 <td>{{row.portfolio}}</td>
                 <td>
-                    <a href="{% url 'position.details' pk=row.id %}" class="test-dark text-decoration-non">
+                    <a href="{% url 'trade_by_portfolio_and_inst.list' portfolio=row.portfolio instrument=row.instrument %}"
+                       class="test-dark text-decoration-non">
                         {{ row.instrument }}
                     </a>
                 </td>

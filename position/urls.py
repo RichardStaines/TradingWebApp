@@ -9,4 +9,5 @@ urlpatterns = [
     path('position/<int:pk>/delete', views.PositionDeleteView.as_view(), name='position.delete'),
 
     path('pos/load', views.csv_load_form, name='position.load'),
+
 ]

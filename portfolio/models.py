@@ -24,7 +24,8 @@ class PortfolioRepository:
         Portfolio.all().delete()
 
     def get_portfolio(self, name):
-        return Portfolio.objects.filter(name = name)
+        qs = Portfolio.objects.filter(name = name)
+        return qs[0] if len(qs) > 0 else None
 
     def get_portfolio_list(self):
         return Portfolio.objects.all()

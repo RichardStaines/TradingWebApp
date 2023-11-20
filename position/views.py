@@ -6,6 +6,7 @@ from django.views.generic.edit import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from Tools import LoadCsv
+from trade.models import Trade
 from .forms import PositionForm, PositionCsvLoaderForm
 from .models import Position
 

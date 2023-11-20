@@ -4,6 +4,8 @@ from django.views.generic import DetailView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from instrument.models import InstrumentRepository
+from portfolio.models import PortfolioRepository
 from .forms import TradeForm
 from .models import Trade
 
@@ -42,6 +44,23 @@ class TradeListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Trade.objects.all().order_by('-trade_date')  # descending order
+
+
+class TradeListViewByPortfolioInstrument(LoginRequiredMixin, ListView):
+    model = Trade
+    context_object_name = "trades"
+    template_name = 'trade_list.html'
+    login_url = "/login"
+
+    def get_queryset(self):
+        portfolio_name = self.kwargs.get('portfolio')
+        portRepo = PortfolioRepository()
+        portfolio_id = portRepo.get_portfolio(portfolio_name).id
+        instrument_code = self.kwargs.get('instrument')
+        instRepo = InstrumentRepository()
+        inst_id = instRepo.get_instrument_by_code(instrument_code).id
+        return (Trade.objects.all().filter(portfolio=portfolio_id, instrument=inst_id)
+                .order_by('-trade_date'))  # descending order
 
 
 class TradeDetailView(DetailView):
