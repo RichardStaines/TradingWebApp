@@ -8,9 +8,10 @@ from .models import Position
 class PositionForm(forms.ModelForm):
     class Meta:
         model = Position
-        fields = ['instrument', 'quantity', 'cost', 'avg_price',
-                  'portfolio', 'notes',]
+        fields = ['portfolio', 'instrument',  'quantity', 'cost', 'avg_price',
+                  'notes',]
         widgets = {
+            'portfolio': forms.Select(),
             'instrument': forms.Select(),
             'quantity': forms.NumberInput(
                 attrs={'class': 'form-control', }
@@ -21,7 +22,7 @@ class PositionForm(forms.ModelForm):
             'avg_price': forms.NumberInput(
                 attrs={'class': 'form-control', }
             ),
-            'portfolio': forms.Select(),
+
             'notes': forms.Textarea(attrs={'class': 'form-control'}),
         }
         labels = {'avg_price': 'Average Price'}
