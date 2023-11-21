@@ -52,7 +52,7 @@
                 <td >{{row.buy_sell}}</td>
                 <td>{{row.instrument}}</td>
                 <td>{{row.quantity |intcomma}}</td>
-                <td>£{{row.price |intcomma}}</td>
+                <td>£{{row.price.normalize |intcomma}}</td>
                 <td>£{{row.net_consideration |intcomma}}</td>
                 <td>
                     <a href="{% url 'portfolio.details' pk=row.portfolio.id %}" class="test-dark text-decoration-non">
@@ -187,20 +187,18 @@
                   style: "currency",
                   currency: "GBP"
                 }).format(considerationTotal);
-                var avgPrice = new Intl.NumberFormat("en-UK", {
-                  style: "currency",
-                  currency: "GBP"
-                }).format(avgPrice);
-
+                if (avgPrice > 1)
+                    var avgPrice = new Intl.NumberFormat("en-UK", {
+                      style: "currency",
+                      currency: "GBP"
+                    }).format(avgPrice);
+                else
+                    avgPrice = "£" + parseFloat(avgPrice.toFixed(6))
                 // Update footer
-                api.column(1).footer().innerHTML =
-                    instrument;
-                api.column(2).footer().innerHTML =
-                    qtyTotal;
-                api.column(3).footer().innerHTML =
-                    avgPrice;
-                api.column(4).footer().innerHTML =
-                    considerationTotal;
+                api.column(1).footer().innerHTML = instrument;
+                api.column(2).footer().innerHTML = qtyTotal;
+                api.column(3).footer().innerHTML = avgPrice
+                api.column(4).footer().innerHTML = considerationTotal;
             },
 
         });
