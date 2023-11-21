@@ -15,6 +15,7 @@
             <th>Quantity</th>
             <th>Cost</th>
             <th>Average Price</th>
+            <th>Ex Div</th>
             <th>Created On</th>
             <th>Updated On</th>
             <th>Id</th>
@@ -26,6 +27,7 @@
             <th>Quantity</th>
             <th>Cost</th>
             <th>Average Price</th>
+            <th>Ex Div</th>
             <th>Created On</th>
             <th>Updated On</th>
             <th>Id</th>
@@ -45,6 +47,7 @@
                 <td>{{row.quantity |intcomma}}</td>
                 <td>£{{row.cost.normalize |intcomma}}</td>
                 <td>{{row.avg_price.normalize |intcomma}}</td>
+                <td>{{row.ex_div_date}}</td>
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
                 <td>
@@ -70,7 +73,7 @@
             stateSave: true,
             columnDefs: [
                 {
-                    targets: [5,6], // your field position
+                    targets: [6,7], // your field position
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');

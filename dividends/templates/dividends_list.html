@@ -5,6 +5,26 @@
 {% block content %}
 
     <h1 class="my5">Dividends</h1>
+    <p>
+    <table id="datatable2" class="display stripe cell-border"
+           style="width:100%">
+        <thead>
+            <tr class="col-head">
+            {% for dividend in DividendsByYear %}
+            <th>{{ dividend.year }} </th>
+            {% endfor %}
+            </tr>
+        </thead>
+        <tbody><tr>
+            {% for dividend in DividendsByYear %}
+            <td>£{{ dividend.total_amount.normalize |intcomma}}</td>
+            {% endfor %}
+        </tr>
+        </tbody>
+    </table>
+    </p>
+<br>
+    <hr>
     <table id="datatable1" class="display stripe cell-border"
            style="width:100%" searching="true">
     <thead>
@@ -80,7 +100,15 @@
 <script>
 
     $(document).ready(function() {
+        $('#datatable2').DataTable({
+            info: false,
+            ordering: false,
+            searching: false,
+            paging: false
+        })
+
         $('#datatable1').DataTable({
+            searching: false,
             order: [[0, 'desc']],
             columnDefs: [
                 {

@@ -7,7 +7,7 @@
   color: blue;
 }
 
-th { white-space: nowrap; }
+th { white-space: nowrap; background-color: lightblue;}
 
 tfoot input {
         width: 100%;

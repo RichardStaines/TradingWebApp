@@ -1,3 +1,5 @@
+from django.db.models import Sum
+from django.db.models.functions import ExtractYear
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from django.views.generic import DetailView, CreateView, UpdateView
@@ -40,8 +42,18 @@ class DividendListView(LoginRequiredMixin, ListView):
     template_name = 'dividends_list.html'
     login_url = "/login"
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(DividendListView, self).get_context_data(*args, **kwargs)
+        context['DividendsByYear'] = (Dividend.objects.annotate(year=ExtractYear('payment_date'))
+                                      .values('year').annotate(total_amount=Sum('amount')))
+
+        return context
+
     def get_queryset(self):
-        return Dividend.objects.all()
+        qs = Dividend.objects.all().annotate(
+            payment_year=ExtractYear('payment_date')
+        )
+        return qs
 
 
 class DividendDetailView(DetailView):
