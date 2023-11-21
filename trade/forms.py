@@ -9,6 +9,15 @@ BUY_SELL = (
 
 
 class TradeForm(forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        # first call parent's constructor
+        super(TradeForm, self).__init__(*args, **kwargs)
+        # there's a `fields` property now
+        not_require_list = ['description',]
+        for item in not_require_list:
+            self.fields[item].required = False
+
     class Meta:
         model = Trade
         fields = ['buy_sell', 'instrument', 'quantity', 'price', 'net_consideration',
@@ -41,7 +50,7 @@ class TradeForm(forms.ModelForm):
                        }
             ),
             'reference':  forms.TextInput(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', } ),
         }
         labels = {'payment_date': 'Payment Date'}
 
