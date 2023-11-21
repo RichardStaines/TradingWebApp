@@ -4,6 +4,7 @@
 
 {% block content %}
     <h1 >Cash</h1>
+    <a href="{% url 'cash.new' %}" class="btn btn-secondary mr-0">New Cash Entry</a>
     <table id="datatable1" class="display stripe cell-border"
            style="width:100%" searching="true">
     <thead>
@@ -57,7 +58,7 @@
             {% endfor %}
         </tbody>
     </table>
-<a href="{% url 'cash.new' %}" class="btn btn-secondary my-5">New</a>
+
 
 <script>
     $(document).ready(function() {

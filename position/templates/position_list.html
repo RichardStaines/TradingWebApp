@@ -5,6 +5,8 @@
 {% block content %}
 
     <h1 class="my5">Positions</h1>
+    <a href="{% url 'position.new' %}" class="btn btn-secondary mr-0">New Position</a>
+
     <table id="datatable1" class="display stripe cell-border"
            style="width:100%" searching="true">
     <thead>
@@ -62,7 +64,7 @@
             {% endfor %}
         </tbody>
     </table>
-<a href="{% url 'position.new' %}" class="btn btn-secondary my-5">New</a>
+
 
 <script>
 

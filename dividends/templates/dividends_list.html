@@ -5,6 +5,8 @@
 {% block content %}
 
     <h1 class="my5">Dividends</h1>
+    <a href="{% url 'dividend.new' %}" class="btn btn-secondary mr-0">
+        New Dividend</a>
     <p>
     <table id="datatable2" class="display stripe cell-border"
            style="width:100%">
@@ -95,7 +97,7 @@
             </tr>
         </tfoot>
     </table>
-<a href="{% url 'dividend.new' %}" class="btn btn-secondary my-5">New</a>
+
 
 <script>
 

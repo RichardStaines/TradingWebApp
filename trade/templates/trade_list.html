@@ -5,6 +5,8 @@
 
 {% block content %}
     <h1 class="my5">Trades</h1> {{ extra_title }}
+    <a href="{% url 'trade.new' %}" class="btn btn-secondary mr-0">New Trade</a>
+
     <table id="datatable1" class="display stripe cell-border"
            style="width:100%" searching="true">
     <thead>
@@ -94,7 +96,7 @@
 
         </tfoot>
     </table>
-<a href="{% url 'trade.new' %}" class="btn btn-secondary my-5">New</a>
+
 
 <script>
     $(document).ready(function() {

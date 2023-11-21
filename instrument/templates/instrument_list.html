@@ -6,6 +6,7 @@
 
 {% block content %}
     <h1 class="my5">Instruments</h1>
+    <a href="{% url 'instrument.new' %}" class="btn btn-secondary mr-0">New Instrument</a>
 
     <table id="datatable1" class="display stripe cell-border"
            style="width:100%" searching="true">
@@ -59,7 +60,7 @@
         </tbody>
 </table>
 
-<a href="{% url 'instrument.new' %}" class="btn btn-secondary my-5">New</a>
+
 
 <script>
     $(document).ready(function() {
