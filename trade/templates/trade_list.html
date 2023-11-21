@@ -178,7 +178,7 @@
                 // Total over all pages
                 considerationTotal = considerations.reduce((a, b) => a + b, 0);
                 qtyTotal = quantities.reduce((a, b) => a + b, 0);
-                avgPrice = considerationTotal / qtyTotal
+                avgPrice = (qtyTotal != 0) ? (considerationTotal / qtyTotal) : 0
 
                 var qtyTotal = new Intl.NumberFormat("en-UK", {
                   style: "decimal",
