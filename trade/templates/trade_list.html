@@ -150,6 +150,59 @@
                     });
             },
 
+
+
+        footerCallback: function (row, data, start, end, display) {
+                let api = this.api();
+
+                // Remove the formatting to get integer data for summation
+                let intVal = function (i) {
+                    return typeof i === 'string'
+                        ? i.replace(/[\$£,]/g, '') * 1
+                        : typeof i === 'number'
+                        ? i
+                        : 0;
+                };
+
+                buy_sell_arr = api.column(0, { page: 'current' }).data()
+                inst_arr = api.column(1, { page: 'current' }).data()
+                instrument = inst_arr[0]
+                considerations = api.column(4, { page: 'current' }).data()
+                    .map(function (val, index) {
+                        return intVal(val) * (inst_arr[index]==instrument ? (buy_sell_arr[index]=='S' ? -1 : 1) : 0)
+                    }
+                    )
+                quantities = api.column(2, { page: 'current' }).data()
+                    .map(function (val, index) { return intVal(val) * (buy_sell_arr[index]=='S' ? -1 : 1) }
+                    )
+                // Total over all pages
+                considerationTotal = considerations.reduce((a, b) => a + b, 0);
+                qtyTotal = quantities.reduce((a, b) => a + b, 0);
+                avgPrice = considerationTotal / qtyTotal
+
+                var qtyTotal = new Intl.NumberFormat("en-UK", {
+                  style: "decimal",
+                }).format(qtyTotal);
+                var considerationTotal = new Intl.NumberFormat("en-UK", {
+                  style: "currency",
+                  currency: "GBP"
+                }).format(considerationTotal);
+                var avgPrice = new Intl.NumberFormat("en-UK", {
+                  style: "currency",
+                  currency: "GBP"
+                }).format(avgPrice);
+
+                // Update footer
+                api.column(1).footer().innerHTML =
+                    instrument;
+                api.column(2).footer().innerHTML =
+                    qtyTotal;
+                api.column(3).footer().innerHTML =
+                    avgPrice;
+                api.column(4).footer().innerHTML =
+                    considerationTotal;
+            },
+
         });
     } );
 </script>
