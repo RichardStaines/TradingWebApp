@@ -11,7 +11,7 @@
            style="width:100%" searching="true">
     <thead>
 
-        <tr class="col-head">
+        <tr>
             <th>Portfolio</th>
             <th>Instrument</th>
             <th>Quantity</th>
@@ -23,7 +23,7 @@
             <th>Id</th>
             <th></th>
         </tr>
-        <tr class="col-head">
+        <tr>
             <th>Portfolio</th>
             <th>Instrument</th>
             <th>Quantity</th>
@@ -73,6 +73,7 @@
         $('#datatable1').DataTable({
             order: [[0, 'asc'],[1, 'asc']],
             stateSave: true,
+            autoWidth: true,
             columnDefs: [
                 {
                     targets: [6,7], // your field position
