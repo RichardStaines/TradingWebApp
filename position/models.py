@@ -14,6 +14,7 @@ class Position(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
+    ex_div_summary = ''
 
     class Meta:
         db_table = "app_position"
