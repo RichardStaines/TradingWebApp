@@ -15,6 +15,8 @@ class DividendSchedule( models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
 
+    class Meta:
+        db_table = "app_dividendschedule"
 
 class DivScheduleRepository:
 
