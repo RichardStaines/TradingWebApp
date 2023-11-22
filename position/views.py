@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db.models.expressions import RawSQL
 from django.db.models.functions import ExtractYear
 from django.forms import model_to_dict
@@ -11,7 +13,7 @@ from django.db.models import DateField, CharField, Value, Window, F, Max, Expres
 
 from DividendSchedule.models import DividendSchedule
 from Tools import LoadCsv
-from dividends.models import Dividend
+from dividends.models import Dividend, DividendRepository
 from trade.models import Trade
 from .forms import PositionForm, PositionCsvLoaderForm
 from .models import Position
@@ -51,33 +53,38 @@ class PositionListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         context = super(PositionListView, self).get_context_data(*args, **kwargs)
-        context['ExDivByInst'] = (DividendSchedule.objects.values('instrument_id')
-                                             .annotate(ex_div_date=Max('ex_div_date'))
-                                  )
-        context['DividendsByInstYear'] = (Dividend.objects.annotate(year=ExtractYear('payment_date'))
-                                          .values('instrument_id', 'year').annotate(total_amount=Sum('amount')))
+        context['year'] = datetime.now().year
+        context['last_year'] = datetime.now().year - 1
+        context['prev_year'] = datetime.now().year - 2
 
         return context
 
     def get_queryset(self):
         qs = Position.objects.all()
-        qs_dict_list = [model_to_dict(item) for item in qs]
-        instruments = [item.instrument.id for item in qs]
+#        qs_dict_list = [model_to_dict(item) for item in qs]
+#        instruments = [item.instrument.id for item in qs]
 #        ds_qs = (DividendSchedule.object.filter(instrument__in=instruments)
 #                )
-        ds_qs = (DividendSchedule.objects.values('instrument_id')
-                 .annotate(ex_div_date=Max('ex_div_date'))
-                 )
+#        ds_qs = (DividendSchedule.objects.values('instrument_id')
+#                 .annotate(ex_div_date=Max('ex_div_date'))
+#                 )
+        divRepo = DividendRepository()
+        divRepo.get_dividends_by_inst_year()
+
+
+
         ds_qs = (DividendSchedule.objects.all().order_by('ex_div_date').values()
                  )
         ex_div_lookup = {item['instrument_id']: item for item in ds_qs}
 #        ds_flds = DividendSchedule._meta.fields
         new_qs = []
         for item in qs:
-            ex_div_date = ex_div_lookup[item.instrument_id]['ex_div_date'] \
+            item.year,item.div_ytd = divRepo.get_dividend_total(item.instrument_id, "YTD")
+            _,item.div_last = divRepo.get_dividend_total(item.instrument_id, "LAST")
+            _,item.div_prev = divRepo.get_dividend_total(item.instrument_id, "PREV")
+            item.ex_div_date = ex_div_lookup[item.instrument_id]['ex_div_date'] \
                 if item.instrument_id in ex_div_lookup else ''
-            payment = ex_div_lookup[item.instrument_id]['payment'] if item.instrument_id in ex_div_lookup else ''
-            item.ex_div_summary = f"{ex_div_date} / {payment}" if ex_div_date != '' else ''
+            item.div_payment_per_share = ex_div_lookup[item.instrument_id]['payment'] if item.instrument_id in ex_div_lookup else 0
             new_qs.append(item)
 
         #qs = qs.annotate(ex_div_date2=RawSQL("select max(ex_div_date) as ex_div_date "

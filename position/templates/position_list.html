@@ -18,6 +18,9 @@
             <th>Cost</th>
             <th>Average Price</th>
             <th>Ex Div</th>
+            <th>Div {{year}}</th>
+            <th>Div {{last_year}}</th>
+            <th>Div {{prev_year}}</th>
             <th>Created On</th>
             <th>Updated On</th>
             <th>Id</th>
@@ -30,6 +33,9 @@
             <th>Cost</th>
             <th>Average Price</th>
             <th>Ex Div</th>
+            <th>Div {{year}}</th>
+            <th>Div {{last_year}}</th>
+            <th>Div {{prev_year}}</th>
             <th>Created On</th>
             <th>Updated On</th>
             <th>Id</th>
@@ -49,7 +55,11 @@
                 <td>{{row.quantity |intcomma}}</td>
                 <td>£{{row.cost.normalize |intcomma}}</td>
                 <td>{{row.avg_price.normalize |intcomma}}</td>
-                <td>{{row.ex_div_summary}}</td>
+                <td>{{row.ex_div_date}} {{row.div_payment_per_share.normalize | intcomma}}
+                    {% widthratio row.div_payment_per_share 1 row.quantity %}</td>
+                <td>{{row.div_ytd.normalize |intcomma}}</td>
+                <td>{{row.div_last.normalize |intcomma}}</td>
+                <td>{{row.div_prev.normalize |intcomma}}</td>
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
                 <td>
@@ -63,6 +73,23 @@
             </tr>
             {% endfor %}
         </tbody>
+        <tfoot>
+        <tr>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </tfoot>
     </table>
 
 
@@ -76,7 +103,7 @@
             autoWidth: true,
             columnDefs: [
                 {
-                    targets: [6,7], // your field position
+                    targets: [9,10], // your field position
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');
@@ -109,6 +136,52 @@
                         });
                     });
             },
+
+        footerCallback: function (row, data, start, end, display) {
+                let api = this.api();
+
+                // Remove the formatting to get integer data for summation
+                let intVal = function (i) {
+                    return typeof i === 'string'
+                        ? i.replace(/[\$£,]/g, '') * 1
+                        : typeof i === 'number'
+                        ? i
+                        : 0;
+                };
+
+                // Total over all pages
+                div_ytd = api
+                    .column(6)
+                    .data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+                div_last = api
+                    .column(7)
+                    .data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+                div_prev = api
+                    .column(8)
+                    .data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+
+                // Total over this page
+                var div_ytd = new Intl.NumberFormat("en-UK", {
+                  style: "currency",
+                  currency: "GBP"
+                }).format(div_ytd);
+                var div_last = new Intl.NumberFormat("en-UK", {
+                  style: "currency",
+                  currency: "GBP"
+                }).format(div_last);
+                var div_prev = new Intl.NumberFormat("en-UK", {
+                  style: "currency",
+                  currency: "GBP"
+                }).format(div_prev);
+                // Update footer
+                api.column(6).footer().innerHTML = div_ytd;
+                api.column(7).footer().innerHTML = div_last;
+                api.column(8).footer().innerHTML = div_prev;
+            }
+
 
         });
     } );

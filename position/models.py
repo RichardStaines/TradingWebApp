@@ -14,7 +14,12 @@ class Position(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
-    ex_div_summary = ''
+    ex_div_date = ''
+    div_payment_per_share = 0
+    div_ytd = 0
+    div_last = 0
+    div_prev = 0
+    year = 0
 
     class Meta:
         db_table = "app_position"

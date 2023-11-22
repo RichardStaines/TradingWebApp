@@ -45,8 +45,9 @@ class DividendListView(LoginRequiredMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super(DividendListView, self).get_context_data(*args, **kwargs)
         context['DividendsByYear'] = (Dividend.objects.annotate(year=ExtractYear('payment_date'))
-                                      .values('year').annotate(total_amount=Sum('amount')))
-
+                                      .values('year').annotate(total_amount=Sum('amount')).order_by('-year'))
+        context['DividendsByInstYear'] = (Dividend.objects.annotate(year=ExtractYear('payment_date'))
+                                      .values('instrument', 'year').annotate(total_amount=Sum('amount')))
         return context
 
     def get_queryset(self):
