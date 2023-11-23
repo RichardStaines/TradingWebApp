@@ -1,6 +1,7 @@
 from django.db import models
 from portfolio.models import Portfolio
 from instrument.models import Instrument, InstrumentRepository
+from trade.models import Trade
 
 
 class Position(models.Model):
@@ -15,6 +16,7 @@ class Position(models.Model):
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
     ex_div_date = ''
+    payment_date = ''
     div_payment_per_share = 0
     div_ytd = 0
     div_last = 0
@@ -23,11 +25,40 @@ class Position(models.Model):
 
     class Meta:
         db_table = "app_position"
+        unique_together = [["portfolio", "instrument"]]
+        indexes = [
+            models.Index(fields=["portfolio", "instrument"]),
+        ]
+
 
 class PositionRepository:
 
     def __init__(self, debug=False):
         self.debug = debug
+
+    def update_position_with_trade(self, trade: Trade, user, mode="NEW"):
+        notes_suffix = f" by TradeId {trade.reference} {trade.buy_sell} {trade.quantity}@{trade.price}"
+        qs = Position.objects.filter(portfolio=trade.portfolio, instrument=trade.instrument)
+        if qs is None:
+            # create a new position for the trade
+            pos = Position(portfolio=trade.portfolio, instrument=trade.instrument,
+                           quantity=trade.quantity, avg_price=trade.price,
+                           cost=trade.net_consideration, notes=f"Created {notes_suffix}")
+
+        if (trade.buy_sell == 'S' and mode == "NEW") or (trade.buy_sell == 'B' and mode == "CANCEL"):
+            pos = qs[0]
+            pos.quantity -= trade.quantity
+            # pos.cost -= trade.net_consideration
+            pos.cost = ( pos.quantity * pos.avg_price) / 100.0
+            pos.notes = f"Updated {notes_suffix}"
+        else:
+            pos = qs[0]
+            pos.quantity += trade.quantity
+            pos.cost += trade.net_consideration
+            new_avg_price = (pos.cost / pos.quantity)
+            pos.avg_price = new_avg_price * 100
+            pos.notes = f"Updated {notes_suffix}"
+        pos.save()
 
     def clear_table(self):
         Position.objects.all().delete()

@@ -1,6 +1,7 @@
 from django.db import models
 from portfolio.models import Portfolio
 from instrument.models import Instrument, InstrumentRepository
+from django.contrib.auth.models import User
 
 
 class Trade(models.Model):
@@ -18,9 +19,11 @@ class Trade(models.Model):
     updated_on = models.DateTimeField(auto_now=True)
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         db_table = "app_trade"
+
 
 class TradeRepository:
 

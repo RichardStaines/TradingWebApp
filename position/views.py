@@ -84,6 +84,8 @@ class PositionListView(LoginRequiredMixin, ListView):
             _,item.div_prev = divRepo.get_dividend_total(item.instrument_id, "PREV")
             item.ex_div_date = ex_div_lookup[item.instrument_id]['ex_div_date'] \
                 if item.instrument_id in ex_div_lookup else ''
+            item.payment_date = ex_div_lookup[item.instrument_id]['payment_date'] \
+                if item.instrument_id in ex_div_lookup else ''
             item.div_payment_per_share = ex_div_lookup[item.instrument_id]['payment'] if item.instrument_id in ex_div_lookup else 0
             new_qs.append(item)
 

@@ -6,6 +6,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 from instrument.models import InstrumentRepository
 from portfolio.models import PortfolioRepository
+from position.models import PositionRepository
 from .forms import TradeForm
 from .models import Trade
 
@@ -18,6 +19,8 @@ class TradeCreateView(CreateView):
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
+        posRepo = PositionRepository()
+        posRepo.update_position_with_trade(self.object, self.request.user)
         self.object.user = self.request.user
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
@@ -28,7 +31,9 @@ class TradeUpdateView(UpdateView):
     success_url = '/trades'
     form_class = TradeForm
     template_name = 'trade_form.html'
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['buy_sell'].disabled = True
 
 class TradeDeleteView(DeleteView):
     model = Trade

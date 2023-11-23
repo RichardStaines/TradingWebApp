@@ -5,8 +5,10 @@
 {% block content %}
 
     <h1 class="my5">Positions</h1>
-    <a href="{% url 'position.new' %}" class="btn btn-secondary mr-0">New Position</a>
-
+    <span class="mr-0">
+    <a href="{% url 'trade.new' %}" class="btn btn-secondary">New Trade</a>
+    <a href="{% url 'position.new' %}" class="btn btn-secondary">New Position</a>
+    </span>
     <table id="datatable1" class="display stripe cell-border"
            style="width:100%" searching="true">
     <thead>
@@ -55,9 +57,16 @@
                 <td>{{row.quantity |intcomma}}</td>
                 <td>£{{row.cost.normalize |intcomma}}</td>
                 <td>{{row.avg_price.normalize |intcomma}}</td>
-                <td>{{row.ex_div_date}} {{row.div_payment_per_share.normalize | intcomma}}
-                    {% widthratio row.div_payment_per_share 1 row.quantity %}</td>
-                <td>{{row.div_ytd.normalize |intcomma}}</td>
+                <td>{{row.ex_div_date}} {{row.div_payment_per_share.normalize | intcomma}}<br>
+                    {% if row.quantity > 0 %}
+                        {% if row.div_payment_per_share > 0 %}
+                            <span style="color: blue;">{{row.payment_date}}
+                            £{% widthratio row.div_payment_per_share 1 row.quantity %}
+                        {% endif  %}
+                    {% endif  %}
+                    </span>
+                </td>
+                <td  style="color: blue;">{{row.div_ytd.normalize |intcomma}}</td>
                 <td>{{row.div_last.normalize |intcomma}}</td>
                 <td>{{row.div_prev.normalize |intcomma}}</td>
                 <td>{{row.created_on}}</td>
@@ -81,7 +90,7 @@
             <th></th>
             <th></th>
             <th></th>
-            <th></th>
+            <th  style="color: blue;"></th>
             <th></th>
             <th></th>
             <th></th>

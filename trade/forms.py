@@ -20,9 +20,12 @@ class TradeForm(forms.ModelForm):
 
     class Meta:
         model = Trade
-        fields = ['buy_sell', 'instrument', 'quantity', 'price', 'net_consideration',
-                  'portfolio', 'trade_date', 'settle_date', 'description', 'reference']
+        fields = ['portfolio', 'buy_sell', 'instrument',
+                  'quantity', 'price', 'net_consideration',
+                  'trade_date', 'settle_date', 'description', 'reference'
+                  ]
         widgets = {
+            'portfolio': forms.Select(),
             'buy_sell': forms.Select(choices=BUY_SELL),
             'instrument': forms.Select(),
             'quantity': forms.NumberInput(
@@ -34,7 +37,7 @@ class TradeForm(forms.ModelForm):
             'net_consideration': forms.NumberInput(
                 attrs={'class': 'form-control', }
             ),
-            'portfolio': forms.Select(),
+
             'trade_date': forms.DateInput(
                 format=('%Y-%m-%d'),
                 attrs={'class': 'form-control',
