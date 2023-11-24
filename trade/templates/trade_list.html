@@ -65,10 +65,10 @@
                 </td>
                 <td>{{row.trade_date}}</td>
                 <td>{{row.settle_date}}</td>
-                <td><span {% if row.pnl < 0 %} style="color: red;"
+                <td {% if row.pnl < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
-                    {{row.pnl}} </span>
+                    {{row.pnl}}
                 </td>
                 <td>{{row.description}}</td>
                 <td>{{row.created_on}}</td>
@@ -109,12 +109,23 @@
 <script>
     $(document).ready(function() {
 
+        var BUY_SELL_COL = 0
+        var INSTRUMENT_COL = 1
+        var QTY_COL = 2
+        var PRICE_COL = 3
+        var CONSIDERATION_COL = 4
+        var PNL_COL = 8
+        var TRADE_DATE_COL = 6
+        var SETTLE_DATE_COL = 7
+        var CREATED_COL = 10
+        var UPDATED_COL = 11
+
         $('#datatable1').DataTable({
-            order: [[6, 'desc']],
+            order: [[TRADE_DATE_COL, 'desc']],
             stateSave: true,
             columnDefs: [
                 {
-                    targets: [6,7], // your field position
+                    targets: [TRADE_DATE_COL, SETTLE_DATE_COL], // your field position
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM. DD, YYYY');
@@ -126,7 +137,7 @@
                     orderable: true
                 },
                 {
-                    targets: [10,11], // your field position
+                    targets: [CREATED_COL, UPDATED_COL], // your field position
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM DD YYYY, hh:mm');
@@ -174,22 +185,28 @@
                         : 0;
                 };
 
-                buy_sell_arr = api.column(0, { page: 'current' }).data()
-                inst_arr = api.column(1, { page: 'current' }).data()
+                buy_sell_arr = api.column(BUY_SELL_COL, { page: 'current' }).data()
+                inst_arr = api.column(INSTRUMENT_COL, { page: 'current' }).data()
                 instrument = inst_arr[0]
-                considerations = api.column(4, { page: 'current' }).data()
+                considerations = api.column(CONSIDERATION_COL, { page: 'current' }).data()
                     .map(function (val, index) {
                         return intVal(val) * (inst_arr[index]==instrument ? (buy_sell_arr[index]=='S' ? -1 : 1) : 0)
                     }
                     )
-                quantities = api.column(2, { page: 'current' }).data()
+                quantities = api.column(QTY_COL, { page: 'current' }).data()
                     .map(function (val, index) { return intVal(val) * (buy_sell_arr[index]=='S' ? -1 : 1) }
                     )
+                pnl = api.column(PNL_COL, { page: 'current' }).data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
                 // Total over all pages
                 considerationTotal = considerations.reduce((a, b) => a + b, 0);
                 qtyTotal = quantities.reduce((a, b) => a + b, 0);
                 avgPrice = (qtyTotal != 0) ? (considerationTotal / qtyTotal) : 0
 
+                var pnl = new Intl.NumberFormat("en-UK", {
+                  style: "currency",
+                  currency: "GBP"
+                }).format(pnl);
                 var qtyTotal = new Intl.NumberFormat("en-UK", {
                   style: "decimal",
                 }).format(qtyTotal);
@@ -205,10 +222,11 @@
                 else
                     avgPrice = "£" + parseFloat(avgPrice.toFixed(6))
                 // Update footer
-                api.column(1).footer().innerHTML = instrument;
-                api.column(2).footer().innerHTML = qtyTotal;
-                api.column(3).footer().innerHTML = avgPrice
-                api.column(4).footer().innerHTML = considerationTotal;
+                api.column(INSTRUMENT_COL).footer().innerHTML = instrument;
+                api.column(PNL_COL).footer().innerHTML = pnl;
+                api.column(QTY_COL).footer().innerHTML = qtyTotal;
+                api.column(PRICE_COL).footer().innerHTML = avgPrice
+                api.column(CONSIDERATION_COL).footer().innerHTML = considerationTotal;
             },
 
         });
