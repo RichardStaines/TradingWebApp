@@ -19,6 +19,7 @@
             <th>Quantity</th>
             <th>Cost</th>
             <th>Average Price</th>
+            <th>PnL</th>
             <th>Ex Div</th>
             <th>Div {{year}}</th>
             <th>Div {{last_year}}</th>
@@ -34,6 +35,7 @@
             <th>Quantity</th>
             <th>Cost</th>
             <th>Average Price</th>
+            <th>PnL</th>
             <th>Ex Div</th>
             <th>Div {{year}}</th>
             <th>Div {{last_year}}</th>
@@ -57,6 +59,7 @@
                 <td>{{row.quantity |intcomma}}</td>
                 <td>£{{row.cost.normalize |intcomma}}</td>
                 <td>{{row.avg_price.normalize |intcomma}}</td>
+                <td>{{row.pnl.normalize |intcomma}}</td>
                 <td>{{row.ex_div_date}} {{row.div_payment_per_share.normalize | intcomma}}<br>
                     {% if row.quantity > 0 %}
                         {% if row.div_payment_per_share > 0 %}
@@ -90,7 +93,8 @@
             <th></th>
             <th></th>
             <th></th>
-            <th  style="color: blue;"></th>
+            <th></th>
+            <th style="color: blue;"></th>
             <th></th>
             <th></th>
             <th></th>
@@ -112,7 +116,7 @@
             autoWidth: true,
             columnDefs: [
                 {
-                    targets: [9,10], // your field position
+                    targets: [10,11], // your field position
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');
@@ -160,15 +164,15 @@
 
                 // Total over all pages
                 div_ytd = api
-                    .column(6)
-                    .data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
-                div_last = api
                     .column(7)
                     .data()
                     .reduce((a, b) => intVal(a) + intVal(b), 0);
-                div_prev = api
+                div_last = api
                     .column(8)
+                    .data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+                div_prev = api
+                    .column(9)
                     .data()
                     .reduce((a, b) => intVal(a) + intVal(b), 0);
 
@@ -186,9 +190,9 @@
                   currency: "GBP"
                 }).format(div_prev);
                 // Update footer
-                api.column(6).footer().innerHTML = div_ytd;
-                api.column(7).footer().innerHTML = div_last;
-                api.column(8).footer().innerHTML = div_prev;
+                api.column(7).footer().innerHTML = div_ytd;
+                api.column(8).footer().innerHTML = div_last;
+                api.column(9).footer().innerHTML = div_prev;
             }
 
 
