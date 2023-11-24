@@ -9,7 +9,7 @@ class PositionForm(forms.ModelForm):
     class Meta:
         model = Position
         fields = ['portfolio', 'instrument',  'quantity', 'cost', 'avg_price',
-                  'notes',]
+                  'pnl','notes',]
         widgets = {
             'portfolio': forms.Select(),
             'instrument': forms.Select(),
@@ -22,10 +22,15 @@ class PositionForm(forms.ModelForm):
             'avg_price': forms.NumberInput(
                 attrs={'class': 'form-control', }
             ),
+            'pnl': forms.NumberInput(
+                attrs={'class': 'form-control', }
+            ),
 
             'notes': forms.Textarea(attrs={'class': 'form-control'}),
         }
-        labels = {'avg_price': 'Average Price'}
+        labels = {'avg_price': 'Average Price (p)',
+                  'cost': 'Cost (£)',
+                  'pnl': 'PnL (£)'}
 
 
 class PositionCsvLoaderForm(forms.Form):
