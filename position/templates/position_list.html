@@ -59,10 +59,10 @@
                 <td>{{row.quantity |intcomma}}</td>
                 <td>£{{row.cost.normalize |intcomma}}</td>
                 <td>{{row.avg_price.normalize |intcomma}}</td>
-                <td><span {% if row.pnl < 0 %} style="color: red;"
+                <td {% if row.pnl < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
-                    {{row.pnl.normalize |intcomma}} </span>
+                    {{row.pnl.normalize |intcomma}}
                 </td>
                 <td>{{row.ex_div_date}} {{row.div_payment_per_share.normalize | intcomma}}<br>
                     {% if row.quantity > 0 %}
@@ -114,13 +114,22 @@
 
     $(document).ready(function() {
 
+        var PORTFOLIO_COL = 0
+        var INSTRUMENT_COL = 1
+        var PNL_COL = 5
+        var DIV_YTD_COL = 7
+        var DIV_LAST_COL = 8
+        var DIV_PREV_COL = 9
+        var CREATED_COL = 10
+        var UPDATED_COL = 11
+
         $('#datatable1').DataTable({
-            order: [[0, 'asc'],[1, 'asc']],
+            order: [[PORTFOLIO_COL, 'asc'],[INSTRUMENT_COL, 'asc']],
             stateSave: true,
             autoWidth: true,
             columnDefs: [
                 {
-                    targets: [10,11], // your field position
+                    targets: [CREATED_COL,UPDATED_COL], // your field position
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');
@@ -167,20 +176,28 @@
                 };
 
                 // Total over all pages
+                pnl = api
+                    .column(PNL_COL)
+                    .data()
+                    .reduce((a, b) => intVal(a) + intVal(b), 0);
                 div_ytd = api
-                    .column(7)
+                    .column(DIV_YTD_COL)
                     .data()
                     .reduce((a, b) => intVal(a) + intVal(b), 0);
                 div_last = api
-                    .column(8)
+                    .column(DIV_LAST_COL)
                     .data()
                     .reduce((a, b) => intVal(a) + intVal(b), 0);
                 div_prev = api
-                    .column(9)
+                    .column(DIV_PREV_COL)
                     .data()
                     .reduce((a, b) => intVal(a) + intVal(b), 0);
 
                 // Total over this page
+                var pnl = new Intl.NumberFormat("en-UK", {
+                  style: "currency",
+                  currency: "GBP"
+                }).format(pnl);
                 var div_ytd = new Intl.NumberFormat("en-UK", {
                   style: "currency",
                   currency: "GBP"
@@ -194,9 +211,10 @@
                   currency: "GBP"
                 }).format(div_prev);
                 // Update footer
-                api.column(7).footer().innerHTML = div_ytd;
-                api.column(8).footer().innerHTML = div_last;
-                api.column(9).footer().innerHTML = div_prev;
+                api.column(PNL_COL).footer().innerHTML = pnl;
+                api.column(DIV_YTD_COL).footer().innerHTML = div_ytd;
+                api.column(DIV_LAST_COL).footer().innerHTML = div_last;
+                api.column(DIV_PREV_COL).footer().innerHTML = div_prev;
             }
 
 
