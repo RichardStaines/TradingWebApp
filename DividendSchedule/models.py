@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 from instrument.models import Instrument, InstrumentRepository
@@ -14,6 +15,7 @@ class DividendSchedule( models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         db_table = "app_dividendschedule"

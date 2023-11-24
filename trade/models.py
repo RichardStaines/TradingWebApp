@@ -15,6 +15,7 @@ class Trade(models.Model):
     trade_date = models.DateField(null=False)
     settle_date = models.DateField(null=False)
     description = models.CharField(max_length=100, unique=False)
+    pnl = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)

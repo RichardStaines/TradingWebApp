@@ -1,5 +1,6 @@
 import math
 
+from django.contrib.auth.models import User
 from django.db import models
 
 from instrument.models import InstrumentRepository
@@ -16,6 +17,7 @@ class Cash(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         db_table = "app_cash"

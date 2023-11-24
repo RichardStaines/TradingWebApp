@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from portfolio.models import Portfolio
 from instrument.models import Instrument, InstrumentRepository
@@ -10,11 +11,13 @@ class Position(models.Model):
     quantity = models.DecimalField(max_digits=12, decimal_places=0)
     cost = models.DecimalField(max_digits=12, decimal_places=2)
     avg_price = models.DecimalField(max_digits=12, decimal_places=2)
+    pnl = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     notes = models.CharField(max_length=100, unique=False)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     ex_div_date = ''
     payment_date = ''
     div_payment_per_share = 0
@@ -37,6 +40,14 @@ class PositionRepository:
         self.debug = debug
 
     def update_position_with_trade(self, trade: Trade, user, mode="NEW"):
+        """
+        Adjust the position by the effects of the trade
+        :param trade: trade object
+        :param user: user entering the trade
+        :param mode: NEW or CANCEL
+        :return: the pnl for the trade when sell, 0 when buy
+        """
+        trade_pnl = 0
         notes_suffix = f" by TradeId {trade.reference} {trade.buy_sell} {trade.quantity}@{trade.price}"
         qs = Position.objects.filter(portfolio=trade.portfolio, instrument=trade.instrument)
         if qs is None:
@@ -45,20 +56,33 @@ class PositionRepository:
                            quantity=trade.quantity, avg_price=trade.price,
                            cost=trade.net_consideration, notes=f"Created {notes_suffix}")
 
-        if (trade.buy_sell == 'S' and mode == "NEW") or (trade.buy_sell == 'B' and mode == "CANCEL"):
+        if trade.buy_sell == 'S':
+            # sell trades don't affect avg_price they affect PnL
             pos = qs[0]
-            pos.quantity -= trade.quantity
-            # pos.cost -= trade.net_consideration
+            trade_pnl = (trade.net_consideration - (trade.quantity * pos.avg_price))
+            if mode == "NEW":
+                pos.quantity -= trade.quantity
+                pos.pnl += trade_pnl
+            else:
+                pos.quantity += trade.quantity
+                pos.pnl -= trade_pnl
+
+                # pos.cost -= trade.net_consideration
             pos.cost = ( pos.quantity * pos.avg_price) / 100.0
             pos.notes = f"Updated {notes_suffix}"
         else:
             pos = qs[0]
-            pos.quantity += trade.quantity
-            pos.cost += trade.net_consideration
+            if mode == "NEW":
+                pos.quantity += trade.quantity
+                pos.cost += trade.net_consideration
+            else:
+                pos.quantity -= trade.quantity
+                pos.cost -= trade.net_consideration
             new_avg_price = (pos.cost / pos.quantity)
             pos.avg_price = new_avg_price * 100
             pos.notes = f"Updated {notes_suffix}"
         pos.save()
+        return trade_pnl
 
     def clear_table(self):
         Position.objects.all().delete()

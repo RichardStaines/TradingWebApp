@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 
 
@@ -12,6 +13,7 @@ class Instrument(models.Model):
     company_link = models.URLField(null=False, default='')
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
+    user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     class Meta:
         db_table = "app_instrument"
@@ -31,6 +33,9 @@ class InstrumentRepository:
     def get_instrument_by_code(self, code):
         qs = Instrument.objects.filter(code=code)
         return qs[0] if len(qs) > 0 else None
+
+    def get_instruments_for_price_source(price_source):
+        return Instrument.query.filter_by(price_source=price_source).all()
 
     def save_from_df(self, df, clear_before_load=False):
         if clear_before_load:
