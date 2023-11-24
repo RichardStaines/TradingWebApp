@@ -59,7 +59,11 @@
                 <td>{{row.quantity |intcomma}}</td>
                 <td>£{{row.cost.normalize |intcomma}}</td>
                 <td>{{row.avg_price.normalize |intcomma}}</td>
-                <td>{{row.pnl.normalize |intcomma}}</td>
+                <td><span {% if row.pnl < 0 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                    {{row.pnl.normalize |intcomma}} </span>
+                </td>
                 <td>{{row.ex_div_date}} {{row.div_payment_per_share.normalize | intcomma}}<br>
                     {% if row.quantity > 0 %}
                         {% if row.div_payment_per_share > 0 %}

@@ -65,7 +65,11 @@
                 </td>
                 <td>{{row.trade_date}}</td>
                 <td>{{row.settle_date}}</td>
-                <td>{{row.pnl}}</td>
+                <td><span {% if row.pnl < 0 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                    {{row.pnl}} </span>
+                </td>
                 <td>{{row.description}}</td>
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
