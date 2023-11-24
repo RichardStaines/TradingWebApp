@@ -17,6 +17,12 @@ class TradeCreateView(CreateView):
     form_class = TradeForm
     template_name = 'trade_form.html'
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(TradeCreateView, self).get_context_data(*args, **kwargs)
+        context['mode'] = 'Entry'
+
+        return context
+
     def form_valid(self, form):
         self.object = form.save(commit=False)
         posRepo = PositionRepository()
@@ -32,9 +38,23 @@ class TradeUpdateView(UpdateView):
     form_class = TradeForm
     template_name = 'trade_form.html'
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-#        self.fields['buy_sell'].disabled = True
+    def get_context_data(self, *args, **kwargs):
+        context = super(TradeUpdateView, self).get_context_data(*args, **kwargs)
+        context['mode'] = 'Update'
+        return context
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        posRepo = PositionRepository()
+        pre_amended_trade = Trade.objects.get(pk=self.object.id)
+        if ((pre_amended_trade.price != self.object.price) or (pre_amended_trade.quantity != self.object.quantity)
+                or pre_amended_trade.net_consideration != self.object.net_consideration):
+            posRepo.update_position_with_trade(pre_amended_trade, self.request.user, 'CANCEL')
+            self.object.pnl = posRepo.update_position_with_trade(self.object, self.request.user, 'NEW')
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
 
 class TradeDeleteView(DeleteView):
     model = Trade
