@@ -12,13 +12,13 @@
     <thead>
 
         <tr >
+            <th >Trade Date</th>
             <th>BuySell</th>
             <th>Instrument</th>
             <th>Quantity</th>
             <th>Price</th>
             <th>Net Consideration</th>
             <th>Portfolio</th>
-            <th>Trade Date</th>
             <th>Settlement Date</th>
             <th>PnL</th>
             <th>Description</th>
@@ -28,13 +28,13 @@
             <th></th>
         </tr>
             <tr>
+            <th >Trade Date</th>
             <th >BuySell</th>
             <th >Instrument</th>
             <th >Quantity</th>
             <th >Price</th>
             <th >Net Consideration</th>
             <th >Portfolio</th>
-            <th >Trade Date</th>
             <th >Settlement Date</th>
             <th>PnL</th>
             <th >Description</th>
@@ -52,9 +52,14 @@
             {% else %}
             <tr class="sell">
             {% endif %}
-
+                <td>{{row.trade_date}}</td>
                 <td >{{row.buy_sell}}</td>
-                <td>{{row.instrument}}</td>
+                <td>
+                    <a href="{% url 'trade_by_portfolio_and_inst.list' portfolio=row.portfolio instrument=row.instrument %}"
+                       class="test-dark text-decoration-non">
+                        {{ row.instrument }}
+                    </a>
+                </td>
                 <td>{{row.quantity |intcomma}}</td>
                 <td>£{{row.price.normalize |intcomma}}</td>
                 <td>£{{row.net_consideration |intcomma}}</td>
@@ -63,7 +68,6 @@
                         {{row.portfolio}}
                     </a>
                 </td>
-                <td>{{row.trade_date}}</td>
                 <td>{{row.settle_date}}</td>
                 <td {% if row.pnl < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
@@ -109,20 +113,20 @@
 <script>
     $(document).ready(function() {
 
-        var BUY_SELL_COL = 0
-        var INSTRUMENT_COL = 1
-        var QTY_COL = 2
-        var PRICE_COL = 3
-        var CONSIDERATION_COL = 4
-        var PNL_COL = 8
-        var TRADE_DATE_COL = 6
+        var TRADE_DATE_COL = 0
+        var BUY_SELL_COL = 1
+        var INSTRUMENT_COL = 2
+        var QTY_COL = 3
+        var PRICE_COL = 4
+        var CONSIDERATION_COL = 5
         var SETTLE_DATE_COL = 7
+        var PNL_COL = 8
         var CREATED_COL = 10
         var UPDATED_COL = 11
 
         $('#datatable1').DataTable({
             order: [[TRADE_DATE_COL, 'desc']],
-            stateSave: true,
+            stateSave: false,
             columnDefs: [
                 {
                     targets: [TRADE_DATE_COL, SETTLE_DATE_COL], // your field position
@@ -170,8 +174,6 @@
                         });
                     });
             },
-
-
 
         footerCallback: function (row, data, start, end, display) {
                 let api = this.api();

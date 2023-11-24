@@ -31,9 +31,10 @@ class TradeUpdateView(UpdateView):
     success_url = '/trades'
     form_class = TradeForm
     template_name = 'trade_form.html'
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['buy_sell'].disabled = True
+#        self.fields['buy_sell'].disabled = True
 
 class TradeDeleteView(DeleteView):
     model = Trade
