@@ -20,7 +20,7 @@ class TradeCreateView(CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         posRepo = PositionRepository()
-        posRepo.update_position_with_trade(self.object, self.request.user)
+        self.object.pnl = posRepo.update_position_with_trade(self.object, self.request.user)
         self.object.user = self.request.user
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
@@ -39,6 +39,12 @@ class TradeDeleteView(DeleteView):
     model = Trade
     success_url = '/trades'
     template_name = 'trade_delete.html'
+    def form_valid(self, form):
+
+        posRepo = PositionRepository()
+        self.object.pnl = posRepo.update_position_with_trade(self.object, self.request.user, "CANCEL")
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class TradeListView(LoginRequiredMixin, ListView):

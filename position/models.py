@@ -50,16 +50,15 @@ class PositionRepository:
         trade_pnl = 0
         notes_suffix = f" by TradeId {trade.reference} {trade.buy_sell} {trade.quantity}@{trade.price}"
         qs = Position.objects.filter(portfolio=trade.portfolio, instrument=trade.instrument)
-        if qs is None:
+        if len(qs) == 0:
             # create a new position for the trade
             pos = Position(portfolio=trade.portfolio, instrument=trade.instrument,
                            quantity=trade.quantity, avg_price=trade.price,
                            cost=trade.net_consideration, notes=f"Created {notes_suffix}")
-
-        if trade.buy_sell == 'S':
+        elif trade.buy_sell == 'S':
             # sell trades don't affect avg_price they affect PnL
             pos = qs[0]
-            trade_pnl = (trade.net_consideration - (trade.quantity * pos.avg_price))
+            trade_pnl = (trade.net_consideration - (trade.quantity * pos.avg_price / 100))
             if mode == "NEW":
                 pos.quantity -= trade.quantity
                 pos.pnl += trade_pnl
@@ -68,7 +67,7 @@ class PositionRepository:
                 pos.pnl -= trade_pnl
 
                 # pos.cost -= trade.net_consideration
-            pos.cost = ( pos.quantity * pos.avg_price) / 100.0
+            pos.cost = ( pos.quantity * pos.avg_price) / 100
             pos.notes = f"Updated {notes_suffix}"
         else:
             pos = qs[0]
