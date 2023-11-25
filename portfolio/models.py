@@ -20,6 +20,13 @@ class PortfolioRepository:
     def __init__(self, debug=False):
         self.debug = debug
 
+    def get_portfolio_dict(self):
+        """
+        read the portfolio table into a dict
+        :return: a dict of the portfolio entries
+        """
+        return {rec['id']: rec['name'] for rec in Portfolio.objects.all().values()}
+
     def clear_table(self):
         Portfolio.all().delete()
 

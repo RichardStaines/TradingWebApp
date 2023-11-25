@@ -8,21 +8,36 @@
     <a href="{% url 'dividend.new' %}" class="btn btn-secondary mr-0">
         New Dividend</a>
     <p>
-    <table id="datatable2" class="display stripe cell-border"
+    <table id="datatableTotals" class="display stripe cell-border"
            style="width:100%">
         <thead>
-            <tr class="col-head">
-            {% for dividend in DividendsByYear %}
-            <th>{{ dividend.year }} </th>
-            {% endfor %}
+            <tr>
+                <th>Portfolio </th>
+                {% for year in years %}
+                <th>{{ year }} </th>
+                {% endfor %}
             </tr>
         </thead>
-        <tbody><tr>
-            {% for dividend in DividendsByYear %}
-            <td>£{{ dividend.total_amount.normalize |intcomma}}</td>
+        <tbody>
+        {% for dividendsByPortfolio in DividendsByPortfolioYear %}
+        <tr>
+            <td>{{ dividendsByPortfolio.portfolio }}</td>
+            {% for dividend in dividendsByPortfolio.byYear %}
+            <td>£{{ dividend.total_amount.normalize | intcomma }}</td>
             {% endfor %}
         </tr>
+        {% endfor %}
         </tbody>
+            <tfoot >
+            <tr>
+                <th>Totals</th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+        </tfoot>
     </table>
     </p>
 <br>
@@ -102,11 +117,37 @@
 <script>
 
     $(document).ready(function() {
-        $('#datatable2').DataTable({
+        $('#datatableTotals').DataTable({
             info: false,
             ordering: false,
             searching: false,
-            paging: false
+            paging: false,
+
+        footerCallback: function (row, data, start, end, display) {
+                let api = this.api();
+
+                // Remove the formatting to get integer data for summation
+                let intVal = function (i) {
+                    return typeof i === 'string'
+                        ? i.replace(/[\$£,]/g, '') * 1
+                        : typeof i === 'number'
+                        ? i
+                        : 0;
+                };
+                for (var col = 1; col < 7; col++) {
+                    total = api
+                        .column(col)
+                        .data()
+                        .reduce((a, b) => intVal(a) + intVal(b), 0);
+                    var total = new Intl.NumberFormat("en-UK", {
+                      style: "currency",
+                      currency: "GBP"
+                    }).format(total);
+                     // Update footer
+                    api.column(col).footer().innerHTML = total;
+                };
+            }
+
         })
 
         $('#datatable1').DataTable({

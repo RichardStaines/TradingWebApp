@@ -71,17 +71,15 @@ class PositionListView(LoginRequiredMixin, ListView):
         divRepo = DividendRepository()
         divRepo.get_dividends_by_inst_year()
 
-
-
         ds_qs = (DividendSchedule.objects.all().order_by('ex_div_date').values()
                  )
         ex_div_lookup = {item['instrument_id']: item for item in ds_qs}
 #        ds_flds = DividendSchedule._meta.fields
         new_qs = []
         for item in qs:
-            item.year,item.div_ytd = divRepo.get_dividend_total(item.instrument_id, "YTD")
-            _,item.div_last = divRepo.get_dividend_total(item.instrument_id, "LAST")
-            _,item.div_prev = divRepo.get_dividend_total(item.instrument_id, "PREV")
+            item.year,item.div_ytd = divRepo.get_dividend_total(item.portfolio_id, item.instrument_id, "YTD")
+            _,item.div_last = divRepo.get_dividend_total(item.portfolio_id, item.instrument_id, "LAST")
+            _,item.div_prev = divRepo.get_dividend_total(item.portfolio_id, item.instrument_id, "PREV")
             item.ex_div_date = ex_div_lookup[item.instrument_id]['ex_div_date'] \
                 if item.instrument_id in ex_div_lookup else ''
             item.payment_date = ex_div_lookup[item.instrument_id]['payment_date'] \
