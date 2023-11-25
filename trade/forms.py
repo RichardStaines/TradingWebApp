@@ -14,9 +14,12 @@ class TradeForm(forms.ModelForm):
         # first call parent's constructor
         super(TradeForm, self).__init__(*args, **kwargs)
         # there's a `fields` property now
-        not_require_list = ['description',]
+        not_require_list = ['description', 'reference']
         for item in not_require_list:
             self.fields[item].required = False
+        not_edit_list = []
+        for item in not_edit_list:
+            self.fields[item].disabled = ('instance' in kwargs and kwargs['instance'] is not None)
 
     class Meta:
         model = Trade
