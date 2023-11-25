@@ -134,17 +134,17 @@
                         ? i
                         : 0;
                 };
-                for (var col = 1; col < 7; col++) {
-                    total = api
+                for (var col = 1; col < 6; col++) {
+                    div_total = api
                         .column(col)
                         .data()
                         .reduce((a, b) => intVal(a) + intVal(b), 0);
-                    var total = new Intl.NumberFormat("en-UK", {
+                    var div_total = new Intl.NumberFormat("en-UK", {
                       style: "currency",
                       currency: "GBP"
-                    }).format(total);
+                    }).format(div_total);
                      // Update footer
-                    api.column(col).footer().innerHTML = total;
+                    api.column(col).footer().innerHTML = div_total;
                 };
             }
 
