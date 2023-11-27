@@ -7,4 +7,5 @@ urlpatterns = [
     path('instrument_price/new', views.InstrumentPriceCreateView.as_view(), name='instrument_price.new'),
     path('instrument_price/<int:pk>/edit', views.InstrumentPriceUpdateView.as_view(), name='instrument_price.update'),
     path('instrument_price/<int:pk>/delete', views.InstrumentPriceDeleteView.as_view(), name='instrument_price.delete'),
+    path('instrument_prices/yfinance', views.load_from_yfinance, name='instrument_price.loadYfin'),
 ]

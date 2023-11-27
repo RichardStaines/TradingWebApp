@@ -35,8 +35,15 @@ class InstrumentRepository:
         qs = Instrument.objects.filter(code=code)
         return qs[0] if len(qs) > 0 else None
 
-    def get_instruments_for_price_source(price_source):
-        return Instrument.query.filter_by(price_source=price_source).all()
+    def get_instrument_by_id(self, id):
+        qs = Instrument.objects.filter(pk=id)
+        return qs[0] if len(qs) > 0 else None
+
+    def get_instruments_for_price_source(self, price_source):
+        qs = Instrument.objects.filter(price_source=price_source).all().values()
+        ticker_dict = {rec['id']: rec for rec in qs}
+        return ticker_dict
+
 
     def save_from_df(self, df, clear_before_load=False):
         if clear_before_load:

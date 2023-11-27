@@ -6,7 +6,10 @@
 
 {% block content %}
     <h1 class="my5">Instrument Prices</h1>
-    <a href="{% url 'instrument_price.new' %}" class="btn btn-secondary mr-0">New Instrument Price</a>
+    <span class="mr-0">
+    <a href="{% url 'instrument_price.new' %}" class="btn btn-secondary">New Instrument Price</a>
+    <a href="{% url 'instrument_price.loadYfin' %}" class="btn btn-secondary">Download from YFinance</a>
+    </span>
 
     <table id="datatable1" class="display stripe cell-border"
            style="width:100%" searching="true">
