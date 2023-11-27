@@ -32,8 +32,8 @@ class InstrumentRepository:
         Instrument.objects.all().delete()
 
     def get_instrument_by_code(self, code):
-        qs = Instrument.objects.filter(code=code)
-        return qs[0] if len(qs) > 0 else None
+        return Instrument.objects.get(code=code)
+        # return qs[0] if len(qs) > 0 else None
 
     def get_instrument_by_id(self, id):
         rec = Instrument.objects.get(pk=id)
