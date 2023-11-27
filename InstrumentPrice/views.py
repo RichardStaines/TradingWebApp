@@ -75,7 +75,6 @@ def get_ticker_history(_ticker, _start_date=None, _end_date=None, _interval='1mi
                     ip_rec.change = ip_rec.price - ip_rec.open
                     ip_rec.change_percent = 100 * (ip_rec.change / ip_rec.open)
                     ip_rec.save()
-                print(ticker_data)
             except ValueError as e:
                 print(e)
             except Exception as e:
