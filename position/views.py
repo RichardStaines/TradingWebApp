@@ -97,6 +97,8 @@ class PositionListView(LoginRequiredMixin, ListView):
             item.change_pct = price_lookup[item.instrument_id]['change_percent'] \
                 if item.instrument_id in price_lookup else ''
             item.position_value = (decimal.Decimal(item.mkt_price) * item.quantity) / 100 if item.mkt_price != '' else 0
+            item.value_change = item.quantity * decimal.Decimal(item.change) / 100\
+                if item.change != '' and item.quantity != 0 else 0
             item.unrealised_pnl = item.position_value - item.cost
             new_qs.append(item)
 

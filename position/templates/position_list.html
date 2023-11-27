@@ -21,6 +21,7 @@
             <th>Average Price</th>
             <th>Mkt Price</th>
             <th>Mkt Value</th>
+            <th>Value Change</th>
            <th>UnrealisedPnL</th>
             <th>PnL</th>
             <th>Ex Div</th>
@@ -40,6 +41,7 @@
             <th>Average Price</th>
             <th>Mkt Price</th>
             <th>Mkt Value</th>
+            <th>Value Change</th>
             <th>UnrealisedPnL</th>
             <th>PnL</th>
             <th>Ex Div</th>
@@ -74,6 +76,10 @@
                           {% else %}style="color: blue;"
                           {% endif %}>
                     £{{row.position_value.normalize |intcomma}}
+                </td>
+                <td {% if row.change < 0 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>£{{row.value_change.normalize |intcomma}}
                 </td>
                 <td {% if row.unrealised_pnl < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
@@ -142,13 +148,14 @@
         var INSTRUMENT_COL = 1
         var COST_COL = 3
         var MKT_VAL_COL = 6
-        var UNREALISED_COL = 7
-        var PNL_COL = 8
-        var DIV_YTD_COL = 10
-        var DIV_LAST_COL = 11
-        var DIV_PREV_COL = 12
-        var CREATED_COL = 13
-        var UPDATED_COL = 14
+        var MKT_VAL_CHG_COL = 7
+        var UNREALISED_COL = 8
+        var PNL_COL = 9
+        var DIV_YTD_COL = 11
+        var DIV_LAST_COL = 12
+        var DIV_PREV_COL = 13
+        var CREATED_COL = 14
+        var UPDATED_COL = 15
 
         $('#datatable1').DataTable({
             order: [[PORTFOLIO_COL, 'asc'],[INSTRUMENT_COL, 'asc']],
@@ -202,7 +209,8 @@
                         : 0;
                 };
 
-                var sum_cols = [COST_COL, MKT_VAL_COL, UNREALISED_COL, PNL_COL,
+                var sum_cols = [COST_COL, MKT_VAL_COL, MKT_VAL_CHG_COL,
+                                UNREALISED_COL, PNL_COL,
                                 DIV_YTD_COL, DIV_LAST_COL, DIV_PREV_COL]
                 for (var col of sum_cols)
                 {

@@ -29,6 +29,7 @@ class Position(models.Model):
     change = 0
     change_pct = 0
     position_value = 0
+    value_change = 0
     unrealised_pnl = 0
 
     class Meta:
