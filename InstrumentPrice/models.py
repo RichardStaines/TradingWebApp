@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from instrument.models import Instrument
+
 
 # Create your models here.
 class InstrumentPrice(models.Model):
@@ -17,6 +19,7 @@ class InstrumentPrice(models.Model):
     change_percent = models.DecimalField(max_digits=12, decimal_places=4)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
+    instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
 
     class Meta:

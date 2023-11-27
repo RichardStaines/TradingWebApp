@@ -29,4 +29,5 @@ urlpatterns = [
     path('csvloader', include('CsvLoader.urls')),
     path('', include('DividendSchedule.urls')),
     path('pos/', include('position.urls')),
+    path('prices/', include('InstrumentPrice.urls')),
 ]

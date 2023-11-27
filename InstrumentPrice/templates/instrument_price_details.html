@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="border round">
+    <h1 class="my-5">{{instrument_price.instrument}}</h1>
+    <p>{{instrument_price.price_source}}</p>
+    <p>{{instrument_price.open}}</p>
+    <p>{{instrument_price.close}}</p>
+    <p>{{instrument_price.high}}</p>
+    <p>{{instrument_price.low}}</p>
+    <p>{{instrument_price.volume}}</p>
+    <p>{{instrument_price.price}}</p>
+    <p>{{instrument_price.change}}</p>
+    <p>{{instrument_price.change_percent}}</p>
+    <p>{{instrument_price.created_on}}</p>
+    <p>{{instrument_price.updated_on}}</p>
+</div>
+
+
+<a href="{% url 'instrument_price.list' %}" class="btn btn-secondary my-5">List</a>
+<a href="{% url 'instrument_price.update' pk=instrument_price.id%}" class="btn btn-secondary">Edit</a>
+<a href="{% url 'instrument_price.delete' pk=instrument_price.id%}" class="btn btn-danger">Delete</a>
+
+{% endblock %}

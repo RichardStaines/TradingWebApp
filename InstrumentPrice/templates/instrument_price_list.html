@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% load humanize %}
+
+{% block content %}
+    <h1 class="my5">Instrument Prices</h1>
+    <a href="{% url 'instrument_price.new' %}" class="btn btn-secondary mr-0">New Instrument Price</a>
+
+    <table id="datatable1" class="display stripe cell-border"
+           style="width:100%" searching="true">
+    <thead>
+        <tr>
+            <th>Instrument</th>
+            <th>Price Source</th>
+            <th>Open</th>
+            <th>Close</th>
+            <th>High</th>
+            <th>Low</th>
+            <th>Volume</th>
+            <th>Price</th>
+            <th>Chg</th>
+            <th>Chg Pcnt</th>
+            <th>Created On</th>
+            <th>Updated On</th>
+            <th>Id</th>
+            <th></th>
+        </tr>
+    </thead>
+        <tbody>
+           {% for instrument_price in instrument_prices %}
+            <tr>
+                <td>
+                    <a href="{% url 'instrument_price.details' pk=instrument_price.id %}" class="test-dark text-decoration-non">
+                    {{ instrument_price.instrument }}
+                    </a>
+                </td>
+                <td>{{instrument_price.price_source}}</td>
+                <td>{{instrument_price.open}}</td>
+                <td>{{instrument_price.close}}</td>
+                <td>{{instrument_price.high}}</td>
+                <td>{{instrument_price.low}}</td>
+                <td>{{instrument_price.volume}}</td>
+                <td>{{instrument_price.price}}</td>
+                <td>{{instrument_price.change}}</td>
+                <td>{{instrument_price.change_percent}}</td>
+                <td>{{instrument.created_on}}</td>
+                <td>{{instrument.updated_on}}</td>
+                <td>
+                    <button onclick="window.location.href='{% url 'instrument_price.update' pk=instrument_price.id %}'"
+                            class="test-dark text-decoration-non">Edit {{instrument_price.id}}</button>
+                </td>
+                <td>
+                    <button onclick="window.location.href='{% url 'instrument_price.delete' pk=instrument_price.id %}'"
+                            class="test-dark text-decoration-non">Delete</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+</table>
+
+
+
+<script>
+    $(document).ready(function() {
+        $('#datatable1').DataTable({
+            stateSave: true,
+        });
+    } );
+</script>
+
+{% endblock %}
