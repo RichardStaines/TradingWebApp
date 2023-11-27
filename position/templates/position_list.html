@@ -140,6 +140,9 @@
 
         var PORTFOLIO_COL = 0
         var INSTRUMENT_COL = 1
+        var COST_COL = 3
+        var MKT_VAL_COL = 6
+        var UNREALISED_COL = 7
         var PNL_COL = 8
         var DIV_YTD_COL = 10
         var DIV_LAST_COL = 11
@@ -199,46 +202,23 @@
                         : 0;
                 };
 
-                // Total over all pages
-                pnl = api
-                    .column(PNL_COL)
-                    .data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
-                div_ytd = api
-                    .column(DIV_YTD_COL)
-                    .data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
-                div_last = api
-                    .column(DIV_LAST_COL)
-                    .data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
-                div_prev = api
-                    .column(DIV_PREV_COL)
-                    .data()
-                    .reduce((a, b) => intVal(a) + intVal(b), 0);
+                var sum_cols = [COST_COL, MKT_VAL_COL, UNREALISED_COL, PNL_COL,
+                                DIV_YTD_COL, DIV_LAST_COL, DIV_PREV_COL]
+                for (var col of sum_cols)
+                {
+                    // Total over all pages
+                    sum_val = api
+                        .column(col, { page: 'current' })
+                        .data()
+                        .reduce((a, b) => intVal(a) + intVal(b), 0);
+                    var sum_val = new Intl.NumberFormat("en-UK", {
+                      style: "currency",
+                      currency: "GBP"
+                    }).format(sum_val);
 
-                // Total over this page
-                var pnl = new Intl.NumberFormat("en-UK", {
-                  style: "currency",
-                  currency: "GBP"
-                }).format(pnl);
-                var div_ytd = new Intl.NumberFormat("en-UK", {
-                  style: "currency",
-                  currency: "GBP"
-                }).format(div_ytd);
-                var div_last = new Intl.NumberFormat("en-UK", {
-                  style: "currency",
-                  currency: "GBP"
-                }).format(div_last);
-                var div_prev = new Intl.NumberFormat("en-UK", {
-                  style: "currency",
-                  currency: "GBP"
-                }).format(div_prev);
-                // Update footer
-                api.column(PNL_COL).footer().innerHTML = pnl;
-                api.column(DIV_YTD_COL).footer().innerHTML = div_ytd;
-                api.column(DIV_LAST_COL).footer().innerHTML = div_last;
-                api.column(DIV_PREV_COL).footer().innerHTML = div_prev;
+                    api.column(col).footer().innerHTML = sum_val;
+                }
+
             }
 
 
