@@ -9,19 +9,22 @@ class InstrumentForm(forms.ModelForm):
         # first call parent's constructor
         super(InstrumentForm, self).__init__(*args, **kwargs)
         # there's a `fields` property now
-        not_require_list = ['price_source', 'sedol', 'dividend_info_link', 'company_link']
+        not_require_list = ['price_source_code', 'price_source',
+                            'sedol', 'dividend_info_link', 'company_link']
         for item in not_require_list:
             self.fields[item].required = False
 
     class Meta:
         model = Instrument
-        fields = ['code', 'sedol', 'description', 'price_source',
+        fields = ['code', 'sedol', 'description',
+                  'price_source', 'price_source_code',
                   'dividend_info_link', 'company_link']
         widgets = {
             'code': forms.TextInput(attrs={'class': 'form-control'}),
             'sedol': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class':  'form-control'}),
             'price_source': forms.TextInput(attrs={'class': 'form-control'}),
+            'price_source_code': forms.TextInput(attrs={'class': 'form-control'}),
             'dividend_info_link': forms.TextInput(attrs={'class': 'form-control'}),
             'company_link': forms.TextInput(attrs={'class': 'form-control'}),
         }

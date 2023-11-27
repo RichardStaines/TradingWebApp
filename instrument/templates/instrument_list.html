@@ -12,16 +12,16 @@
            style="width:100%" searching="true">
     <thead>
 
-        <tr class="col-head">
-            <th class="sorting_enabled">Code</th>
-            <th class="sorting_enabled">Sedol</th>
-            <th class="sorting_enabled">Description</th>
-            <th class="sorting_enabled">Price Source</th>
-            <th class="sorting_enabled">Dividend Info Link</th>
-            <th class="sorting_enabled">Company Link</th>
-
-            <th class="sorting_enabled">Created On</th>
-            <th class="sorting_enabled">Updated On</th>
+        <tr>
+            <th>Code</th>
+            <th>Sedol</th>
+            <th>Description</th>
+            <th>Price Source</th>
+            <th>Price Source Code</th>
+            <th>Dividend Info Link</th>
+            <th>Company Link</th>
+            <th>Created On</th>
+            <th>Updated On</th>
             <th>Id</th>
             <th></th>
         </tr>
@@ -37,6 +37,7 @@
                 <td>{{instrument.sedol}}</td>
                 <td>{{instrument.description}}</td>
                 <td>{{instrument.price_source}}</td>
+                <td>{{instrument.price_source_code}}</td>
                 <td><a href="{{instrument.dividend_info_link}}"
                        class="test-dark text-decoration-non">
                     {{instrument.dividend_info_link}}
