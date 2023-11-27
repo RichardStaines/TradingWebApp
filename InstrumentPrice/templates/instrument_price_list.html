@@ -45,8 +45,8 @@
                 <td>{{instrument_price.price}}</td>
                 <td>{{instrument_price.change}}</td>
                 <td>{{instrument_price.change_percent}}</td>
-                <td>{{instrument.created_on}}</td>
-                <td>{{instrument.updated_on}}</td>
+                <td>{{instrument_price.created_on}}</td>
+                <td>{{instrument_price.updated_on}}</td>
                 <td>
                     <button onclick="window.location.href='{% url 'instrument_price.update' pk=instrument_price.id %}'"
                             class="test-dark text-decoration-non">Edit {{instrument_price.id}}</button>

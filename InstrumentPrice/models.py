@@ -26,4 +26,4 @@ class InstrumentPrice(models.Model):
         db_table = "app_instrument_price"
 
     def __str__(self):
-        return f"{self.code}"
+        return f"{self.instrument}"
