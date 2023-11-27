@@ -24,7 +24,7 @@
             <th>Volume</th>
             <th>Price</th>
             <th>Chg</th>
-            <th>Chg Pcnt</th>
+            <th>Chg (%)</th>
             <th>Created On</th>
             <th>Updated On</th>
             <th>Id</th>
@@ -40,14 +40,26 @@
                     </a>
                 </td>
                 <td>{{instrument_price.price_source}}</td>
-                <td>{{instrument_price.open}}</td>
-                <td>{{instrument_price.close}}</td>
-                <td>{{instrument_price.high}}</td>
-                <td>{{instrument_price.low}}</td>
-                <td>{{instrument_price.volume}}</td>
-                <td>{{instrument_price.price}}</td>
-                <td>{{instrument_price.change}}</td>
-                <td>{{instrument_price.change_percent}}</td>
+                <td>{{instrument_price.open.normalize}}</td>
+                <td>{{instrument_price.close.normalize}}</td>
+                <td>{{instrument_price.high.normalize}}</td>
+                <td>{{instrument_price.low.normalize}}</td>
+                <td>{{instrument_price.volume.normalize | intcomma}}</td>
+                <td {% if instrument_price.change < 0 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                {{instrument_price.price.normalize}}
+                </td>
+                <td {% if instrument_price.change < 0 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                    {{instrument_price.change.normalize}}
+                </td>
+                <td {% if instrument_price.change_percent < 0 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                    {{instrument_price.change_percent.normalize}} %
+                </td>
                 <td>{{instrument_price.created_on}}</td>
                 <td>{{instrument_price.updated_on}}</td>
                 <td>

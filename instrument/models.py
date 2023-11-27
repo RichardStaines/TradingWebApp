@@ -36,8 +36,8 @@ class InstrumentRepository:
         return qs[0] if len(qs) > 0 else None
 
     def get_instrument_by_id(self, id):
-        qs = Instrument.objects.get(pk=id)
-        return qs[0] if len(qs) > 0 else None
+        rec = Instrument.objects.get(pk=id)
+        return rec
 
     def get_instruments_for_price_source(self, price_source):
         qs = Instrument.objects.filter(price_source=price_source).all().values()
