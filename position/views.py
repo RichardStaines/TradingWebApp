@@ -1,3 +1,4 @@
+import decimal
 from datetime import datetime
 
 from django.db.models.expressions import RawSQL
@@ -12,6 +13,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import DateField, CharField, Value, Window, F, Max, ExpressionWrapper, QuerySet, Sum
 
 from DividendSchedule.models import DividendSchedule
+from InstrumentPrice.models import InstrumentPrice
 from Tools import LoadCsv
 from dividends.models import Dividend, DividendRepository
 from trade.models import Trade
@@ -74,7 +76,9 @@ class PositionListView(LoginRequiredMixin, ListView):
         ds_qs = (DividendSchedule.objects.all().order_by('ex_div_date').values()
                  )
         ex_div_lookup = {item['instrument_id']: item for item in ds_qs}
-#        ds_flds = DividendSchedule._meta.fields
+
+        ip_qs = InstrumentPrice.objects.all().values()
+        price_lookup = {item['instrument_id']: item for item in ip_qs}
         new_qs = []
         for item in qs:
             item.year,item.div_ytd = divRepo.get_dividend_total(item.portfolio_id, item.instrument_id, "YTD")
@@ -85,6 +89,15 @@ class PositionListView(LoginRequiredMixin, ListView):
             item.payment_date = ex_div_lookup[item.instrument_id]['payment_date'] \
                 if item.instrument_id in ex_div_lookup else ''
             item.div_payment_per_share = ex_div_lookup[item.instrument_id]['payment'] if item.instrument_id in ex_div_lookup else 0
+
+            item.mkt_price = price_lookup[item.instrument_id]['price'] \
+                if item.instrument_id in price_lookup else ''
+            item.change = price_lookup[item.instrument_id]['change'] \
+                if item.instrument_id in price_lookup else ''
+            item.change_pct = price_lookup[item.instrument_id]['change_percent'] \
+                if item.instrument_id in price_lookup else ''
+            item.position_value = (decimal.Decimal(item.mkt_price) * item.quantity) / 100 if item.mkt_price != '' else 0
+            item.unrealised_pnl = item.position_value - item.cost
             new_qs.append(item)
 
         #qs = qs.annotate(ex_div_date2=RawSQL("select max(ex_div_date) as ex_div_date "

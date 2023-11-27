@@ -25,6 +25,11 @@ class Position(models.Model):
     div_last = 0
     div_prev = 0
     year = 0
+    mkt_price = 0.0
+    change = 0
+    change_pct = 0
+    position_value = 0
+    unrealised_pnl = 0
 
     class Meta:
         db_table = "app_position"

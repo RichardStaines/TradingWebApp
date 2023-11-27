@@ -19,6 +19,9 @@
             <th>Quantity</th>
             <th>Cost</th>
             <th>Average Price</th>
+            <th>Mkt Price</th>
+            <th>Mkt Value</th>
+           <th>UnrealisedPnL</th>
             <th>PnL</th>
             <th>Ex Div</th>
             <th>Div {{year}}</th>
@@ -35,6 +38,9 @@
             <th>Quantity</th>
             <th>Cost</th>
             <th>Average Price</th>
+            <th>Mkt Price</th>
+            <th>Mkt Value</th>
+            <th>UnrealisedPnL</th>
             <th>PnL</th>
             <th>Ex Div</th>
             <th>Div {{year}}</th>
@@ -59,6 +65,21 @@
                 <td>{{row.quantity |intcomma}}</td>
                 <td>£{{row.cost.normalize |intcomma}}</td>
                 <td>{{row.avg_price.normalize |intcomma}}</td>
+                <td {% if row.change < 0 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                {{row.mkt_price.normalize |intcomma}} ({{row.change.normalize}} {{row.change_pct.normalize}}%)
+                </td>
+                <td {% if row.change < 0 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                    £{{row.position_value.normalize |intcomma}}
+                </td>
+                <td {% if row.unrealised_pnl < 0 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                    £{{row.unrealised_pnl.normalize |intcomma}}
+                </td>
                 <td {% if row.pnl < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
@@ -98,6 +119,9 @@
             <th></th>
             <th></th>
             <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
             <th style="color: blue;"></th>
             <th></th>
             <th></th>
@@ -116,12 +140,12 @@
 
         var PORTFOLIO_COL = 0
         var INSTRUMENT_COL = 1
-        var PNL_COL = 5
-        var DIV_YTD_COL = 7
-        var DIV_LAST_COL = 8
-        var DIV_PREV_COL = 9
-        var CREATED_COL = 10
-        var UPDATED_COL = 11
+        var PNL_COL = 8
+        var DIV_YTD_COL = 10
+        var DIV_LAST_COL = 11
+        var DIV_PREV_COL = 12
+        var CREATED_COL = 13
+        var UPDATED_COL = 14
 
         $('#datatable1').DataTable({
             order: [[PORTFOLIO_COL, 'asc'],[INSTRUMENT_COL, 'asc']],
