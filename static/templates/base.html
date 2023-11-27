@@ -69,6 +69,10 @@
                       <li><a class="dropdown-item" href="{% url 'dividend_schedule.load' %}">Load dividend schedules from a CSV File</a></li>
                       <li><a class="dropdown-item" href="{% url 'position.load' %}">Load positions from a CSV File</a></li>
                       <li><hr class="dropdown-divider"></li>
+                      <li><a class="dropdown-item" href="{% url 'instrument_price.loadYfin' %}">
+                          Refresh Instrument Prices from Yahoo Finance
+                      </a></li>
+                      <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item" href="{% url 'portfolio.list' %}">Portfolios</a></li>
                     <li><a class="dropdown-item" href="{% url 'instrument.list' %}">Instruments</a></li>
                   </ul>
