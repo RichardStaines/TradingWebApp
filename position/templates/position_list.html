@@ -70,16 +70,16 @@
                 <td {% if row.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
-                {{row.mkt_price.normalize |intcomma}} ({{row.change.normalize}} {{row.change_pct.normalize}}%)
+                {{row.mkt_price.normalize |intcomma}} ({{row.change.normalize |floatformat:2}} {{row.change_pct.normalize |floatformat:2}}%)
                 </td>
                 <td {% if row.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
-                    £{{row.position_value.normalize |intcomma}}
+                    £{{row.position_value.normalize |floatformat:2|intcomma}}
                 </td>
                 <td {% if row.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
-                          {% endif %}>£{{row.value_change.normalize |intcomma}}
+                          {% endif %}>£{{row.value_change.normalize |floatformat:2|intcomma}}
                 </td>
                 <td {% if row.unrealised_pnl < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
