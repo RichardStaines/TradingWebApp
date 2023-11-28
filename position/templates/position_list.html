@@ -73,29 +73,37 @@
                           {% else %}style="color: blue;"
                           {% endif %}>
                 {{row.mkt_price.normalize |intcomma}}
-                ({% if row.change > 0 %}+{% endif %}{{row.change.normalize |floatformat:2}}
-                {% if row.change_pct > 0 %}+{% endif %}{{row.change_pct.normalize |floatformat:2}}%)
+                {% if row.quantity != 0 %}({% endif %}
+                {% if row.change > 0 %}+{% endif %}{{row.change.normalize |floatformat:2}}
+                {% if row.change_pct > 0 %}+{% endif %}{{row.change_pct.normalize |floatformat:2}}
+                {% if row.quantity != 0 %}%){% endif %}
                 </td>
                 <td {% if row.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
-                    £{{row.position_value.normalize |floatformat:2|intcomma}}
+                    {% if row.quantity != 0 %}
+                        £{{row.position_value.normalize |floatformat:2|intcomma}}
+                    {% endif %}
                 </td>
                 <td {% if row.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
-
-                £{% if row.value_change > 0 %}+{% endif %}{{row.value_change.normalize |floatformat:2|intcomma}}
+                {% if row.quantity != 0 %}
+                    £{% if row.value_change > 0 %}+{% endif %}{{row.value_change.normalize |floatformat:2|intcomma}}
+                {% endif %}
                 </td>
                 <td {% if row.unrealised_pnl < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
+                    {% if row.quantity != 0 %}
                     £{{row.unrealised_pnl.normalize |floatformat:2|intcomma}}
+                    {% endif %}
                 </td>
                 <td {% if row.unrealised_pnl_pct < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
                 {% if row.unrealised_pnl_pct > 0 %}+{% endif %}{{row.unrealised_pnl_pct.normalize |floatformat:2|intcomma}}
+                {% if row.unrealised_pnl_pct != 0 %}%{% endif %}
                 </td>
                 <td {% if row.pnl < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
