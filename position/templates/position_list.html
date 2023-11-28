@@ -22,7 +22,8 @@
             <th>Mkt Price</th>
             <th>Mkt Value</th>
             <th>Value Change</th>
-           <th>UnrealisedPnL</th>
+            <th>UnrealisedPnL</th>
+            <th>Unrealised (%)</th>
             <th>PnL</th>
             <th>Ex Div</th>
             <th>Div {{year}}</th>
@@ -43,6 +44,7 @@
             <th>Mkt Value</th>
             <th>Value Change</th>
             <th>UnrealisedPnL</th>
+            <th>Unrealised (%)</th>
             <th>PnL</th>
             <th>Ex Div</th>
             <th>Div {{year}}</th>
@@ -70,7 +72,9 @@
                 <td {% if row.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
-                {{row.mkt_price.normalize |intcomma}} ({{row.change.normalize |floatformat:2}} {{row.change_pct.normalize |floatformat:2}}%)
+                {{row.mkt_price.normalize |intcomma}}
+                ({% if row.change > 0 %}+{% endif %}{{row.change.normalize |floatformat:2}}
+                {% if row.change_pct > 0 %}+{% endif %}{{row.change_pct.normalize |floatformat:2}}%)
                 </td>
                 <td {% if row.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
@@ -79,12 +83,19 @@
                 </td>
                 <td {% if row.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
-                          {% endif %}>£{{row.value_change.normalize |floatformat:2|intcomma}}
+                          {% endif %}>
+
+                £{% if row.value_change > 0 %}+{% endif %}{{row.value_change.normalize |floatformat:2|intcomma}}
                 </td>
                 <td {% if row.unrealised_pnl < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
-                    £{{row.unrealised_pnl.normalize |intcomma}}
+                    £{{row.unrealised_pnl.normalize |floatformat:2|intcomma}}
+                </td>
+                <td {% if row.unrealised_pnl_pct < 0 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                {% if row.unrealised_pnl_pct > 0 %}+{% endif %}{{row.unrealised_pnl_pct.normalize |floatformat:2|intcomma}}
                 </td>
                 <td {% if row.pnl < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
@@ -100,9 +111,9 @@
                     {% endif  %}
                     </span>
                 </td>
-                <td  style="color: blue;">{{row.div_ytd.normalize |intcomma}}</td>
-                <td>{{row.div_last.normalize |intcomma}}</td>
-                <td>{{row.div_prev.normalize |intcomma}}</td>
+                <td  style="color: blue;">{{row.div_ytd.normalize |floatformat:2|intcomma}}</td>
+                <td>{{row.div_last.normalize |floatformat:2|intcomma}}</td>
+                <td>{{row.div_prev.normalize |floatformat:2|intcomma}}</td>
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
                 <td>
@@ -118,6 +129,7 @@
         </tbody>
         <tfoot>
         <tr>
+            <th></th>
             <th></th>
             <th></th>
             <th></th>
@@ -150,12 +162,12 @@
         var MKT_VAL_COL = 6
         var MKT_VAL_CHG_COL = 7
         var UNREALISED_COL = 8
-        var PNL_COL = 9
-        var DIV_YTD_COL = 11
-        var DIV_LAST_COL = 12
-        var DIV_PREV_COL = 13
-        var CREATED_COL = 14
-        var UPDATED_COL = 15
+        var PNL_COL = 10
+        var DIV_YTD_COL = 12
+        var DIV_LAST_COL = 13
+        var DIV_PREV_COL = 14
+        var CREATED_COL = 15
+        var UPDATED_COL = 16
 
         $('#datatable1').DataTable({
             order: [[PORTFOLIO_COL, 'asc'],[INSTRUMENT_COL, 'asc']],

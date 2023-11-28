@@ -100,6 +100,7 @@ class PositionListView(LoginRequiredMixin, ListView):
             item.value_change = item.quantity * decimal.Decimal(item.change) / 100\
                 if item.change != '' and item.quantity != 0 else 0
             item.unrealised_pnl = item.position_value - item.cost
+            item.unrealised_pnl_pct = 100 * (item.unrealised_pnl / item.cost) if item.cost != 0 else 0
             new_qs.append(item)
 
         #qs = qs.annotate(ex_div_date2=RawSQL("select max(ex_div_date) as ex_div_date "
