@@ -1,0 +1,32 @@
+.not-visible {
+    visibility : hidden;
+}
+.visible {
+    visibility : visible;
+}
+
+.sell {
+  color: red;
+}
+
+.buy {
+  color: blue;
+}
+
+.mr-0 {
+  position: absolute; right: 3;
+}
+
+th { white-space: nowrap; background-color: lightblue;}
+h1, h2 {
+    display: inline;
+}
+
+tfoot input {
+    width: 100%;
+    padding: 3px;
+    box-sizing: border-box;
+}
+
+ul.errorlist {display:none}
+

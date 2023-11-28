@@ -8,7 +8,10 @@
     <h1 class="my5">Instrument Prices</h1>
     <span class="mr-0">
     <a href="{% url 'instrument_price.new' %}" class="btn btn-secondary">New Instrument Price</a>
-    <a href="{% url 'instrument_price.loadYfin' %}" class="btn btn-secondary">Download from YFinance</a>
+    <a href="{% url 'instrument_price.loadYfin' %}" class="btn btn-secondary"
+       onclick="startSpinner()">
+        <span id="spinner-box" class="spinner-border spinner-border-sm not-visible" role="status" aria-hidden="true"></span>
+        Download from YFinance</a>
     </span>
 
     <table id="datatable1" class="display stripe cell-border"
@@ -78,6 +81,14 @@
 
 
 <script>
+
+    function startSpinner() {
+        const spinnerBox = document.getElementById('spinner-box')
+//        alert("startSpinner: " + spinnerBox)
+        spinnerBox.classList.remove('not-visible')
+        spinnerBox.classList.add('visible')
+    }
+
     $(document).ready(function() {
         $('#datatable1').DataTable({
             stateSave: true,
