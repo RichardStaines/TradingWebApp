@@ -73,10 +73,10 @@
                           {% else %}style="color: blue;"
                           {% endif %}>
                 {{row.mkt_price.normalize |intcomma}}
-                {% if row.quantity != 0 %}({% endif %}
+                {% if row.mkt_price != '' %}({% endif %}
                 {% if row.change > 0 %}+{% endif %}{{row.change.normalize |floatformat:2}}
                 {% if row.change_pct > 0 %}+{% endif %}{{row.change_pct.normalize |floatformat:2}}
-                {% if row.quantity != 0 %}%){% endif %}
+                {% if row.mkt_price != '' %}% ){% endif %}
                 </td>
                 <td {% if row.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
