@@ -18,14 +18,26 @@ class ScrapeURL:
         interesting_rows = ["Per Share", "ex_div", "payment_date"]
         out_dict = {}
         self.driver.get(url)
-        table = self.driver.find_elements(By.TAG_NAME, "table")[0]  # 1st table
+        tables = self.driver.find_elements(By.TAG_NAME, "table")
+        if len(tables) == 0:
+            return out_dict
+
+        table = tables[0]
         for i, row in enumerate(table.find_elements(By.TAG_NAME, 'tr')):
             for j, cell in enumerate(row.find_elements(By.TAG_NAME, 'td')):
                 if j == 2 and row_meanings[i] in interesting_rows:
-                    out_dict[row_meanings[i]] = cell.text
+                    if row_meanings[i] == "Per Share":
+                        out_dict[row_meanings[i]] = self.extract_price(cell.text)
+                    else:
+                        out_dict[row_meanings[i]] = cell.text
                     # print(f"{i},{j} {cell.text} {row_meanings[i]}")
 
         return out_dict
 
-
-
+    def extract_price(self, s):
+        """
+        extract the price in pence
+        :param s: <price>p [(<cents-price>c)]
+        :return: price value
+        """
+        return 0 if s.lower() == 'sign up required' else s[:s.find('p')]

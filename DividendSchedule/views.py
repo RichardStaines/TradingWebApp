@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import ListView
@@ -73,22 +75,23 @@ def csv_load_form(request):
 
 def scrape_urls_for_ex_div(request):
     instRepo = InstrumentRepository()
-    urls_dict = instRepo.get_instruments_for_price_source('yfinance')
+    inst_dict = instRepo.get_instruments_for_price_source('yfinance')
     scraper = ScrapeURL()
 
-    for inst_id, instrument in urls_dict.items():
+    for inst_id, instrument in inst_dict.items():
         if instrument['dividend_info_link'] != '':
             ex_div_dict = scraper.get_div(instrument['dividend_info_link'])
-            divScheduleRec = DividendSchedule.objects.filter(instrument=inst_id)  # add ex_div_date too
+            ex_div_date = datetime.strptime(ex_div_dict['ex_div'][0:11], "%d %b %Y").date()
+            divScheduleRec = DividendSchedule.objects.filter(instrument=inst_id, ex_div_date=ex_div_date)
             if len(divScheduleRec) == 0:
                 divScheduleRec = DividendSchedule(instrument=instRepo.get_instrument_by_id(inst_id),
-                                         payment=0,ex_div_date='10/10/2000')
+                                         payment=ex_div_dict['Per Share'],ex_div_date=ex_div_date)
             else:
                 divScheduleRec = divScheduleRec[0]
 
             # update the record details with the scraped info and save
-
-
-        #data = update_ticker_history(instrument['price_source_code'], rec=divScheduleRec)
+            divScheduleRec.payment_date = datetime.strptime(ex_div_dict['payment_date'][0:11], "%d %b %Y").date()
+            divScheduleRec.payment = float(ex_div_dict['Per Share']) / 100
+            divScheduleRec.save()
 
     return HttpResponseRedirect('/ds')
