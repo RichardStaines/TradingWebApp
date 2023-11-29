@@ -113,9 +113,9 @@
                 <td>{{row.ex_div_date}}
                     {% if row.div_payment_per_share != 0 %}{{row.div_payment_per_share.normalize | intcomma}}{% endif %}
                     <br>
+                        <span style="color: blue;">{{row.payment_date}}
                     {% if row.quantity > 0 %}
                         {% if row.div_payment_per_share > 0 %}
-                            <span style="color: blue;">{{row.payment_date}}
                             £{% widthratio row.div_payment_per_share 1 row.quantity %}
                         {% endif  %}
                     {% endif  %}
