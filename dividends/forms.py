@@ -6,7 +6,7 @@ from dividends.models import Dividend
 class DividendForm(forms.ModelForm):
     class Meta:
         model = Dividend
-        fields = ['instrument', 'description', 'amount', 'payment_date', 'portfolio']
+        fields = ['portfolio', 'instrument', 'description', 'amount', 'payment_date']
         widgets = {
             'portfolio': forms.Select(),
             'instrument': forms.Select(),
