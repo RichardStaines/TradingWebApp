@@ -33,7 +33,6 @@
             <th>Created On</th>
             <th>Updated On</th>
             <th>Id</th>
-            <th></th>
         </tr>
         <tr>
             <th>Portfolio</th>
@@ -55,7 +54,6 @@
             <th>Created On</th>
             <th>Updated On</th>
             <th>Id</th>
-            <th></th>
         </tr>
     </thead>
         <tbody>
@@ -134,11 +132,10 @@
                 <td>{{row.updated_on}}</td>
                 <td>
                     <button onclick="window.location.href='{% url 'position.update' pk=row.id %}'"
-                            class="test-dark text-decoration-non">Edit {{row.id}}</button>
-                </td>
-                <td>
+                            class="test-dark text-decoration-non">Edit</button>
                     <button onclick="window.location.href='{% url 'position.delete' pk=row.id %}'"
                             class="test-dark text-decoration-non">Delete</button>
+                    {{row.id}}
                 </td>
             </tr>
             {% endfor %}
