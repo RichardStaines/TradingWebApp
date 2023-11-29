@@ -6,8 +6,10 @@ from django.views.generic.edit import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from Tools import LoadCsv
+from Utils.ScrapeURL import ScrapeURL
+from instrument.models import InstrumentRepository
 from .forms import DividendScheduleForm, DividendScheduleCsvLoaderForm
-from .models import DividendSchedule
+from .models import DividendSchedule, DivScheduleRepository
 
 
 class DividendScheduleCreateView(CreateView):
@@ -67,3 +69,26 @@ def csv_load_form(request):
     else:
         form = DividendScheduleCsvLoaderForm()
     return render(request, 'ds_csv_loader_form.html', {'form': form})
+
+
+def scrape_urls_for_ex_div(request):
+    instRepo = InstrumentRepository()
+    urls_dict = instRepo.get_instruments_for_price_source('yfinance')
+    scraper = ScrapeURL()
+
+    for inst_id, instrument in urls_dict.items():
+        if instrument['dividend_info_link'] != '':
+            ex_div_dict = scraper.get_div(instrument['dividend_info_link'])
+            divScheduleRec = DividendSchedule.objects.filter(instrument=inst_id)  # add ex_div_date too
+            if len(divScheduleRec) == 0:
+                divScheduleRec = DividendSchedule(instrument=instRepo.get_instrument_by_id(inst_id),
+                                         payment=0,ex_div_date='10/10/2000')
+            else:
+                divScheduleRec = divScheduleRec[0]
+
+            # update the record details with the scraped info and save
+
+
+        #data = update_ticker_history(instrument['price_source_code'], rec=divScheduleRec)
+
+    return HttpResponseRedirect('/ds')

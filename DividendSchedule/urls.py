@@ -9,5 +9,6 @@ urlpatterns = [
     path('ds/<int:pk>/delete', views.DividendScheduleDeleteView.as_view(), name='dividend_schedule.delete'),
 
     path('ds/load', views.csv_load_form, name='dividend_schedule.load'),
+    path('ds/scrape', views.scrape_urls_for_ex_div, name='dividend_schedule.scrape_urls_for_ex_div'),
 
 ]
