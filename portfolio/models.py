@@ -10,6 +10,7 @@ class Portfolio(models.Model):
 
     class Meta:
         db_table = "app_portfolio"
+        ordering = ('name',)
 
     def __str__(self):
         return f"{self.name}"

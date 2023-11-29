@@ -30,7 +30,7 @@ class InstrumentUpdateView(UpdateView):
 
 class InstrumentDeleteView(DeleteView):
     model = Instrument
-    success_url = '/instruments'
+    success_url = '/instrument'
     template_name = 'instrument_delete.html'
 
 

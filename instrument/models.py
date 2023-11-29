@@ -18,6 +18,7 @@ class Instrument(models.Model):
 
     class Meta:
         db_table = "app_instrument"
+        ordering = ('code',)
 
     def __str__(self):
         return f"{self.code}"
