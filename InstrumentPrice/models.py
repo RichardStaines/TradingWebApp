@@ -13,7 +13,7 @@ class InstrumentPrice(models.Model):
     close = models.DecimalField(max_digits=12, decimal_places=4)
     high = models.DecimalField(max_digits=12, decimal_places=4)
     low = models.DecimalField(max_digits=12, decimal_places=4)
-    volume = models.DecimalField(max_digits=12, decimal_places=4)
+    volume = models.DecimalField(max_digits=15, decimal_places=0)
     price = models.DecimalField(max_digits=12, decimal_places=4)
     change = models.DecimalField(max_digits=12, decimal_places=4)
     change_percent = models.DecimalField(max_digits=12, decimal_places=4)

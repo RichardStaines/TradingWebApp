@@ -1,3 +1,5 @@
+import decimal
+
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.views.generic import ListView
@@ -56,6 +58,7 @@ class InstrumentPriceDetailView(DetailView):
 
 
 def get_ticker_history(_ticker, _start_date=None, _end_date=None, _interval='1min', _period='1h', ip_rec=None):
+    print(_ticker)
     _ticker = _ticker.strip()
     ticker_data = yf.Ticker(_ticker, session=None).fast_info
     if ip_rec is not None:
@@ -66,7 +69,6 @@ def get_ticker_history(_ticker, _start_date=None, _end_date=None, _interval='1mi
         ip_rec.price = ticker_data.last_price
         ip_rec.high = ticker_data.day_high
         ip_rec.low = ticker_data.day_low
-        ip_rec.high = ticker_data.day_high
         ip_rec.change = ip_rec.price - ip_rec.open
         ip_rec.change_percent = 100 * (ip_rec.change / ip_rec.close)
         ip_rec.save()
