@@ -17,7 +17,6 @@
             <th>Description</th>
             <th>Created On</th>
             <th>Updated On</th>
-            <th>Id</th>
             <th></th>
         </tr>
             <tr class="col-head">
@@ -28,7 +27,6 @@
             <th>Description</th>
             <th>Created On</th>
             <th>Updated On</th>
-            <th>Id</th>
             <th></th>
         </tr>
     </thead>
@@ -48,9 +46,7 @@
                 <td>{{row.updated_on}}</td>
                 <td>
                     <button onclick="window.location.href='{% url 'cash.update' pk=row.id %}'"
-                            class="test-dark text-decoration-non">Edit {{row.id}}</button>
-                </td>
-                <td>
+                            class="test-dark text-decoration-non">Edit</button>
                     <button onclick="window.location.href='{% url 'cash.delete' pk=row.id %}'"
                             class="test-dark text-decoration-non">Delete</button>
                 </td>
