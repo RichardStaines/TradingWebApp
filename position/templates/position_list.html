@@ -176,6 +176,7 @@
         var PORTFOLIO_COL = 0
         var INSTRUMENT_COL = 1
         var COST_COL = 3
+        var MKT_PRICE_COL = 5
         var MKT_VAL_COL = 6
         var MKT_VAL_CHG_COL = 7
         var UNREALISED_COL = 8
@@ -192,6 +193,24 @@
             stateSave: true,
             autoWidth: true,
             columnDefs: [
+                {
+                    targets: [MKT_PRICE_COL], // your field position
+                    type: 'number',
+                    render: function (data, type, row, meta) {
+                        raw_data = data === ''
+                            ? -90000000
+                            : typeof data === 'string'
+                            ? data.substring(data.indexOf('('), data.indexOf(')')).replace(/[/(\$£%,+]/g, '').trim().split(' ').slice(-1) *1
+                            : typeof data === 'number'
+                            ? i
+                            : 0
+                        if (type === 'sort') {
+                            return raw_data;
+                        }
+                        return data;
+                    },
+                    orderable: true
+                },
                 {
                     targets: [MKT_VAL_CHG_COL], // your field position
                     type: 'number',
