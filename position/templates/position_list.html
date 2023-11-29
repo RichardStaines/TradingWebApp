@@ -29,6 +29,7 @@
             <th>Div {{year}}</th>
             <th>Div {{last_year}}</th>
             <th>Div {{prev_year}}</th>
+            <th>Instrument</th>
             <th>Created On</th>
             <th>Updated On</th>
             <th>Id</th>
@@ -50,6 +51,7 @@
             <th>Div {{year}}</th>
             <th>Div {{last_year}}</th>
             <th>Div {{prev_year}}</th>
+            <th>Instrument</th>
             <th>Created On</th>
             <th>Updated On</th>
             <th>Id</th>
@@ -124,6 +126,10 @@
                 <td  style="color: blue;">{{row.div_ytd.normalize |floatformat:2|intcomma}}</td>
                 <td>{{row.div_last.normalize |floatformat:2|intcomma}}</td>
                 <td>{{row.div_prev.normalize |floatformat:2|intcomma}}</td>
+                <td><a href="{% url 'trade_by_portfolio_and_inst.list' portfolio=row.portfolio instrument=row.instrument %}"
+                       class="test-dark text-decoration-non">
+                        {{ row.instrument }}
+                    </a></td>
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
                 <td>
@@ -157,6 +163,7 @@
             <th></th>
             <th></th>
             <th></th>
+            <th></th>
         </tr>
         </tfoot>
     </table>
@@ -176,8 +183,9 @@
         var DIV_YTD_COL = 12
         var DIV_LAST_COL = 13
         var DIV_PREV_COL = 14
-        var CREATED_COL = 15
-        var UPDATED_COL = 16
+        var INSTRUMENT_COL2 = 15
+        var CREATED_COL = 16
+        var UPDATED_COL = 17
 
         $('#datatable1').DataTable({
             order: [[PORTFOLIO_COL, 'asc'],[INSTRUMENT_COL, 'asc']],
