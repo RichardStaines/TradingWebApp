@@ -24,7 +24,6 @@
             <th class="sorting_enabled">Payment</th>
             <th class="sorting_enabled">Created On</th>
             <th class="sorting_enabled">Updated On</th>
-            <th>Id</th>
             <th></th>
         </tr>
         <tr class="col-head">
@@ -34,7 +33,6 @@
             <th>Payment</th>
             <th>Created On</th>
             <th>Updated On</th>
-            <th>Id</th>
             <th></th>
         </tr>
     </thead>
@@ -53,9 +51,7 @@
                 <td>{{row.updated_on}}</td>
                 <td>
                     <button onclick="window.location.href='{% url 'dividend_schedule.update' pk=row.id %}'"
-                            class="test-dark text-decoration-non">Edit {{row.id}}</button>
-                </td>
-                <td>
+                            class="test-dark text-decoration-non">Edit</button>
                     <button onclick="window.location.href='{% url 'dividend_schedule.delete' pk=row.id %}'"
                             class="test-dark text-decoration-non">Delete</button>
                 </td>

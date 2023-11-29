@@ -22,7 +22,6 @@
             <th>Company Link</th>
             <th>Created On</th>
             <th>Updated On</th>
-            <th>Id</th>
             <th></th>
         </tr>
     </thead>
@@ -50,9 +49,7 @@
                 <td>{{instrument.updated_on}}</td>
                 <td>
                     <button onclick="window.location.href='{% url 'instrument.update' pk=instrument.id %}'"
-                            class="test-dark text-decoration-non">Edit {{row.id}}</button>
-                </td>
-                <td>
+                            class="test-dark text-decoration-non">Edit</button>
                     <button onclick="window.location.href='{% url 'instrument.delete' pk=instrument.id %}'"
                             class="test-dark text-decoration-non">Delete</button>
                 </td>
