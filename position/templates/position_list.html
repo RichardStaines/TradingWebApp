@@ -185,6 +185,24 @@
             autoWidth: true,
             columnDefs: [
                 {
+                    targets: [MKT_VAL_CHG_COL], // your field position
+                    type: 'number',
+                    render: function (data, type, row, meta) {
+                        raw_data = data === ''
+                            ? -90000000
+                            : typeof data === 'string'
+                            ? data.replace(/[\$£,+]/g, '') * 1
+                            : typeof data === 'number'
+                            ? i
+                            : 0
+                        if (type === 'sort') {
+                            return raw_data;
+                        }
+                        return data;
+                    },
+                    orderable: true
+                },
+                {
                     targets: [CREATED_COL,UPDATED_COL], // your field position
                     type: 'datetime',
                     render: function (data, type, row, meta) {
