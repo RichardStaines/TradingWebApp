@@ -16,12 +16,13 @@ class InstrumentForm(forms.ModelForm):
 
     class Meta:
         model = Instrument
-        fields = ['code', 'sedol', 'description',
+        fields = ['code', 'sedol', 'alt_code', 'description',
                   'price_source', 'price_source_code',
                   'dividend_info_link', 'company_link']
         widgets = {
             'code': forms.TextInput(attrs={'class': 'form-control'}),
             'sedol': forms.TextInput(attrs={'class': 'form-control'}),
+            'alt_code': forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class':  'form-control'}),
             'price_source': forms.TextInput(attrs={'class': 'form-control'}),
             'price_source_code': forms.TextInput(attrs={'class': 'form-control'}),

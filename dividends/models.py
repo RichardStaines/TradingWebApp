@@ -65,7 +65,11 @@ class DividendRepository:
         if clear_before_load:
             self.clear_table()
         instRepo = InstrumentRepository()
-        rec_list = [Dividend(instrument=instRepo.get_instrument_by_code(div.Symbol),
+        for div in df.itertuples():
+            print(f"{div.Symbol} {div.Sedol}")
+            x = instRepo.get_instrument_by_code(div.Symbol,div.Sedol,alt_code=div.Sedol)
+
+        rec_list = [Dividend(instrument=instRepo.get_instrument_by_code(div.Symbol,div.Sedol, alt_code=div.Sedol),
                              sedol=div.Sedol,
                              description=div.Description,
                              amount=div.Credit,
