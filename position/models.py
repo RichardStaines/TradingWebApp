@@ -32,6 +32,11 @@ class Position(models.Model):
     value_change = 0
     unrealised_pnl = 0
     unrealised_pnl_pct = 0 # as %age of cost
+    ma50 = 0
+    ma200 = 0
+    year_high = 0
+    year_low = 0
+    pcnt_from_year_high = 0
 
     class Meta:
         db_table = "app_position"

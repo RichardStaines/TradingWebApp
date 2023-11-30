@@ -101,6 +101,12 @@ class PositionListView(LoginRequiredMixin, ListView):
                 if item.change != '' and item.quantity != 0 else 0
             item.unrealised_pnl = item.position_value - item.cost
             item.unrealised_pnl_pct = 100 * (item.unrealised_pnl / item.cost) if item.cost != 0 else 0
+            item.ma50 = price_lookup[item.instrument_id]['ma50'] if item.instrument_id in price_lookup else ''
+            item.ma200 = price_lookup[item.instrument_id]['ma200'] if item.instrument_id in price_lookup else ''
+            item.year_high = price_lookup[item.instrument_id]['year_high'] if item.instrument_id in price_lookup else ''
+            item.year_low = price_lookup[item.instrument_id]['year_low'] if item.instrument_id in price_lookup else ''
+            item.pcnt_from_year_high = price_lookup[item.instrument_id]['pcnt_from_year_high'] if item.instrument_id in price_lookup else ''
+
             new_qs.append(item)
 
         #qs = qs.annotate(ex_div_date2=RawSQL("select max(ex_div_date) as ex_div_date "

@@ -75,8 +75,21 @@
                 {{row.mkt_price.normalize |intcomma}}
                 {% if row.mkt_price != '' %}({% endif %}
                 {% if row.change > 0 %}+{% endif %}{{row.change.normalize |floatformat:2}}
-                {% if row.change_pct > 0 %}+{% endif %}{{row.change_pct.normalize |floatformat:2}}
+                <b>{% if row.change_pct > 0 %}+{% endif %}{{row.change_pct.normalize |floatformat:2}}</b>
                 {% if row.mkt_price != '' %}% ){% endif %}
+                {% if row.mkt_price != '' %}
+                <span style="color: red;">{{row.year_low.normalize |floatformat:2}}</span>/<span style="color: blue;">{{row.year_high.normalize |floatformat:2}}</span>
+                <span style="color: purple;">{{row.pcnt_from_year_high }} %</span>
+                <span {% if row.mkt_price < row.ma50 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                {{row.ma50 |floatformat:2}}(ma50)</span>
+                <span {% if row.mkt_price < row.ma200 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                {{row.ma200 |floatformat:2}}(ma200) {% if row.ma50 > row.ma200 %}*{% endif %}
+                </span>
+                {% endif %}
                 </td>
                 <td {% if row.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"

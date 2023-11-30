@@ -75,6 +75,7 @@
                 <td {% if instrument_price.price < instrument_price.ma200  %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>{{instrument_price.ma200.normalize |floatformat:2}}
+                    {% if instrument_price.ma50 > instrument_price.ma200 %}*{% endif %}
                 </td>
                 <td>{{instrument_price.mkt_cap | intcomma}}</td>
                 <td>{{instrument_price.updated_on}}</td>
