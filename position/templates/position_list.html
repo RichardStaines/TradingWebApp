@@ -210,7 +210,8 @@
                         raw_data = data === ''
                             ? -90000000
                             : typeof data === 'string'
-                            ? data.substring(data.indexOf('('), data.indexOf(')')).replace(/[/(\$£%,+]/g, '').trim().split(' ').slice(-1) *1
+                            ? data.substring(data.indexOf('('), data.indexOf(')')).replace(/[/(\/)%$£,+]/g, '')
+                            .trim().split(' ').filter(entry => entry.trim() != '').slice(-1)
                             : typeof data === 'number'
                             ? i
                             : 0
