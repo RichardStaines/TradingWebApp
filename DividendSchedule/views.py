@@ -80,18 +80,19 @@ def scrape_urls_for_ex_div(request):
 
     for inst_id, instrument in inst_dict.items():
         if instrument['dividend_info_link'] != '':
-            ex_div_dict = scraper.get_div(instrument['dividend_info_link'])
-            ex_div_date = datetime.strptime(ex_div_dict['ex_div'][0:11], "%d %b %Y").date()
-            divScheduleRec = DividendSchedule.objects.filter(instrument=inst_id, ex_div_date=ex_div_date)
-            if len(divScheduleRec) == 0:
-                divScheduleRec = DividendSchedule(instrument=instRepo.get_instrument_by_id(inst_id),
-                                         payment=ex_div_dict['Per Share'],ex_div_date=ex_div_date)
-            else:
-                divScheduleRec = divScheduleRec[0]
+            ex_div_dict_list = scraper.get_div(instrument['dividend_info_link'])
+            for ex_div_dict in ex_div_dict_list:
+                ex_div_date = datetime.strptime(ex_div_dict['ex_div'][0:11], "%d %b %Y").date()
+                divScheduleRec = DividendSchedule.objects.filter(instrument=inst_id, ex_div_date=ex_div_date)
+                if len(divScheduleRec) == 0:
+                    divScheduleRec = DividendSchedule(instrument=instRepo.get_instrument_by_id(inst_id),
+                                             payment=ex_div_dict['Per Share'],ex_div_date=ex_div_date)
+                else:
+                    divScheduleRec = divScheduleRec[0]
 
-            # update the record details with the scraped info and save
-            divScheduleRec.payment_date = datetime.strptime(ex_div_dict['payment_date'][0:11], "%d %b %Y").date()
-            divScheduleRec.payment = float(ex_div_dict['Per Share']) / 100
-            divScheduleRec.save()
+                # update the record details with the scraped info and save
+                divScheduleRec.payment_date = datetime.strptime(ex_div_dict['payment_date'][0:11], "%d %b %Y").date()
+                divScheduleRec.payment = float(ex_div_dict['Per Share']) / 100
+                divScheduleRec.save()
 
     return HttpResponseRedirect('/ds')
