@@ -69,7 +69,7 @@ def get_ticker_history(_ticker, _start_date=None, _end_date=None, _interval='1mi
         ip_rec.price = ticker_data.last_price
         ip_rec.high = ticker_data.day_high
         ip_rec.low = ticker_data.day_low
-        ip_rec.change = ip_rec.price - ip_rec.open
+        ip_rec.change = ip_rec.price - ip_rec.close
         ip_rec.change_percent = 100 * (ip_rec.change / ip_rec.close)
         ip_rec.save()
 
