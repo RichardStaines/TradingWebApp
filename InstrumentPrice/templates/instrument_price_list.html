@@ -22,13 +22,16 @@
             <th>Price Source</th>
             <th>Open</th>
             <th>Close</th>
-            <th>High</th>
-            <th>Low</th>
+            <th>Low/High</th>
             <th>Volume</th>
             <th>Price</th>
             <th>Chg</th>
             <th>Chg (%)</th>
-            <th>Created On</th>
+            <th>Yr Low/High</th>
+            <th>% From Yr High</th>
+            <th>MA 50</th>
+            <th>MA 200</th>
+            <th>Mkt Cap</th>
             <th>Updated On</th>
             <th></th>
         </tr>
@@ -40,12 +43,12 @@
                     <a href="{% url 'instrument_price.details' pk=instrument_price.id %}" class="test-dark text-decoration-non">
                     {{ instrument_price.instrument }}
                     </a>
+                     &nbsp;({{ instrument_price.exchange}} {{ instrument_price.currency}})
                 </td>
                 <td>{{instrument_price.price_source}}</td>
                 <td>{{instrument_price.open.normalize}}</td>
                 <td>{{instrument_price.close.normalize}}</td>
-                <td>{{instrument_price.high.normalize}}</td>
-                <td>{{instrument_price.low.normalize}}</td>
+                <td>{{instrument_price.low.normalize |floatformat:2}} {{instrument_price.high.normalize |floatformat:2}}</td>
                 <td>{{instrument_price.volume.normalize | intcomma}}</td>
                 <td {% if instrument_price.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
@@ -62,7 +65,18 @@
                           {% endif %}>
                     {{instrument_price.change_percent.normalize}} %
                 </td>
-                <td>{{instrument_price.created_on}}</td>
+                <td><span style="color: red;">{{instrument_price.year_low.normalize |floatformat:2}}</span>/<span style="color: blue;">{{instrument_price.year_high.normalize |floatformat:2}}</span>
+                </td>
+                <td style="color: darkorange;"><b>{{instrument_price.pcnt_from_year_high }} %</b></td>
+                <td {% if instrument_price.price < instrument_price.ma50  %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>{{instrument_price.ma50.normalize |floatformat:2}}
+                </td>
+                <td {% if instrument_price.price < instrument_price.ma200  %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>{{instrument_price.ma200.normalize |floatformat:2}}
+                </td>
+                <td>{{instrument_price.mkt_cap | intcomma}}</td>
                 <td>{{instrument_price.updated_on}}</td>
                 <td>
                     <button onclick="window.location.href='{% url 'instrument_price.update' pk=instrument_price.id %}'"
