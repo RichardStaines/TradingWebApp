@@ -8,6 +8,11 @@
     <span class="mr-0">
     <a href="{% url 'trade.new' %}" class="btn btn-secondary">New Trade</a>
     <a href="{% url 'position.new' %}" class="btn btn-secondary">New Position</a>
+    <a href="{% url 'positions.loadYfin' %}" class="btn btn-secondary"
+       onclick="startSpinner()">
+        <span id="spinner-box" class="spinner-border spinner-border-sm not-visible" role="status" aria-hidden="true"></span>
+        Load prices from YFinance</a>
+    </span>
     </span>
     <table id="datatable1" class="display stripe cell-border"
            style="width:100%" searching="true">
@@ -180,6 +185,11 @@
 
 
 <script>
+
+    function startSpinner() {
+        const spinnerBox = document.getElementById('spinner-box')
+        spinnerBox.classList.remove('not-visible')
+    }
 
     $(document).ready(function() {
 

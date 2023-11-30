@@ -84,7 +84,7 @@ def get_ticker_history(_ticker, _start_date=None, _end_date=None, _interval='1mi
     return ticker_data
 
 
-def load_from_yfinance(request):
+def load_from_yfinance_and_reload(request, reload_url):
     # get list of RICs
     instRepo = InstrumentRepository()
     tickers_dict= instRepo.get_instruments_for_price_source('yfinance')
@@ -99,4 +99,8 @@ def load_from_yfinance(request):
         # update record with instrument price data
         data = get_ticker_history(instrument['price_source_code'], ip_rec=ipRec)
 
-    return HttpResponseRedirect('/prices/instrument_prices')
+    return HttpResponseRedirect(reload_url)
+
+
+def load_from_yfinance(request):
+    return load_from_yfinance_and_reload(request, '/prices/instrument_prices')

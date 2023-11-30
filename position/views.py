@@ -14,6 +14,7 @@ from django.db.models import DateField, CharField, Value, Window, F, Max, Expres
 
 from DividendSchedule.models import DividendSchedule
 from InstrumentPrice.models import InstrumentPrice
+from InstrumentPrice.views import load_from_yfinance_and_reload
 from Tools import LoadCsv
 from dividends.models import Dividend, DividendRepository
 from trade.models import Trade
@@ -140,3 +141,7 @@ def csv_load_form(request):
     else:
         form = PositionCsvLoaderForm()
     return render(request, 'pos_csv_loader_form.html', {'form': form})
+
+
+def pos_load_from_yfinance(request):
+    return load_from_yfinance_and_reload(request, '/pos/positions')
