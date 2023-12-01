@@ -91,10 +91,13 @@ WSGI_APPLICATION = 'TradingWebApp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+LOGIN_REDIRECT_URL = '/home'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'trading.sqlite',
+        # 'NAME': 'C:/Users/richa/OneDrive/Investments/trading.sqlite',
     }
 }
 
