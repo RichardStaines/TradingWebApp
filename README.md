@@ -19,3 +19,18 @@ DATABASES = {
         'NAME': 'C:/Users/richa/OneDrive/Investments/trading.sqlite',
         # 'NAME': BASE_DIR / 'trading.sqlite',
     }
+
+Setting up reference data.
+
+1. setup your portfolios. e.g. myISA or myPension 
+2. setup the instruments you trade or want to monitor
+3. Use the Load prices button, check the prices update
+4. Scrape for dividend schedules
+5. Enter your Positions
+6. Enter your dividends
+7. Enter trades - note these will affect your positions
+
+There is an option to load Cash, dividends and positions from a csv file. The format expected is a dump csv from Interactive Investor. 
+This load does not affect the positions and bypasses PnL calcs.
+
+There is an option for laoding positions from csv. This is also Interactive Inverstor format. 
