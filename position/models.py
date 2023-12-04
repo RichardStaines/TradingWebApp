@@ -89,7 +89,7 @@ class PositionRepository:
             else:
                 pos.quantity -= trade.quantity
                 pos.cost -= trade.net_consideration
-            new_avg_price = (pos.cost / pos.quantity)
+            new_avg_price = (pos.cost / pos.quantity) if pos.quantity != 0 else 0
             pos.avg_price = new_avg_price * 100
             pos.notes = f"Updated {notes_suffix}"
         pos.save()
