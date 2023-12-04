@@ -38,6 +38,12 @@ class DividendDeleteView(DeleteView):
     success_url = '/dividends'
     template_name = 'dividend_delete.html'
 
+    def post(self, request, *args, **kwargs):
+        if "cancel" in request.POST:
+            url = self.success_url
+            return HttpResponseRedirect(url)
+        else:
+            return super(DividendDeleteView, self).post(request, *args, **kwargs)
 
 class DividendListView(LoginRequiredMixin, ListView):
     model = Dividend

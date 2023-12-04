@@ -87,13 +87,12 @@
                 <td>{{dividend.description}}</td>
                 <td>{{dividend.created_on}}</td>
                 <td>{{dividend.updated_on}}</td>
+                <td>{{dividend.id}}</td>
                 <td>
-                    <button onclick="window.location.href='{% url 'dividend.update' pk=dividend.id %}'"
-                            class="test-dark text-decoration-non">Edit {{dividend.id}}</button>
-                </td>
-                <td>
-                    <button onclick="window.location.href='{% url 'dividend.delete' pk=dividend.id %}'"
-                            class="test-dark text-decoration-non">Delete</button>
+                    <i style="color: blue;" class="fa fa-edit"
+                        onclick="window.location.href='{% url 'dividend.update' pk=dividend.id %}'">&nbsp;&nbsp;</i>
+                    <i style="color: red;" class="fa fa-trash"
+                       onclick="window.location.href='{% url 'dividend.delete' pk=dividend.id %}'"></i>
                 </td>
             </tr>
             {% endfor %}
