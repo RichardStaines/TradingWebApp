@@ -35,7 +35,7 @@ class TradeForm(forms.ModelForm):
                 attrs={'class': 'form-control', }
             ),
             'price': forms.NumberInput(
-                attrs={'class': 'form-control', }
+                attrs={'class': 'form-control', 'placeholder': 'Price (£)'}
             ),
             'net_consideration': forms.NumberInput(
                 attrs={'class': 'form-control', }
@@ -58,6 +58,7 @@ class TradeForm(forms.ModelForm):
             'reference':  forms.TextInput(attrs={'class': 'form-control'}),
             'description': forms.Textarea(attrs={'class': 'form-control', } ),
         }
-        labels = {'payment_date': 'Payment Date'}
+        labels = {'payment_date': 'Payment Date',
+                  'price': 'Price (£)'}
 
 
