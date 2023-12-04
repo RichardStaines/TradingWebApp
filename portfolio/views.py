@@ -35,6 +35,16 @@ class PortfolioDeleteView(DeleteView):
     success_url = '/portfolios'
     template_name = 'portfolio_delete.html'
 
+    def post(self, request, *args, **kwargs):
+        if "cancel" in request.POST:
+            url = self.success_url
+            return HttpResponseRedirect(url)
+        else:
+            return super(PortfolioDeleteView, self).post(request, *args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        super(PortfolioDeleteView, self).delete(*args, **kwargs)
+
 class PortfolioDetailView(DetailView):
     model = Portfolio
     context_object_name = "portfolio"

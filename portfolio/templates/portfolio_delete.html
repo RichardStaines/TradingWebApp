@@ -5,9 +5,11 @@
 <form method="post">
     {% csrf_token %}
     <p>Are you sure you want to delete "{{portfolio.name}}" ?</p>
-    <p>This action cannot be undone</p>
+    <p>This will delete <b>ALL Trades, Dividends and Positions</b> associated with the Portfolio.</p>
+        <p>This action cannot be undone</p>
 
-    <input type="submit" class="btn btn-danger" value="Confirm">
+    <input type="submit" name='confirm' class="btn btn-danger" value="Confirm">
+    <input type="submit" name='cancel' class="btn btn-primary" value="Cancel">
 </form>
 
 {% endblock %}
