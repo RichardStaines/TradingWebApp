@@ -50,10 +50,10 @@
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
                 <td>
-                    <button onclick="window.location.href='{% url 'dividend_schedule.update' pk=row.id %}'"
-                            class="test-dark text-decoration-non">Edit</button>
-                    <button onclick="window.location.href='{% url 'dividend_schedule.delete' pk=row.id %}'"
-                            class="test-dark text-decoration-non">Delete</button>
+                    <i style="color: blue;" class="fa fa-edit"
+                       onclick="window.location.href='{% url 'dividend_schedule.update' pk=row.id %}'">&nbsp;&nbsp;</i>
+                    <i style="color: red;" class="fa fa-trash"
+                       onclick="window.location.href='{% url 'dividend_schedule.delete' pk=row.id %}'"></i>
                 </td>
             </tr>
             {% endfor %}

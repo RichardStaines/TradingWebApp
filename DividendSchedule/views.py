@@ -40,6 +40,13 @@ class DividendScheduleDeleteView(DeleteView):
     context_object_name = "row"
     template_name = 'dividend_schedule_delete.html'
 
+    def post(self, request, *args, **kwargs):
+        if "cancel" in request.POST:
+            url = self.success_url
+            return HttpResponseRedirect(url)
+        else:
+            return super(DividendScheduleDeleteView, self).post(request, *args, **kwargs)
+
 
 class DividendScheduleListView(LoginRequiredMixin, ListView):
     model = DividendSchedule
