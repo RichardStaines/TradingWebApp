@@ -47,6 +47,12 @@ class PositionDeleteView(DeleteView):
     success_url = '/pos/positions'
     template_name = 'position_delete.html'
 
+    def post(self, request, *args, **kwargs):
+        if "cancel" in request.POST:
+            url = self.success_url
+            return HttpResponseRedirect(url)
+        else:
+            return super(PositionDeleteView, self).post(request, *args, **kwargs)
 
 class PositionListView(LoginRequiredMixin, ListView):
     model = Position

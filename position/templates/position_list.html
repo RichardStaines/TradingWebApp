@@ -149,11 +149,12 @@
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
                 <td>
-                    <button onclick="window.location.href='{% url 'position.update' pk=row.id %}'"
-                            class="test-dark text-decoration-non">Edit</button>
-                    <button onclick="window.location.href='{% url 'position.delete' pk=row.id %}'"
-                            class="test-dark text-decoration-non">Delete</button>
-                    {{row.id}}
+                    {{row.id}}&nbsp;
+                    <i style="color: blue;" class="fa fa-edit"
+                       onclick="window.location.href='{% url 'position.update' pk=row.id %}'">&nbsp;&nbsp;</i>
+                    <i style="color: red;" class="fa fa-trash"
+                       onclick="window.location.href='{% url 'position.delete' pk=row.id %}'"></i>
+
                 </td>
             </tr>
             {% endfor %}
