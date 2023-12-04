@@ -37,8 +37,16 @@ class InstrumentPriceUpdateView(UpdateView):
 
 class InstrumentPriceDeleteView(DeleteView):
     model = InstrumentPrice
+    context_object_name = "instrument_price"
     success_url = '/prices/instrument_prices'
     template_name = 'instrument_price_delete.html'
+
+    def post(self, request, *args, **kwargs):
+        if "cancel" in request.POST:
+            url = self.success_url
+            return HttpResponseRedirect(url)
+        else:
+            return super(InstrumentPriceDeleteView, self).post(request, *args, **kwargs)
 
 
 class InstrumentPriceListView(LoginRequiredMixin, ListView):

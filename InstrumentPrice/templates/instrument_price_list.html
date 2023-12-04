@@ -80,10 +80,12 @@
                 <td>{{instrument_price.mkt_cap | intcomma}}</td>
                 <td>{{instrument_price.updated_on}}</td>
                 <td>
-                    <button onclick="window.location.href='{% url 'instrument_price.update' pk=instrument_price.id %}'"
-                            class="test-dark text-decoration-non">Edit</button>
-                    <button onclick="window.location.href='{% url 'instrument_price.delete' pk=instrument_price.id %}'"
-                            class="test-dark text-decoration-non">Delete</button>
+                    <i style="color: blue;" class="fa fa-edit"
+                       onclick="window.location.href='{% url 'instrument_price.update' pk=instrument_price.id %}'">&nbsp;</i>
+                    &nbsp;
+                    <i style="color: red;" class="fa fa-trash"
+                       onclick="window.location.href='{% url 'instrument_price.delete' pk=instrument_price.id %}'">&nbsp;</i>
+
                 </td>
             </tr>
             {% endfor %}
