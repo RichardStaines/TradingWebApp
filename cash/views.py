@@ -33,6 +33,13 @@ class CashDeleteView(DeleteView):
     success_url = '/cash'
     template_name = 'cash_delete.html'
 
+    def post(self, request, *args, **kwargs):
+        if "cancel" in request.POST:
+            url = self.success_url
+            return HttpResponseRedirect(url)
+        else:
+            return super(CashDeleteView, self).post(request, *args, **kwargs)
+
 
 class CashListView(LoginRequiredMixin, ListView):
     model = Cash
