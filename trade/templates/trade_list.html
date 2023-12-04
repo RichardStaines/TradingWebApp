@@ -77,13 +77,14 @@
                 <td>{{row.description}}</td>
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
-                <td>
-                    <button onclick="window.location.href='{% url 'trade.update' pk=row.id %}'"
-                            class="test-dark text-decoration-non">Edit {{row.reference}}/{{row.id}}</button>
+                <td>{{row.reference}}/{{row.id}}
                 </td>
                 <td>
-                    <button onclick="window.location.href='{% url 'trade.delete' pk=row.id %}'"
-                            class="test-dark text-decoration-non">Delete</button>
+                    <i style="color: blue;" class="fa fa-edit"
+                       onclick="window.location.href='{% url 'trade.update' pk=row.id %}'">&nbsp;</i>
+                    &nbsp;
+                    <i style="color: red;" class="fa fa-trash"
+                       onclick="window.location.href='{% url 'trade.delete' pk=row.id %}'"></i>
                 </td>
             </tr>
             {% endfor %}
