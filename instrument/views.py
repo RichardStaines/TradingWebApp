@@ -33,6 +33,13 @@ class InstrumentDeleteView(DeleteView):
     success_url = '/instruments'
     template_name = 'instrument_delete.html'
 
+    def post(self, request, *args, **kwargs):
+        if "cancel" in request.POST:
+            url = self.success_url
+            return HttpResponseRedirect(url)
+        else:
+            return super(InstrumentDeleteView, self).post(request, *args, **kwargs)
+
 
 class InstrumentListView(LoginRequiredMixin, ListView):
     model = Instrument

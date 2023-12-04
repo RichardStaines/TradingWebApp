@@ -23,7 +23,7 @@
             <th>Company Link</th>
             <th>Created On</th>
             <th>Updated On</th>
-            <th></th>
+            <th>Action</th>
         </tr>
     </thead>
         <tbody>
@@ -50,10 +50,9 @@
                 <td>{{instrument.created_on}}</td>
                 <td>{{instrument.updated_on}}</td>
                 <td>
-                    <button onclick="window.location.href='{% url 'instrument.update' pk=instrument.id %}'"
-                            class="test-dark text-decoration-non">Edit</button>
-                    <button onclick="window.location.href='{% url 'instrument.delete' pk=instrument.id %}'"
-                            class="test-dark text-decoration-non">Delete</button>
+                    <i style="color: blue;" class="fa fa-edit" onclick="window.location.href='{% url 'instrument.update' pk=instrument.id %}'">&nbsp;</i>
+                    &nbsp;
+                    <i style="color: red;" class="fa fa-trash" onclick="window.location.href='{% url 'instrument.delete' pk=instrument.id %}'">&nbsp;</i>
                 </td>
             </tr>
             {% endfor %}

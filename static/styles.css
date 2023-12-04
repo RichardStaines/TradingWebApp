@@ -13,6 +13,10 @@
   color: blue;
 }
 
+.danger {
+  color: red;
+}
+
 .mr-0 {
   position: absolute; right: 3;
 }

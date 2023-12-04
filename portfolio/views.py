@@ -42,8 +42,6 @@ class PortfolioDeleteView(DeleteView):
         else:
             return super(PortfolioDeleteView, self).post(request, *args, **kwargs)
 
-    def delete(self, *args, **kwargs):
-        super(PortfolioDeleteView, self).delete(*args, **kwargs)
 
 class PortfolioDetailView(DetailView):
     model = Portfolio
