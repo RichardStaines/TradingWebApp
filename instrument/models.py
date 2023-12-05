@@ -16,6 +16,8 @@ class Instrument(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    yahoo_chart = ''
+    yahoo_info = ''
 
     class Meta:
         db_table = "app_instrument"
