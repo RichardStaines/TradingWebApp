@@ -112,7 +112,7 @@ class PositionListView(LoginRequiredMixin, ListView):
             item.ma200 = price_lookup[item.instrument_id]['ma200'] if item.instrument_id in price_lookup else ''
             item.year_high = price_lookup[item.instrument_id]['year_high'] if item.instrument_id in price_lookup else ''
             item.year_low = price_lookup[item.instrument_id]['year_low'] if item.instrument_id in price_lookup else ''
-            item.pcnt_from_year_high = price_lookup[item.instrument_id]['pcnt_from_year_high'] if item.instrument_id in price_lookup else ''
+            item.pcnt_from_year_high = 100 - price_lookup[item.instrument_id]['pcnt_from_year_high'] if item.instrument_id in price_lookup else ''
 
             new_qs.append(item)
 
