@@ -87,11 +87,11 @@
                           {% else %}style="color: blue;"
                           {% endif %}>
                 {{row.instrument_price.price.normalize |intcomma}}
-                {% if row.instrument_price.price != '' %}({% endif %}
+                {% if row.instrument_price.price != NaN %}({% endif %}
                 {% if row.instrument_price.change > 0 %}+{% endif %}{{row.instrument_price.change.normalize |floatformat:2}}
                 <b>{% if row.instrument_price.change_percent > 0 %}+{% endif %}{{row.instrument_price.change_percent.normalize |floatformat:2}}</b>
-                {% if row.instrument_price.price != '' %}% ){% endif %}
-                {% if row.instrument_price.price != '' %}
+                {% if row.instrument_price.price != NaN %}% ){% endif %}
+                {% if row.instrument_price.price != NaN %}
                 <span style="color: red;">{{row.instrument_price.year_low.normalize |floatformat:2}}</span>/<span style="color: blue;">{{row.instrument_price.year_high.normalize |floatformat:2}}</span>
                 <span style="color: purple;">{{row.instrument_price.pcnt_from_year_high }} %</span>
                 <span {% if row.instrument_price.price < row.instrument_price.ma50 %} style="color: red;"
