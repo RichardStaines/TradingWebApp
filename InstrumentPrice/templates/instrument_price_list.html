@@ -19,6 +19,7 @@
     <thead>
         <tr>
             <th>Instrument</th>
+            <th>Yahoo</th>
             <th>Price Source</th>
             <th>Open</th>
             <th>Close</th>
@@ -44,6 +45,18 @@
                     {{ instrument_price.instrument }}
                     </a>
                      &nbsp;({{ instrument_price.exchange}} {{ instrument_price.currency}})
+                </td>
+                <td>
+                        {% if instrument_price.instrument.price_source_code != '' %}
+                        &nbsp;
+                        <a href="https://uk.finance.yahoo.com/quote/{{instrument_price.instrument.price_source_code}}">
+                            <i class="fa fa-info"></i>
+                        </a>&nbsp;
+                        <a href="https://uk.finance.yahoo.com/chart/{{instrument_price.instrument.price_source_code}}">
+                            <i class="fa fa-line-chart"></i>
+                        </a>
+                    {% endif %}
+                </td>
                 </td>
                 <td>{{instrument_price.price_source}}</td>
                 <td>{{instrument_price.open.normalize}}</td>

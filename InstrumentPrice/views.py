@@ -56,7 +56,7 @@ class InstrumentPriceListView(LoginRequiredMixin, ListView):
     login_url = "/login"
 
     def get_queryset(self):
-        return InstrumentPrice.objects.all().order_by('instrument')
+        return InstrumentPrice.objects.select_related('instrument').all().order_by('instrument')
 
 
 class InstrumentPriceDetailView(DetailView):
