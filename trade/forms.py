@@ -25,7 +25,7 @@ class TradeForm(forms.ModelForm):
         model = Trade
         fields = ['portfolio', 'buy_sell', 'instrument',
                   'quantity', 'price', 'net_consideration',
-                  'trade_date', 'settle_date', 'description', 'reference'
+                  'trade_date', 'settle_date', 'pnl', 'description', 'reference'
                   ]
         widgets = {
             'portfolio': forms.Select(),
@@ -39,6 +39,9 @@ class TradeForm(forms.ModelForm):
             ),
             'net_consideration': forms.NumberInput(
                 attrs={'class': 'form-control', }
+            ),
+            'pnl': forms.NumberInput(
+                attrs={'class': 'form-control', 'placeholder': 'PnL (£)'}
             ),
 
             'trade_date': forms.DateInput(
