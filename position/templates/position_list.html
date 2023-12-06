@@ -70,40 +70,49 @@
                        class="test-dark text-decoration-non">
                         {{ row.instrument }}
                     </a>
+                    {% if row.instrument.price_source_code != '' %}
+                        &nbsp;
+                        <a href="https://uk.finance.yahoo.com/quote/{{row.instrument.price_source_code}}">
+                            <i class="fa fa-info"></i>
+                        </a>&nbsp;
+                        <a href="https://uk.finance.yahoo.com/chart/{{row.instrument.price_source_code}}">
+                            <i class="fa fa-line-chart"></i>
+                        </a>
+                    {% endif %}
                 </td>
                 <td>{{row.quantity |intcomma}}</td>
                 <td>£{{row.cost.normalize |intcomma}}</td>
                 <td>{{row.avg_price.normalize |intcomma}}</td>
-                <td {% if row.change < 0 %} style="color: red;"
+                <td {% if row.instrument_price.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
-                {{row.mkt_price.normalize |intcomma}}
-                {% if row.mkt_price != '' %}({% endif %}
-                {% if row.change > 0 %}+{% endif %}{{row.change.normalize |floatformat:2}}
-                <b>{% if row.change_pct > 0 %}+{% endif %}{{row.change_pct.normalize |floatformat:2}}</b>
-                {% if row.mkt_price != '' %}% ){% endif %}
-                {% if row.mkt_price != '' %}
-                <span style="color: red;">{{row.year_low.normalize |floatformat:2}}</span>/<span style="color: blue;">{{row.year_high.normalize |floatformat:2}}</span>
-                <span style="color: purple;">{{row.pcnt_from_year_high }} %</span>
-                <span {% if row.mkt_price < row.ma50 %} style="color: red;"
+                {{row.instrument_price.price.normalize |intcomma}}
+                {% if row.instrument_price.price != '' %}({% endif %}
+                {% if row.instrument_price.change > 0 %}+{% endif %}{{row.instrument_price.change.normalize |floatformat:2}}
+                <b>{% if row.instrument_price.change_percent > 0 %}+{% endif %}{{row.instrument_price.change_percent.normalize |floatformat:2}}</b>
+                {% if row.instrument_price.price != '' %}% ){% endif %}
+                {% if row.instrument_price.price != '' %}
+                <span style="color: red;">{{row.instrument_price.year_low.normalize |floatformat:2}}</span>/<span style="color: blue;">{{row.instrument_price.year_high.normalize |floatformat:2}}</span>
+                <span style="color: purple;">{{row.instrument_price.pcnt_from_year_high }} %</span>
+                <span {% if row.instrument_price.price < row.instrument_price.ma50 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
-                {{row.ma50 |floatformat:2}}(ma50)</span>
-                <span {% if row.mkt_price < row.ma200 %} style="color: red;"
+                {{row.instrument_price.ma50 |floatformat:2}}(ma50)</span>
+                <span {% if row.instrument_price.price < row.instrument_price.ma200 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
-                {{row.ma200 |floatformat:2}}(ma200) {% if row.ma50 > row.ma200 %}*{% endif %}
+                {{row.instrument_price.ma200 |floatformat:2}}(ma200) {% if row.instrument_price.ma50 > row.instrument_price.ma200 %}*{% endif %}
                 </span>
                 {% endif %}
                 </td>
-                <td {% if row.change < 0 %} style="color: red;"
+                <td {% if row.instrument_price.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
                     {% if row.quantity != 0 %}
                         £{{row.position_value.normalize |floatformat:2|intcomma}}
                     {% endif %}
                 </td>
-                <td {% if row.change < 0 %} style="color: red;"
+                <td {% if row.instrument_price.change < 0 %} style="color: red;"
                           {% else %}style="color: blue;"
                           {% endif %}>
                 {% if row.quantity != 0 %}
@@ -145,7 +154,17 @@
                 <td><a href="{% url 'trade_by_portfolio_and_inst.list' portfolio=row.portfolio instrument=row.instrument %}"
                        class="test-dark text-decoration-non">
                         {{ row.instrument }}
-                    </a></td>
+                    </a>
+                    {% if row.instrument.price_source_code != '' %}
+                        &nbsp;
+                        <a href="https://uk.finance.yahoo.com/quote/{{row.instrument.price_source_code}}">
+                            <i class="fa fa-info"></i>
+                        </a>&nbsp;
+                        <a href="https://uk.finance.yahoo.com/chart/{{row.instrument.price_source_code}}">
+                            <i class="fa fa-line-chart"></i>
+                        </a>
+                    {% endif %}
+                </td>
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
                 <td>

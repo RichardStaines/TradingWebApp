@@ -69,7 +69,7 @@ class PositionListView(LoginRequiredMixin, ListView):
         return context
 
     def get_queryset(self):
-        qs = Position.objects.all()
+        qs = Position.objects.select_related('instrument').all()
 #        qs_dict_list = [model_to_dict(item) for item in qs]
 #        instruments = [item.instrument.id for item in qs]
 #        ds_qs = (DividendSchedule.object.filter(instrument__in=instruments)
@@ -97,22 +97,19 @@ class PositionListView(LoginRequiredMixin, ListView):
                 if item.instrument_id in ex_div_lookup else ''
             item.div_payment_per_share = ex_div_lookup[item.instrument_id]['payment'] if item.instrument_id in ex_div_lookup else 0
 
-            item.mkt_price = price_lookup[item.instrument_id]['price'] \
+            # manual join to instrument price table
+            item.instrument_price = price_lookup[item.instrument_id] \
+                if item.instrument_id in price_lookup else None
+
+            mkt_price = price_lookup[item.instrument_id]['price'] \
                 if item.instrument_id in price_lookup else ''
-            item.change = price_lookup[item.instrument_id]['change'] \
+            change = price_lookup[item.instrument_id]['change'] \
                 if item.instrument_id in price_lookup else ''
-            item.change_pct = price_lookup[item.instrument_id]['change_percent'] \
-                if item.instrument_id in price_lookup else ''
-            item.position_value = (decimal.Decimal(item.mkt_price) * item.quantity) / 100 if item.mkt_price != '' else 0
-            item.value_change = item.quantity * decimal.Decimal(item.change) / 100\
-                if item.change != '' and item.quantity != 0 else 0
+            item.position_value = (decimal.Decimal(mkt_price) * item.quantity) / 100 if mkt_price != '' else 0
+            item.value_change = item.quantity * decimal.Decimal(change) / 100\
+                if change != '' and item.quantity != 0 else 0
             item.unrealised_pnl = item.position_value - item.cost
             item.unrealised_pnl_pct = 100 * (item.unrealised_pnl / item.cost) if item.cost != 0 else 0
-            item.ma50 = price_lookup[item.instrument_id]['ma50'] if item.instrument_id in price_lookup else ''
-            item.ma200 = price_lookup[item.instrument_id]['ma200'] if item.instrument_id in price_lookup else ''
-            item.year_high = price_lookup[item.instrument_id]['year_high'] if item.instrument_id in price_lookup else ''
-            item.year_low = price_lookup[item.instrument_id]['year_low'] if item.instrument_id in price_lookup else ''
-            item.pcnt_from_year_high = price_lookup[item.instrument_id]['pcnt_from_year_high'] if item.instrument_id in price_lookup else ''
 
             new_qs.append(item)
 

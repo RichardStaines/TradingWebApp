@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+
+from InstrumentPrice.models import InstrumentPrice
 from portfolio.models import Portfolio
 from instrument.models import Instrument, InstrumentRepository
 from trade.models import Trade
@@ -25,18 +27,11 @@ class Position(models.Model):
     div_last = 0
     div_prev = 0
     year = 0
-    mkt_price = 0.0
-    change = 0
-    change_pct = 0
     position_value = 0
     value_change = 0
     unrealised_pnl = 0
     unrealised_pnl_pct = 0 # as %age of cost
-    ma50 = 0
-    ma200 = 0
-    year_high = 0
-    year_low = 0
-    pcnt_from_year_high = 0
+    instrument_price = None # manual join to instrument price table
 
     class Meta:
         db_table = "app_position"
