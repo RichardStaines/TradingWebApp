@@ -25,6 +25,10 @@ class Trade(models.Model):
     class Meta:
         db_table = "app_trade"
 
+    @property
+    def pnl_percent(self):
+        return 100 * self.pnl / (self.net_consideration - self.pnl)
+
 
 class TradeRepository:
 

@@ -21,6 +21,7 @@
             <th>Portfolio</th>
             <th>Settlement Date</th>
             <th>PnL</th>
+            <th>% PnL</th>
             <th>Description</th>
             <th>Created On</th>
             <th>Updated On</th>
@@ -37,6 +38,7 @@
             <th >Portfolio</th>
             <th >Settlement Date</th>
             <th>PnL</th>
+                <th>% PnL</th>
             <th >Description</th>
             <th >Created On</th>
             <th >Updated On</th>
@@ -74,6 +76,10 @@
                           {% endif %}>
                     {{row.pnl}}
                 </td>
+                <td {% if row.pnl < 0 %} style="color: red;"
+                          {% else %}style="color: blue;"
+                          {% endif %}>
+                    {{row.pnl_percent |floatformat:2}}%</td>
                 <td>{{row.description}}</td>
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
@@ -101,6 +107,7 @@
             <th ></th>
             <th ></th>
             <th ></th>
+                <th ></th>
             <th ></th>
             <th ></th>
             <th ></th>
@@ -122,8 +129,8 @@
         var CONSIDERATION_COL = 5
         var SETTLE_DATE_COL = 7
         var PNL_COL = 8
-        var CREATED_COL = 10
-        var UPDATED_COL = 11
+        var CREATED_COL = 11
+        var UPDATED_COL = 12
 
         $('#datatable1').DataTable({
             order: [[TRADE_DATE_COL, 'desc']],
