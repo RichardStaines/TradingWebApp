@@ -69,18 +69,21 @@
     }
 
     $(document).ready(function() {
+        var EX_DIV_COL = 1
+        var PAY_DATE_COL = 2
 
         $('#datatable1').DataTable({
-            order: [[1, 'desc']],
+            order: [[EX_DIV_COL, 'desc']],
             stateSave: true,
             columnDefs: [
                 {
-                    targets: [1,2], // your field position
+                    targets: [EX_DIV_COL,PAY_DATE_COL], // your field position
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM. DD, YYYY');
                         if (type === 'sort') {
-                            return momentObj.unix();
+                            return momentObj.format('YYYY-MM-DD');
+                            // return momentObj.unix();
                         }
                         return momentObj.format('DD MMM YYYY');
                     },

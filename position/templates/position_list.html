@@ -221,6 +221,7 @@
         var MKT_VAL_CHG_COL = 7
         var UNREALISED_COL = 8
         var PNL_COL = 10
+        var EX_DIV_COL = 11
         var DIV_YTD_COL = 12
         var DIV_LAST_COL = 13
         var DIV_PREV_COL = 14
@@ -268,6 +269,20 @@
                             : 0
                         if (type === 'sort') {
                             return raw_data;
+                        }
+                        return data;
+                    },
+                    orderable: true
+                },
+                {
+                    targets: [EX_DIV_COL], // your field position
+                    type: 'datetime',
+                    render: function (data, type, row, meta) {
+                        raw_data = data.substring(0,14)
+                        var momentObj = moment(raw_data, 'MMM. DD, YYYY');
+                        if (type === 'sort') {
+                            return momentObj.format('YYYY-MM-DD');
+                           // return momentObj.unix();
                         }
                         return data;
                     },
