@@ -14,12 +14,12 @@
 
         <tr>
             <th>Code</th>
+            <th>Yahoo</th>
             <th>Sedol</th>
             <th>Alt Code</th>
             <th>Description</th>
             <th>Price Source</th>
             <th>Price Source Code</th>
-            <th>Yahoo</th>
             <th>Dividend Info Link</th>
             <th>Company Link</th>
             <th>Created On</th>
@@ -35,13 +35,6 @@
                     {{ instrument.code }}
                     </a>
                 </td>
-                <td>{{instrument.sedol}}</td>
-                <td>{{instrument.alt_code}}
-                </td>
-                <td>{{instrument.description}}</td>
-                <td>{{instrument.price_source}}</td>
-                <td>{{instrument.price_source_code}}
-                </td>
                 <td>{% if instrument.price_source_code != '' %}
                         <a href="https://uk.finance.yahoo.com/quote/{{instrument.price_source_code}}">
                             <i class="fa fa-info"></i>
@@ -50,6 +43,13 @@
                             <i class="fa fa-line-chart"></i>
                         </a>
                     {% endif %}
+                </td>
+                <td>{{instrument.sedol}}</td>
+                <td>{{instrument.alt_code}}
+                </td>
+                <td>{{instrument.description}}</td>
+                <td>{{instrument.price_source}}</td>
+                <td>{{instrument.price_source_code}}
                 </td>
                 <td><a href="{{instrument.dividend_info_link}}"
                        class="test-dark text-decoration-non">
