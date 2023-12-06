@@ -60,7 +60,7 @@ class DividendScheduleListView(LoginRequiredMixin, ListView):
 
 class DividendScheduleDetailView(DetailView):
     model = DividendSchedule
-    context_object_name = "dividend_schedules"
+    context_object_name = "dividend_schedule"
     template_name = 'dividend_schedule_details.html'
 
 

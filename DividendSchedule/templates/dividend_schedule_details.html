@@ -2,13 +2,13 @@
 
 {% block content %}
 <div class="border round">
-    <h1 class="my-5">{{dividend.instrument}}</h1>
-    <p>{{dividend.ex_div_date}}</p>
-    <p>{{dividend.payment_date}}</p>
-    <p>{{dividend.payment}}</p>
+    <h1 class="my-5">{{dividend_schedule.instrument}}</h1>
+    <p>{{dividend_schedule.ex_div_date}}</p>
+    <p>{{dividend_schedule.payment_date}}</p>
+    <p>{{dividend_schedule.payment}}</p>
 
-    <p>{{dividend.created_on}}</p>
-    <p>{{dividend.updated_on}}</p>
+    <p>{{dividend_schedule.created_on}}</p>
+    <p>{{dividend_schedule.updated_on}}</p>
 </div>
 
 <a href="{% url 'dividend_schedule.list' %}" class="btn btn-secondary my-5">List</a>
