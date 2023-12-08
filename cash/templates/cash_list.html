@@ -10,20 +10,20 @@
     <thead>
 
         <tr class="col-head">
+            <th>Portfolio</th>
             <th>Type</th>
             <th>Payment Date</th>
             <th>Amount</th>
-            <th>Portfolio</th>
             <th>Description</th>
             <th>Created On</th>
             <th>Updated On</th>
             <th></th>
         </tr>
-            <tr class="col-head">
+            <tr>
+                <th>Portfolio</th>
             <th>Type</th>
             <th>Payment Date</th>
             <th>Amount</th>
-            <th>Portfolio</th>
             <th>Description</th>
             <th>Created On</th>
             <th>Updated On</th>
@@ -33,14 +33,11 @@
         <tbody>
             {% for row in cash_list %}
             <tr>
+                <td>{{row.portfolio}}</td>
                 <td>{{row.type}}</td>
                 <td>{{row.payment_date}}</td>
                 <td>£{{row.amount |intcomma}}</td>
-                <td>
-                    <a href="{% url 'portfolio.details' pk=row.portfolio.id %}" class="test-dark text-decoration-non">
-                        {{row.portfolio}}
-                    </a>
-                </td>
+
                 <td>{{row.description}}</td>
                 <td>{{row.created_on}}</td>
                 <td>{{row.updated_on}}</td>
@@ -58,12 +55,17 @@
 
 <script>
     $(document).ready(function() {
+
+        var PAYMENT_DATE_COL = 2
+        var CREATE_DATE_COL = 5
+        var UPDATE_DATE_COL = 6
+
         $('#datatable1').DataTable({
-            order: [[1, 'desc']],
+            order: [[PAYMENT_DATE_COL, 'desc']],
             stateSave: true,
             columnDefs: [
                 {
-                    targets: [1], // your field position
+                    targets: [PAYMENT_DATE_COL], // your field position
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM DD YYYY');
@@ -75,7 +77,7 @@
                     orderable: true
                 },
                 {
-                    targets: [5,6], // your field position
+                    targets: [CREATE_DATE_COL,UPDATE_DATE_COL], // your field position
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM DD, YYYY, h:mm a');
