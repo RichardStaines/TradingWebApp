@@ -46,11 +46,11 @@
            style="width:100%" searching="true">
     <thead>
 
-        <tr class="col-head">
+        <tr>
+            <th>Portfolio</th>
             <th>Payment Date</th>
             <th>Amount Paid</th>
             <th>Instrument</th>
-            <th>Portfolio</th>
             <th>Description</th>
             <th>Created On</th>
             <th>Updated On</th>
@@ -58,13 +58,13 @@
             <th></th>
         </tr>
         <tr >
+            <th>Portfolio</th>
             <th>Payment Date</th>
             <th>Amount Paid</th>
             <th>Instrument</th>
-            <th>Portfolio</th>
-            <th class="sorting_enabled">Description</th>
-            <th class="sorting_enabled">Created On</th>
-            <th class="sorting_enabled">Updated On</th>
+            <th>Description</th>
+            <th>Created On</th>
+            <th>Updated On</th>
             <th>Id</th>
             <th></th>
         </tr>
@@ -72,16 +72,16 @@
         <tbody>
             {% for dividend in dividends %}
             <tr>
+                <td>
+                    <a href="{% url 'portfolio.details' pk=dividend.portfolio.id %}" class="test-dark text-decoration-non">
+                        {{dividend.portfolio}}
+                    </a>
+                </td>
                 <td>{{dividend.payment_date}}</td>
                 <td>£{{dividend.amount |intcomma}}</td>
                 <td>
                     <a href="{% url 'dividend.details' pk=dividend.id %}" class="test-dark text-decoration-non">
                         {{ dividend.instrument }}
-                    </a>
-                </td>
-                <td>
-                    <a href="{% url 'portfolio.details' pk=dividend.portfolio.id %}" class="test-dark text-decoration-non">
-                        {{dividend.portfolio}}
                     </a>
                 </td>
                 <td>{{dividend.description}}</td>
@@ -149,12 +149,16 @@
 
         })
 
+        var PAYMENT_DATE_COL = 1
+        var AMOUNT_COL = 2
+        var CREATED_COL = 5
+        var UPDATED_COL = 6
         $('#datatable1').DataTable({
-            order: [[0, 'desc']],
+            order: [[PAYMENT_DATE_COL, 'desc']],
             stateSave: true,
             columnDefs: [
                 {
-                    targets: [0], // payment date
+                    targets: [PAYMENT_DATE_COL], // payment date
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM DD, YYYY');
@@ -166,7 +170,7 @@
                     orderable: true
                 },
                 {
-                    targets: [5,6], // created on, updated on
+                    targets: [CREATED_COL,UPDATED_COL], // created on, updated on
                     type: 'datetime',
                     render: function (data, type, row, meta) {
                         var momentObj = moment(data, 'MMM DD, YYYY, h:mm a');
@@ -214,13 +218,13 @@
 
                 // Total over all pages
                 total = api
-                    .column(1)
+                    .column(AMOUNT_COL)
                     .data()
                     .reduce((a, b) => intVal(a) + intVal(b), 0);
 
                 // Total over this page
                 pageTotal = api
-                    .column(1, { page: 'current' })
+                    .column(AMOUNT_COL, { page: 'current' })
                     .data()
                     .reduce((a, b) => intVal(a) + intVal(b), 0);
                 var pageTotal = new Intl.NumberFormat("en-UK", {
@@ -232,10 +236,9 @@
                   currency: "GBP"
                 }).format(total);
                 // Update footer
-                api.column(1).footer().innerHTML =
+                api.column(AMOUNT_COL).footer().innerHTML =
                     pageTotal;
-               // api.column(2).footer().innerHTML =
-               //     total;
+
             }
         });
     } );
