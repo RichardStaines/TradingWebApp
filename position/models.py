@@ -20,9 +20,8 @@ class Position(models.Model):
     portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    ex_div_date = ''
-    payment_date = ''
     div_payment_per_share = 0
+    div_payment_per_share_pcnt = 0
     div_ytd = 0
     div_last = 0
     div_prev = 0
@@ -32,6 +31,7 @@ class Position(models.Model):
     unrealised_pnl = 0
     unrealised_pnl_pct = 0 # as %age of cost
     instrument_price = None # manual join to instrument price table
+    dividend_schedule = None
 
     class Meta:
         db_table = "app_position"

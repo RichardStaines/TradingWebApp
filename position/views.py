@@ -91,11 +91,9 @@ class PositionListView(LoginRequiredMixin, ListView):
             item.year,item.div_ytd = divRepo.get_dividend_total(item.portfolio_id, item.instrument_id, "YTD")
             _,item.div_last = divRepo.get_dividend_total(item.portfolio_id, item.instrument_id, "LAST")
             _,item.div_prev = divRepo.get_dividend_total(item.portfolio_id, item.instrument_id, "PREV")
-            item.ex_div_date = ex_div_lookup[item.instrument_id]['ex_div_date'] \
-                if item.instrument_id in ex_div_lookup else ''
-            item.payment_date = ex_div_lookup[item.instrument_id]['payment_date'] \
-                if item.instrument_id in ex_div_lookup else ''
-            item.div_payment_per_share = ex_div_lookup[item.instrument_id]['payment'] if item.instrument_id in ex_div_lookup else 0
+
+            item.dividend_schedule = ex_div_lookup[item.instrument_id] \
+                if item.instrument_id in ex_div_lookup else None
 
             # manual join to instrument price table
             item.instrument_price = price_lookup[item.instrument_id] \
@@ -110,6 +108,11 @@ class PositionListView(LoginRequiredMixin, ListView):
                 if change != '' and item.quantity != 0 else 0
             item.unrealised_pnl = item.position_value - item.cost
             item.unrealised_pnl_pct = 100 * (item.unrealised_pnl / item.cost) if item.cost != 0 else 0
+
+            div_payment_per_share = ex_div_lookup[item.instrument_id]['payment'] \
+                if item.instrument_id in ex_div_lookup else 0
+            if mkt_price != '' and mkt_price != '0':
+                item.div_payment_per_share_pcnt = 10000.0 * float(div_payment_per_share) / float(mkt_price)
 
             new_qs.append(item)
 
