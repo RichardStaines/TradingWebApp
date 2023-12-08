@@ -338,6 +338,8 @@
                 var sum_cols = [COST_COL, MKT_VAL_COL, MKT_VAL_CHG_COL,
                                 UNREALISED_COL, PNL_COL,
                                 DIV_YTD_COL, DIV_LAST_COL, DIV_PREV_COL]
+                var mkt_chg = 0.0
+                var mkt_val = 0.0
                 for (var col of sum_cols)
                 {
                     // Total over all pages
@@ -345,6 +347,12 @@
                         .column(col, { page: 'current' })
                         .data()
                         .reduce((a, b) => intVal(a) + intVal(b), 0);
+
+                    if (col == MKT_VAL_COL)
+                        mkt_val = sum_val;
+                    else if (col == MKT_VAL_CHG_COL)
+                        mkt_chg = sum_val;
+
                     var sum_val = new Intl.NumberFormat("en-UK", {
                       style: "currency",
                       currency: "GBP"
@@ -352,7 +360,8 @@
 
                     api.column(col).footer().innerHTML = sum_val;
                 }
-
+                var mkt_chg_pcnt = (100 * mkt_chg / (mkt_val - mkt_chg)).toFixed(2) + " %";
+                api.column(MKT_PRICE_COL).footer().innerHTML = mkt_chg_pcnt ;
             }
 
 
