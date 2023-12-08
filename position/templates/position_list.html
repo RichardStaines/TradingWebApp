@@ -220,6 +220,7 @@
         var MKT_VAL_COL = 6
         var MKT_VAL_CHG_COL = 7
         var UNREALISED_COL = 8
+        var UNREALISED_PCNT_COL = 9
         var PNL_COL = 10
         var EX_DIV_COL = 11
         var DIV_YTD_COL = 12
@@ -338,9 +339,8 @@
                 var sum_cols = [COST_COL, MKT_VAL_COL, MKT_VAL_CHG_COL,
                                 UNREALISED_COL, PNL_COL,
                                 DIV_YTD_COL, DIV_LAST_COL, DIV_PREV_COL]
-                var mkt_chg = 0.0
-                var mkt_val = 0.0
-                var mkt_chg_pcnt = 0.0
+                var mkt_chg = 0.0, mkt_val = 0.0, mkt_chg_pcnt = 0.0
+                var unrealised_pcnt = 0.0, unrealised = 0.0, cost = 0.0
                 for (var col of sum_cols)
                 {
                     // Total over all pages
@@ -353,6 +353,10 @@
                         mkt_val = sum_val;
                     else if (col == MKT_VAL_CHG_COL)
                         mkt_chg = sum_val;
+                    else if (col == COST_COL)
+                        cost = sum_val
+                    else if (col == UNREALISED_COL)
+                        unrealised = sum_val
 
                     var sum_val = new Intl.NumberFormat("en-UK", {
                       style: "currency",
@@ -364,6 +368,9 @@
                 if ((mkt_val - mkt_chg) != 0)
                     mkt_chg_pcnt = (100 * mkt_chg / (mkt_val - mkt_chg)).toFixed(2) + " %";
                 api.column(MKT_PRICE_COL).footer().innerHTML = mkt_chg_pcnt ;
+                if (cost != 0)
+                    unrealised_pcnt = (100 * unrealised / cost).toFixed(2) + " %";
+                api.column(UNREALISED_PCNT_COL).footer().innerHTML = unrealised_pcnt ;
             }
 
 
