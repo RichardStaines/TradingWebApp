@@ -50,6 +50,16 @@
             </tr>
             {% endfor %}
         </tbody>
+        <tfoot>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tfoot>
     </table>
 
 
@@ -111,6 +121,30 @@
                     });
             },
 
+        footerCallback: function (row, data, start, end, display) {
+                let api = this.api();
+
+                // Remove the formatting to get integer data for summation
+                let intVal = function (i) {
+                    return typeof i === 'string'
+                        ? i.replace(/[\$£,]/g, '') * 1
+                        : typeof i === 'number'
+                        ? i
+                        : 0;
+                };
+                for (var col = 3; col < 4; col++) {
+                    col_total = api
+                        .column(col, { page: 'current' })
+                        .data()
+                        .reduce((a, b) => intVal(a) + intVal(b), 0);
+                    var col_total = new Intl.NumberFormat("en-UK", {
+                      style: "currency",
+                      currency: "GBP"
+                    }).format(col_total);
+                     // Update footer
+                    api.column(col).footer().innerHTML = col_total;
+                };
+            }
 
         });
     } );
