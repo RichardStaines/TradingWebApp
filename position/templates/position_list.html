@@ -340,6 +340,7 @@
                                 DIV_YTD_COL, DIV_LAST_COL, DIV_PREV_COL]
                 var mkt_chg = 0.0
                 var mkt_val = 0.0
+                var mkt_chg_pcnt = 0.0
                 for (var col of sum_cols)
                 {
                     // Total over all pages
@@ -360,7 +361,8 @@
 
                     api.column(col).footer().innerHTML = sum_val;
                 }
-                var mkt_chg_pcnt = (100 * mkt_chg / (mkt_val - mkt_chg)).toFixed(2) + " %";
+                if ((mkt_val - mkt_chg) != 0)
+                    mkt_chg_pcnt = (100 * mkt_chg / (mkt_val - mkt_chg)).toFixed(2) + " %";
                 api.column(MKT_PRICE_COL).footer().innerHTML = mkt_chg_pcnt ;
             }
 
