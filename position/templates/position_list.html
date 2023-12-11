@@ -182,7 +182,7 @@
         <tfoot>
         <tr>
             <th></th>
-            <th></th>
+            <th id="instrument_filter"></th>
             <th></th>
             <th></th>
             <th></th>
@@ -216,7 +216,9 @@
 
         var PORTFOLIO_COL = 0
         var INSTRUMENT_COL = 1
+        var QTY_COL = 2
         var COST_COL = 3
+        var AVG_PRICE_COL = 4
         var MKT_PRICE_COL = 5
         var MKT_VAL_COL = 6
         var MKT_VAL_CHG_COL = 7
@@ -337,12 +339,16 @@
                         : 0;
                 };
 
-                var sum_cols = [COST_COL, MKT_VAL_COL, MKT_VAL_CHG_COL,
+                inst_filter = api.column(INSTRUMENT_COL).search()
+                console.log(inst_filter)
+
+                var sum_cols = [QTY_COL, COST_COL, MKT_VAL_COL, MKT_VAL_CHG_COL,
                                 UNREALISED_COL, PNL_COL,
                                 DIV_YTD_COL, DIV_LAST_COL, DIV_PREV_COL]
                 var mkt_chg = 0.0, mkt_val = 0.0, mkt_chg_pcnt = 0.0
                 var unrealised_pcnt = 0.0, unrealised = 0.0, cost = 0.0
                 var div_ytd = 0.0, div_ytd_pcnt = 0.0
+                var qty = 0, avg_price = 0.0
                 for (var col of sum_cols)
                 {
                     // Total over all pages
@@ -361,13 +367,20 @@
                         unrealised = sum_val
                     else if (col == DIV_YTD_COL)
                         div_ytd = sum_val
+                    else if (col == QTY_COL)
+                        qty = sum_val
 
-                    var sum_val = new Intl.NumberFormat("en-UK", {
-                      style: "currency",
-                      currency: "GBP"
-                    }).format(sum_val);
-
+                    if (col != QTY_COL)
+                    {
+                        var sum_val = new Intl.NumberFormat("en-UK", {
+                          style: "currency",
+                          currency: "GBP"
+                        }).format(sum_val);
+                    }
                     api.column(col).footer().innerHTML = sum_val;
+                    if (col == QTY_COL && inst_filter.length == 0)
+                        api.column(col).footer().innerHTML = ''
+
                 }
                 if ((mkt_val - mkt_chg) != 0)
                     mkt_chg_pcnt = (100 * mkt_chg / (mkt_val - mkt_chg)).toFixed(2) + " %";
@@ -379,6 +392,12 @@
                 }
                 api.column(UNREALISED_PCNT_COL).footer().innerHTML = unrealised_pcnt ;
                 api.column(DIV_YTD_COL).footer().innerHTML = div_ytd + " (" + div_ytd_pcnt + ")";
+                api.column(AVG_PRICE_COL).footer().innerHTML =  '';
+                if (qty != 0 && inst_filter.length != 0)
+                {
+                    avg_price =  (100 * cost / qty).toFixed(2);
+                    api.column(AVG_PRICE_COL).footer().innerHTML =  avg_price;
+                }
             }
 
 

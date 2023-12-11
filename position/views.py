@@ -91,6 +91,8 @@ class PositionListView(LoginRequiredMixin, ListView):
             item.year,item.div_ytd = divRepo.get_dividend_total(item.portfolio_id, item.instrument_id, "YTD")
             _,item.div_last = divRepo.get_dividend_total(item.portfolio_id, item.instrument_id, "LAST")
             _,item.div_prev = divRepo.get_dividend_total(item.portfolio_id, item.instrument_id, "PREV")
+            if item.cost != 0:
+                item.div_ytd_pcnt_of_cost = 100 * item.div_ytd / item.cost
 
             item.dividend_schedule = ex_div_lookup[item.instrument_id] \
                 if item.instrument_id in ex_div_lookup else None
