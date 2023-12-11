@@ -21,7 +21,8 @@ class Position(models.Model):
     instrument = models.ForeignKey(Instrument, on_delete=models.CASCADE)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     div_payment_per_share = 0
-    div_payment_per_share_pcnt = 0
+    div_payment_per_share_pcnt = 0  # pcnt of mkt price
+    div_payment_per_share_pcnt_of_cost = 0
     div_ytd = 0
     div_last = 0
     div_prev = 0

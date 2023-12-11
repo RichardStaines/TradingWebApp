@@ -144,7 +144,7 @@
                         <span style="color: blue;">{{row.dividend_schedule.payment_date}}
                     {% if row.quantity > 0 %}
                         {% if row.dividend_schedule.payment > 0 %}
-                            £{% widthratio row.dividend_schedule.payment 1 row.quantity %}
+                            £{% widthratio row.dividend_schedule.payment 1 row.quantity %} ({{row.div_payment_per_share_pcnt_of_cost |floatformat:2}}%)
                         {% endif  %}
                     {% endif  %}
                     </span>
