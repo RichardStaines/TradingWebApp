@@ -96,8 +96,8 @@ LOGIN_REDIRECT_URL = '/home'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-       # 'NAME': BASE_DIR / 'trading.sqlite',
-        'NAME': 'C:/Users/richa/OneDrive/Investments/trading.sqlite',
+        'NAME': BASE_DIR / 'trading.sqlite',
+       # 'NAME': 'C:/Users/richa/OneDrive/Investments/trading.sqlite',
     }
 }
 
