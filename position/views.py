@@ -113,6 +113,8 @@ class PositionListView(LoginRequiredMixin, ListView):
                 if item.instrument_id in ex_div_lookup else 0
             if mkt_price != '' and mkt_price != '0':
                 item.div_payment_per_share_pcnt = 10000.0 * float(div_payment_per_share) / float(mkt_price)
+            if item.avg_price != '' and item.avg_price != decimal.Decimal(0):
+                item.div_payment_per_share_pcnt_of_cost = decimal.Decimal(10000.0) * div_payment_per_share / item.avg_price
 
             new_qs.append(item)
 
