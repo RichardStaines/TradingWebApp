@@ -13,6 +13,8 @@ class Instrument(models.Model):
     price_source_code = models.CharField(max_length=10, default='')
     dividend_info_link = models.URLField(null=False, default='')
     company_link = models.URLField(null=False, default='')
+    sector = models.CharField(max_length=20, unique=False, default='')
+    dividend_frequency = models.IntegerField(unique=False, default=2)
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
