@@ -14,12 +14,13 @@ class TradeForm(forms.ModelForm):
         # first call parent's constructor
         super(TradeForm, self).__init__(*args, **kwargs)
         # there's a `fields` property now
-        not_require_list = ['description', 'reference']
-        for item in not_require_list:
+        not_mandatory_list = ['description', 'reference', 'price']
+        for item in not_mandatory_list:
             self.fields[item].required = False
         not_edit_list = []
         for item in not_edit_list:
             self.fields[item].disabled = ('instance' in kwargs and kwargs['instance'] is not None)
+
 
     class Meta:
         model = Trade
@@ -62,6 +63,6 @@ class TradeForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control', } ),
         }
         labels = {'payment_date': 'Payment Date',
-                  'price': 'Price (£)'}
+                  'price': 'Price (£) - Leave blank to calculate from consideration'}
 
 

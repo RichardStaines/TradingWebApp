@@ -24,6 +24,8 @@ class TradeCreateView(CreateView):
         return context
 
     def form_valid(self, form):
+        if form.instance.price is None or form.instance.price == 0:
+            form.instance.price = (form.instance.net_consideration / form.instance.quantity)
         self.object = form.save(commit=False)
         posRepo = PositionRepository()
         self.object.pnl = posRepo.update_position_with_trade(self.object, self.request.user)
@@ -44,6 +46,8 @@ class TradeUpdateView(UpdateView):
         return context
 
     def form_valid(self, form):
+        if form.instance.price is None or form.instance.price == 0:
+            form.instance.price = (form.instance.net_consideration / form.instance.quantity)
         self.object = form.save(commit=False)
         posRepo = PositionRepository()
         pre_amended_trade = Trade.objects.get(pk=self.object.id)
