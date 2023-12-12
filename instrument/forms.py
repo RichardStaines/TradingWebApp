@@ -9,9 +9,9 @@ class InstrumentForm(forms.ModelForm):
         # first call parent's constructor
         super(InstrumentForm, self).__init__(*args, **kwargs)
         # there's a `fields` property now
-        not_require_list = ['price_source_code', 'price_source',
-                            'sedol', 'dividend_info_link', 'company_link']
-        for item in not_require_list:
+        not_mandatory_list = ['price_source_code', 'price_source',
+                            'sedol', 'alt_code', 'dividend_info_link', 'company_link']
+        for item in not_mandatory_list:
             self.fields[item].required = False
 
     class Meta:
