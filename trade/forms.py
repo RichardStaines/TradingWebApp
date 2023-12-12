@@ -14,7 +14,7 @@ class TradeForm(forms.ModelForm):
         # first call parent's constructor
         super(TradeForm, self).__init__(*args, **kwargs)
         # there's a `fields` property now
-        not_mandatory_list = ['description', 'reference', 'price']
+        not_mandatory_list = ['description', 'reference', 'price', 'settle_date']
         for item in not_mandatory_list:
             self.fields[item].required = False
         not_edit_list = []

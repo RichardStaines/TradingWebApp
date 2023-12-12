@@ -13,7 +13,7 @@ class Trade(models.Model):
     price = models.DecimalField(max_digits=12, decimal_places=6)
     net_consideration = models.DecimalField(max_digits=12, decimal_places=2)
     trade_date = models.DateField(null=False)
-    settle_date = models.DateField(null=False)
+    settle_date = models.DateField(null=True)
     description = models.CharField(max_length=100, unique=False)
     pnl = models.DecimalField(max_digits=12, decimal_places=2, default=0)
     created_on = models.DateTimeField(auto_now_add=True)

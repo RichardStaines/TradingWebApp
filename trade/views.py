@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.http import HttpResponseRedirect
 from django.views.generic import ListView
 from django.views.generic import DetailView, CreateView, UpdateView
@@ -26,6 +28,8 @@ class TradeCreateView(CreateView):
     def form_valid(self, form):
         if form.instance.price is None or form.instance.price == 0:
             form.instance.price = (form.instance.net_consideration / form.instance.quantity)
+        if form.instance.settle_date is None:
+            form.instance.settle_date = form.instance.trade_date + timedelta(days=2)
         self.object = form.save(commit=False)
         posRepo = PositionRepository()
         self.object.pnl = posRepo.update_position_with_trade(self.object, self.request.user)
@@ -48,6 +52,8 @@ class TradeUpdateView(UpdateView):
     def form_valid(self, form):
         if form.instance.price is None or form.instance.price == 0:
             form.instance.price = (form.instance.net_consideration / form.instance.quantity)
+        if form.instance.settle_date is None:
+            form.instance.settle_date = form.instance.trade_date + timedelta(days=2) # skip weekends and bank hols in the future
         self.object = form.save(commit=False)
         posRepo = PositionRepository()
         pre_amended_trade = Trade.objects.get(pk=self.object.id)
