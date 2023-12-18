@@ -391,7 +391,7 @@
                     div_ytd_pcnt = (100 * div_ytd / cost).toFixed(2) + "%";
                 }
                 api.column(UNREALISED_PCNT_COL).footer().innerHTML = unrealised_pcnt ;
-                api.column(DIV_YTD_COL).footer().innerHTML = div_ytd + " (" + div_ytd_pcnt + ")";
+                api.column(DIV_YTD_COL).footer().innerHTML = "£" + div_ytd.toFixed(2) + " (" + div_ytd_pcnt + ")";
                 api.column(AVG_PRICE_COL).footer().innerHTML =  '';
                 if (qty != 0 && inst_filter.length != 0)
                 {
