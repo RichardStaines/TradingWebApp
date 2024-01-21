@@ -5,9 +5,14 @@ from django.views.generic import DetailView, CreateView, UpdateView
 from django.views.generic.edit import DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from rest_framework import status
+
 from Tools import LoadCsv
 from .forms import PortfolioForm, PortfolioCsvLoadForm
 from .models import Portfolio
+from .serializers import *
 
 
 class PortfolioCreateView(CreateView):
@@ -75,3 +80,39 @@ def portfolio_csv_load_form(request):
         form = PortfolioCsvLoadForm()
     return render(request, 'portfolio_csv_loader_form.html', {'form': form})
 
+
+@api_view(['GET', 'POST'])
+def portfolio_list(request):
+    if request.method == 'GET':
+        data = Portfolio.objects.all()
+        serializer = PortfolioSerializer(data, context={'request': request}, many=True)
+        return Response(serializer.data)
+    elif request.method == 'POST':
+        serializer = PortfolioSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def portfolio_detail(request, pk):
+    try:
+        portfolio = Portfolio.objects.get(id=pk)
+    except Portfolio.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = PortfolioSerializer(portfolio, context={'request': request}, many=False)
+        return Response(serializer.data)
+    if request.method == 'PUT':
+        serializer = PortfolioSerializer(portfolio, data=request.data,context={'request': request})
+        if serializer.is_valid():
+            serializer.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        portfolio.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

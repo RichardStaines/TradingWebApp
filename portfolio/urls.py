@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
@@ -9,4 +9,7 @@ urlpatterns = [
     path('portfolios/<int:pk>/delete', views.PortfolioDeleteView.as_view(), name='portfolio.delete'),
 
     path('portfolios/load', views.portfolio_csv_load_form, name='portfolio.load'),
+
+    re_path(r'^api/portfolios/$', views.portfolio_list),
+    path('api/portfolio/<int:pk>', views.portfolio_detail),
 ]

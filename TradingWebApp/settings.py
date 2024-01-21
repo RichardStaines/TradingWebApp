@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'crispy_forms',
     "crispy_bootstrap5",
+    'rest_framework',
+    'corsheaders',
 
     # our apps
     'home',
@@ -62,6 +64,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
 ]
 
 ROOT_URLCONF = 'TradingWebApp.urls'
@@ -96,8 +100,8 @@ LOGIN_REDIRECT_URL = '/home'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'trading.sqlite',
-       # 'NAME': 'C:/Users/richa/OneDrive/Investments/trading.sqlite',
+       # 'NAME': BASE_DIR / 'trading.sqlite',
+        'NAME': 'C:/Users/richa/OneDrive/Investments/trading.sqlite',
     }
 }
 
@@ -150,3 +154,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+CORS_ORIGIN_ALLOW_ALL = True
