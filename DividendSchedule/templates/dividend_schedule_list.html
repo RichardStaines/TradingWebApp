@@ -82,6 +82,8 @@
         var EX_DIV_COL = 1
         var PAY_DATE_COL = 2
         var PAYMENT_COL = 3
+        var CREATED_COL = 4
+        var UPDATED_COL = 5
 
         $('#datatable1').DataTable({
             order: [[EX_DIV_COL, 'desc']],
@@ -101,10 +103,10 @@
                     orderable: true
                 },
                 {
-                    targets: [4,5], // your field position
+                    targets: [CREATED_COL,UPDATED_COL], // created on, updated on
                     type: 'datetime',
                     render: function (data, type, row, meta) {
-                        var momentObj = moment(data, 'MMM. DD, YYYY, h:mm a');
+                        var momentObj = moment(data, 'MMM DD, YYYY, h:mm a');
                         if (type === 'sort') {
                             return momentObj.unix();
                         }
