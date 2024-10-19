@@ -66,10 +66,15 @@ class InstrumentPriceDetailView(DetailView):
 
 
 def get_ticker_history(_ticker, _start_date=None, _end_date=None, _interval='1min', _period='1h', ip_rec=None):
-    print(_ticker)
+
     _ticker = _ticker.strip()
-    ticker_data = yf.Ticker(_ticker, session=None).fast_info
+    print(_ticker)
+
+    yf_ticker = yf.Ticker(_ticker, session=None)
+    ticker_data = yf_ticker.fast_info
+    print(f'{ticker_data.open}')
     if ip_rec is not None:
+        #print(f'{ticker_data.open}')
         ip_rec.price_source = 'yfinance'
         ip_rec.close = ticker_data.previous_close
         ip_rec.open = ticker_data.open
@@ -97,7 +102,7 @@ def load_from_yfinance_and_reload(request, reload_url):
     instRepo = InstrumentRepository()
     tickers_dict= instRepo.get_instruments_for_price_source('yfinance')
 
-    yf.pdr_override()  # <== that's all it takes :-)
+    #yf.enable_debug_mode()
     for inst_id, instrument in tickers_dict.items():
         ipRec = InstrumentPrice.objects.filter(instrument=inst_id)
         if len(ipRec) == 0:
